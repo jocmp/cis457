@@ -1,15 +1,13 @@
-import java.io.* ;
-import java.net.* ;
-import java.util.* ;
+package edu.gvsu.cis.campbjos.ftp;
 
-/**
- * PART B
- */
-public final class FTPServer {
+import java.net.ServerSocket;
+import java.net.Socket;
+
+public final class FtpServer {
     
     public static void main(String argv[]) throws Exception {
         // Get the port number from the command line.
-        int port = Integer.valueOf(argv[0]);
+        int port = 9331;
         // Establish the listen socket.
         ServerSocket socket = new ServerSocket(port);
         
@@ -19,7 +17,7 @@ public final class FTPServer {
             Socket connection = socket.accept();
             
             // Construct an object to process the HTTP request message.
-            HttpRequest request = new HttpRequest(connection);
+            FtpClient request = new FtpClient(connection);
             
             // Create a new thread to process the request.
             Thread thread = new Thread(request);
