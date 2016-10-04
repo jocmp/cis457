@@ -4,12 +4,13 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public final class FtpServer {
-    
+
+    private static final int CONTROL_PORT = 8063;
+    private static final int DATA_TRANSFER_PORT = 8064;
+
     public static void main(String argv[]) throws Exception {
         // Get the port number from the command line.
-        int port = 9331;
-        // Establish the listen socket.
-        ServerSocket socket = new ServerSocket(port);
+        ServerSocket socket = new ServerSocket(CONTROL_PORT);
         
         // Process HTTP service requests in an infinite loop.
         while (true) {

@@ -5,7 +5,7 @@ import java.net.Socket;
 import java.util.StringTokenizer;
 
 public final class FtpClient implements Runnable {
-    private final static String CRLF = "\r\n";
+    private static final String CRLF = "\r\n";
 
     private final Socket socket;
 
