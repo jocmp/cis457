@@ -1,7 +1,0 @@
-#!/bin/bash
-
-project_dir="edu/gvsu/cis/campbjos/ftp"
-
-mkdir -p out
-
-javac $(echo "src/$project_dir/*.java") -d "out"

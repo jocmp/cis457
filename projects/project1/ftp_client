@@ -1,5 +1,0 @@
-#!/bin/bash
-
-cd out
-
-java "edu/gvsu/cis/campbjos/ftp/FtpClient"

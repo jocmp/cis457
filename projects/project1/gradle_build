@@ -1,0 +1,4 @@
+#!/bin/bash
+
+./gradlew build -Pversion=client
+./gradlew build -Pversion=server
