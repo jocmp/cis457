@@ -15,6 +15,7 @@ final class ServerProtocolInterpreter implements ProtocolInterpreter, Runnable {
         // Constructor
     public ServerProtocolInterpreter(Socket socket) throws Exception {
         this.socket = socket;
+        System.out.println("New socket lol");
     }
 
     // Implement the run() method of the Runnable interface.
