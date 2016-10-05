@@ -19,6 +19,7 @@ final class ClientProtocolInterpreter implements ProtocolInterpreter {
         final int port = Integer.valueOf(serverPort);
         try {
             socket = new Socket(ipAddress, port);
+            System.out.println("We got here");
         } catch (UnknownHostException e) {
             e.printStackTrace();
         } catch (IOException e) {

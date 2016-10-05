@@ -2,6 +2,7 @@ package edu.gvsu.cis.campbjos.ftp.client;
 
 import edu.gvsu.cis.campbjos.ftp.ProtocolInterpreter;
 
+import java.io.Console;
 import java.util.Scanner;
 
 //User interface
@@ -10,10 +11,12 @@ public final class FtpClient {
     public static void main(String[] args) {
         final ProtocolInterpreter protocolInterpreter = new ClientProtocolInterpreter();
         final Scanner keyboard = new Scanner(System.in);
-        String currentInput = "";
-        boolean connected = false;
-        while(keyboard.hasNextLine()) {
+        boolean isClientRunning = true;
 
+
+        while(isClientRunning) {
+            final String currentInput = keyboard.nextLine();
+            System.out.println(currentInput);
             String[] tokens = currentInput.split(" ");
             final String command = tokens[0].toUpperCase();
             if(command.equals("CONNECT")){
