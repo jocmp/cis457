@@ -1,16 +1,17 @@
-package edu.gvsu.cis.campbjos.ftp;
+package edu.gvsu.cis.campbjos.ftp.server;
 
 import java.io.*;
 import java.net.Socket;
 import java.util.StringTokenizer;
 
-public final class FtpClient implements Runnable {
+public final class ServerProtocolInterpreter implements ProtocolInterpreter, Runnable {
+    
     private static final String CRLF = "\r\n";
 
     private final Socket socket;
-
-    // Constructor
-    public FtpClient(Socket socket) throws Exception {
+    
+        // Constructor
+    public ServerProtocolInterpreter(Socket socket) throws Exception {
         this.socket = socket;
     }
 
@@ -21,6 +22,26 @@ public final class FtpClient implements Runnable {
         } catch (Exception e) {
             System.out.println(e);
         }
+    }
+
+    public void connect(final String ipAddress, final String serverPort);
+        
+    }
+    
+    public void list() {
+        
+    }
+    
+    public void retrieve() {
+        
+    }
+    
+    public void store() {
+        
+    }
+    
+    public void quit() {
+        
     }
 
     private void processRequest() throws Exception {
@@ -100,20 +121,5 @@ public final class FtpClient implements Runnable {
         while ((bytes = fis.read(buffer)) != -1) {
             os.write(buffer, 0, bytes);
         }
-    }
-
-    private static String contentType(String fileName) {
-        if (fileName.endsWith(".htm") || fileName.endsWith(".html")) {
-            return "text/html";
-        }
-
-        if (fileName.endsWith(".gif")) {
-            return "image/gif";
-        }
-
-        if (fileName.endsWith(".jpeg")) {
-            return "image/jpeg";
-        }
-        return "application/octet-stream";
     }
 }

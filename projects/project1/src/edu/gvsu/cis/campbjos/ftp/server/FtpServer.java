@@ -1,4 +1,4 @@
-package edu.gvsu.cis.campbjos.ftp;
+package edu.gvsu.cis.campbjos.ftp.server;
 
 import java.net.ServerSocket;
 import java.net.Socket;
