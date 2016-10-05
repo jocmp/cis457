@@ -1,33 +1,48 @@
 package edu.gvsu.cis.campbjos.ftp.client;
 
-import java.net.Socket;
+import edu.gvsu.cis.campbjos.ftp.ProtocolInterpreter;
 
-public final class ClientProtocolInterpreter implements ProtocolInterpreter {
+import java.io.IOException;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
+final class ClientProtocolInterpreter implements ProtocolInterpreter {
     
     private Socket socket;
     
     public ClientProtocolInterpreter() {
         socket = null;
     }
-    
-    public void connect(final String ipAddress, final String serverPort);
-        socket = new Socket(ipAddress, serverPort);
+
+    @Override
+    public void connect(final String ipAddress, final String serverPort) {
+        final int port = Integer.valueOf(serverPort);
+        try {
+            socket = new Socket(ipAddress, port);
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-    
+
+    @Override
     public void list() {
-        
+
     }
-    
-    public void retrieve(final String filename) {
-        
+
+    @Override
+    public void retrieve(String filename) {
+
     }
-    
-    public void store(final String filename) {
-        
+
+    @Override
+    public void store(String filename) {
+
     }
-    
+
+    @Override
     public void quit() {
-        
+
     }
-    
 }

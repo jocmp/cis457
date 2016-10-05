@@ -1,9 +1,11 @@
 package edu.gvsu.cis.campbjos.ftp.server;
 
+import edu.gvsu.cis.campbjos.ftp.ProtocolInterpreter;
+
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public final class FtpServer {
+final class FtpServer {
 
     private static final int CONTROL_PORT = 8063;
     private static final int DATA_TRANSFER_PORT = 8064;
@@ -18,7 +20,7 @@ public final class FtpServer {
             Socket connection = socket.accept();
             
             // Construct an object to process the HTTP request message.
-            FtpClient request = new FtpClient(connection);
+            ServerProtocolInterpreter request = new ServerProtocolInterpreter(connection);
             
             // Create a new thread to process the request.
             Thread thread = new Thread(request);

@@ -1,10 +1,12 @@
 package edu.gvsu.cis.campbjos.ftp.server;
 
+import edu.gvsu.cis.campbjos.ftp.ProtocolInterpreter;
+
 import java.io.*;
 import java.net.Socket;
 import java.util.StringTokenizer;
 
-public final class ServerProtocolInterpreter implements ProtocolInterpreter, Runnable {
+final class ServerProtocolInterpreter implements ProtocolInterpreter, Runnable {
     
     private static final String CRLF = "\r\n";
 
@@ -24,25 +26,6 @@ public final class ServerProtocolInterpreter implements ProtocolInterpreter, Run
         }
     }
 
-    public void connect(final String ipAddress, final String serverPort);
-        
-    }
-    
-    public void list() {
-        
-    }
-    
-    public void retrieve() {
-        
-    }
-    
-    public void store() {
-        
-    }
-    
-    public void quit() {
-        
-    }
 
     private void processRequest() throws Exception {
         // Set up output stream
@@ -83,7 +66,7 @@ public final class ServerProtocolInterpreter implements ProtocolInterpreter, Run
 
         if (fileExists) {
             statusLine = "HTTP/1.1 200 OK";
-            contentTypeLine = "Content-Type: " + contentType(fileName) + CRLF;
+            // contentTypeLine = "Content-Type: " + contentType(fileName) + CRLF;
         } else {
             statusLine = "HTTP/1.1 404 Not Found";
             contentTypeLine = "Content-Type: text/html" + CRLF;
@@ -121,5 +104,30 @@ public final class ServerProtocolInterpreter implements ProtocolInterpreter, Run
         while ((bytes = fis.read(buffer)) != -1) {
             os.write(buffer, 0, bytes);
         }
+    }
+
+    @Override
+    public void connect(String ipAddress, String serverPort) {
+
+    }
+
+    @Override
+    public void list() {
+
+    }
+
+    @Override
+    public void retrieve(String filename) {
+
+    }
+
+    @Override
+    public void store(String filename) {
+
+    }
+
+    @Override
+    public void quit() {
+
     }
 }
