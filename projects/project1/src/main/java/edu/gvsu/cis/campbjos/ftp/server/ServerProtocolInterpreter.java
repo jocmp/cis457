@@ -1,45 +1,54 @@
 package edu.gvsu.cis.campbjos.ftp.server;
 
+import edu.gvsu.cis.campbjos.ftp.DataTransferProcess;
 import edu.gvsu.cis.campbjos.ftp.ProtocolInterpreter;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import static edu.gvsu.cis.campbjos.ftp.Constants.*;
+import static edu.gvsu.cis.campbjos.ftp.Constants.CRLF;
+import static edu.gvsu.cis.campbjos.ftp.Constants.DATA_TRANSFER_PORT;
+import static java.lang.String.format;
 
 final class ServerProtocolInterpreter implements ProtocolInterpreter, Runnable {
-    
+
     private final Socket socket;
     private final BufferedReader bufferedReader;
-    
-    public ServerProtocolInterpreter(final Socket socket) throws Exception {
+    private ServerDtp serverDtp;
+
+    ServerProtocolInterpreter(final Socket socket) throws IOException {
         this.socket = socket;
-        bufferedReader 
-            = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
     }
 
     @Override
     public void run() {
         boolean isServerRunning = true;
         try {
-            while(isServerRunning) {
+            serverDtp = new ServerDtp(getAcceptedDataSocket());
+            while (isServerRunning) {
                 String requestLine = bufferedReader.readLine();
                 //TODO add request processing for commands
             }
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
     }
 
+
     @Override
     public void list() {
-        //compile the files in the same dir
         String filesList = "";
         File serverDir = new File(".");
         File[] files = serverDir.listFiles();
-        for(File file : files){
-            filesList += file.getName() + "\n";
+        if (files != null) {
+            for (File file : files) {
+                filesList += file.getName() + CRLF;
+            }
         }
         startSendingCharacterStream(filesList);
     }
@@ -51,9 +60,9 @@ final class ServerProtocolInterpreter implements ProtocolInterpreter, Runnable {
 
     @Override
     public void store(String filename) {
-        startListening(filename);
+        startListeningForByteStream(filename);
     }
-    
+
     @Override
     public void quit() {
         try {
@@ -64,32 +73,26 @@ final class ServerProtocolInterpreter implements ProtocolInterpreter, Runnable {
     }
 
 
-    private Socket getSocket() {
+    private Socket getAcceptedDataSocket() throws IOException {
         Socket connection = null;
         try {
             ServerSocket dataSocket = new ServerSocket(DATA_TRANSFER_PORT);
             connection = dataSocket.accept();
         } catch (IOException e) {
-
+            throw new IOException(format("Error creating Server DTP: %s", e.getMessage()));
         }
         return connection;
     }
 
-    private void startListening(final String filename) {
-        Socket connection = getSocket();
-        ServerDtp dtpRequest = new ServerDtp(connection);
-        dtpRequest.listenForByteStream(filename);
+    private void startListeningForByteStream(final String filename) {
+        serverDtp.listenForByteStream(filename);
     }
-    
+
     private void startSendingByteStream(final String filename) {
-        Socket connection = getSocket();
-        ServerDtp dtpRequest = new ServerDtp(connection);
-        dtpRequest.sendByteStream(filename);
+        serverDtp.sendByteStream(filename);
     }
 
     private void startSendingCharacterStream(final String message) {
-        Socket connection = getSocket();
-        ServerDtp dtpRequest = new ServerDtp(connection);
-        dtpRequest.sendCharacterStream(message);
+        serverDtp.sendCharacterStream(message);
     }
 }

@@ -8,7 +8,7 @@ import edu.gvsu.cis.campbjos.ftp.DataTransferProcess;
 import java.io.IOException;
 import java.net.Socket;
 
-final class ServerDtp implements DataTransferProcess {
+final class ServerDtp implements DataTransferProcess, Runnable {
 
     private final Socket socket;
 
@@ -20,7 +20,6 @@ final class ServerDtp implements DataTransferProcess {
     public void listenForByteStream(final String filename) {
         try {
             ControlByteReader.readByteStream(socket.getInputStream(), filename);
-            socket.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -30,19 +29,37 @@ final class ServerDtp implements DataTransferProcess {
     public void sendByteStream(final String filename) {
         try {
             ControlByteWriter.sendFile(socket.getOutputStream(), filename);
-            socket.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    @Override
+    public void closeSocket() {
+        try {
+            socket.close();
+        } catch (IOException e) {
+            // It's closed
+        }
+    }
+
+    @Override
     public void sendCharacterStream(final String message) {
         try {
             ControlWriter.write(socket.getOutputStream(), message);
-            socket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    @Override
+    public String listenForCharacterStream() {
+        // Unused in server DTP
+        return null;
+    }
+
+    @Override
+    public void run() {
+
+    }
 }

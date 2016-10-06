@@ -1,6 +1,8 @@
 package edu.gvsu.cis.campbjos.ftp.client;
 
-import edu.gvsu.cis.campbjos.ftp.*;
+import edu.gvsu.cis.campbjos.ftp.ControlByteReader;
+import edu.gvsu.cis.campbjos.ftp.ControlByteWriter;
+import edu.gvsu.cis.campbjos.ftp.DataTransferProcess;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,24 +15,30 @@ final class ClientDtp implements DataTransferProcess {
 
     private final Socket socket;
 
-    public ClientDtp(final Socket socket) {
+    ClientDtp(final Socket socket) {
         this.socket = socket;
     }
-    
+
     @Override
     public void sendByteStream(final String filename) {
         try {
             ControlByteWriter.sendFile(socket.getOutputStream(), filename);
-            socket.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void sendCharacterStream(final String message) {
+    @Override
+    public void sendCharacterStream(String message) {
+        // Unused in client DTP
+    }
+
+    @Override
+    public void closeSocket() {
         try {
-            ControlWriter.write(socket.getOutputStream(), message);
+            socket.close();
         } catch (IOException e) {
+            // It's closed
         }
     }
 
@@ -38,7 +46,6 @@ final class ClientDtp implements DataTransferProcess {
     public void listenForByteStream(final String filename) {
         try {
             ControlByteReader.readByteStream(socket.getInputStream(), filename);
-            socket.close();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -46,6 +53,7 @@ final class ClientDtp implements DataTransferProcess {
         }
     }
 
+    @Override
     public String listenForCharacterStream() {
         BufferedReader bufferedReader = null;
         try {
@@ -53,24 +61,18 @@ final class ClientDtp implements DataTransferProcess {
         } catch (IOException exception) {
             return "";
         }
-        boolean isRecievingStream = true;
+        boolean isReceivingStream = true;
         String messageFromServer = null;
-        
-        while (isRecievingStream) {
+
+        while (isReceivingStream) {
             String requestLine = null;
             try {
                 requestLine = bufferedReader.readLine();
                 messageFromServer += requestLine;
-                isRecievingStream = !requestLine.equals(CRLF);
+                isReceivingStream = !requestLine.equals(CRLF);
             } catch (IOException e) {
-                e.printStackTrace();
                 break;
             }
-        }
-        try {
-            socket.close();
-        } catch (IOException e) {
-            // It's closed
         }
         return messageFromServer;
     }
