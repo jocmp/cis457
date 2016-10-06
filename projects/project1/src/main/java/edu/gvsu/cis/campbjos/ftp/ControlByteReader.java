@@ -1,14 +1,17 @@
 package edu.gvsu.cis.campbjos.ftp;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 public final class ControlByteReader {
     
     public static void readByteStream(final InputStream inputStream,
         final String filename) throws Exception {
-      //create a file called 'filename' containing what it is in
-      //input stream
+		FileOutputStream output = null;
       try {
-        FileOutputStream output = 
+		  output =
                             new FileOutputStream(new File("./" + filename));
         int read = 0;
         byte[] bytes = new byte[1024];

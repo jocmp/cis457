@@ -1,6 +1,8 @@
-package edu.gvsu.cis.campbjos.ftp;
+package edu.gvsu.cis.campbjos.ftp.client;
 
 import static edu.gvsu.cis.campbjos.ftp.Commands.*;
+import static edu.gvsu.cis.campbjos.ftp.Constants.DATA_TRANSFER_PORT;
+
 import edu.gvsu.cis.campbjos.ftp.ProtocolInterpreter;
 import edu.gvsu.cis.campbjos.ftp.ControlWriter;
 
@@ -9,23 +11,31 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 final class ClientProtocolInterpreter implements ProtocolInterpreter {
-    
+
     private String serverIpAddress;
     private Socket socket;
-    
+
     public ClientProtocolInterpreter() {
         socket = null;
-        bufferedReader = null;
         serverIpAddress = null;
     }
 
-    public void connect(final String ipAddress, final String serverPort) {
+    public boolean connect(final String ipAddress, final String serverPort) {
         final int port = Integer.valueOf(serverPort);
+        boolean isConnected = false;
         try {
             serverIpAddress = ipAddress;
             socket = new Socket(ipAddress, port);
-        } catch (UnknownHostException e) {
+            isConnected = true;
+        } catch (IOException e) {
             e.printStackTrace();
+        }
+        return isConnected;
+    }
+
+    private void sendToControlWriter(final String command) {
+        try {
+            ControlWriter.write(socket.getOutputStream(), command);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -33,48 +43,62 @@ final class ClientProtocolInterpreter implements ProtocolInterpreter {
 
     @Override
     public void list() {
-        ControlWriter.write(socket.getOutputStream(), LIST);
-        
+        sendToControlWriter(LIST);
     }
 
     @Override
     public void retrieve(String filename) {
-        ControlWriter.write(socket.getOutputStream(), RETR);
+        sendToControlWriter(RETR);
     }
 
     @Override
     public void store(String filename) {
-        ControlWriter.write(socket.getOutputStream(), STOR);
+        sendToControlWriter(STOR);
     }
 
     @Override
     public void quit() {
-        ControlWriter.write(socket.getOutputStream(), QUIT);
+        sendToControlWriter(QUIT);
         serverIpAddress = null;
-        socket.close();
+        try {
+            socket.close();
+        } catch (IOException e) {
+            // It's closed
+        }
     }
-    
+
     private void startListeningForCharacterStream() {
-        Socket dataSocket = new Socket(serverIpAddress, DATA_TRANSFER_PORT);
-        
-        Socket connection = dataSocket.accept();
-        ClientDtp dtpRequest = new ClientDtp(connection);
-        dtpRequest.sendByteStream(filename);
+        Socket dataSocket = null;
+        try {
+            dataSocket = new Socket(serverIpAddress, DATA_TRANSFER_PORT);
+        } catch (IOException e) {
+            return;
+        }
+        ClientDtp dtpRequest = new ClientDtp(dataSocket);
+        dtpRequest.listenForCharacterStream();
     }
-    
+
     private void startSendingByteStream(final String filename) {
-        Socket dataSocket = new Socket(serverIpAddress, DATA_TRANSFER_PORT);
-        
-        Socket connection = dataSocket.accept();
-        ClientDtp dtpRequest = new ClientDtp(connection);
+        Socket dataSocket = null;
+        try {
+            dataSocket = new Socket(serverIpAddress, DATA_TRANSFER_PORT);
+        } catch (IOException e) {
+            return;
+        }
+
+        ClientDtp dtpRequest = new ClientDtp(dataSocket);
         dtpRequest.sendByteStream(filename);
     }
 
     private void startSendingCharacterStream(final String message) {
-        Socket dataSocket = new Socket(DATA_TRANSFER_PORT);
-        
-        Socket connection = dataSocket.accept();
-        ClientDtp dtpRequest = new ClientDtp(connection);
-        dtpRequest.sendByteStream(filename);
+        Socket dataSocket = null;
+        try {
+            dataSocket = new Socket(serverIpAddress, DATA_TRANSFER_PORT);
+        } catch (IOException e) {
+            return;
+        }
+
+        ClientDtp dtpRequest = new ClientDtp(dataSocket);
+        dtpRequest.sendCharacterStream(message);
     }
 }

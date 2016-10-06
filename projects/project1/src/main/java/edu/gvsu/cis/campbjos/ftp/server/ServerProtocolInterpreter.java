@@ -3,8 +3,10 @@ package edu.gvsu.cis.campbjos.ftp.server;
 import edu.gvsu.cis.campbjos.ftp.ProtocolInterpreter;
 
 import java.io.*;
+import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.StringTokenizer;
+
+import static edu.gvsu.cis.campbjos.ftp.Constants.*;
 
 final class ServerProtocolInterpreter implements ProtocolInterpreter, Runnable {
     
@@ -15,7 +17,6 @@ final class ServerProtocolInterpreter implements ProtocolInterpreter, Runnable {
         this.socket = socket;
         bufferedReader 
             = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        serverDtp = new ServerDtp();
     }
 
     @Override
@@ -24,7 +25,7 @@ final class ServerProtocolInterpreter implements ProtocolInterpreter, Runnable {
         try {
             while(isServerRunning) {
                 String requestLine = bufferedReader.readLine();
-                processRequest(request);
+                //TODO add request processing for commands
             }
         } catch (Exception e) {
             System.out.println(e);
@@ -55,30 +56,40 @@ final class ServerProtocolInterpreter implements ProtocolInterpreter, Runnable {
     
     @Override
     public void quit() {
-        socket.close();
+        try {
+            socket.close();
+        } catch (IOException e) {
+            // It's closed
+        }
     }
-    
+
+
+    private Socket getSocket() {
+        Socket connection = null;
+        try {
+            ServerSocket dataSocket = new ServerSocket(DATA_TRANSFER_PORT);
+            connection = dataSocket.accept();
+        } catch (IOException e) {
+
+        }
+        return connection;
+    }
+
     private void startListening(final String filename) {
-        ServerSocket dataSocket = new ServerSocket(DATA_TRANSFER_PORT);
-        
-        Socket connection = dataSocket.accept();
+        Socket connection = getSocket();
         ServerDtp dtpRequest = new ServerDtp(connection);
         dtpRequest.listenForByteStream(filename);
     }
     
     private void startSendingByteStream(final String filename) {
-        ServerSocket dataSocket = new ServerSocket(DATA_TRANSFER_PORT);
-        
-        Socket connection = dataSocket.accept();
+        Socket connection = getSocket();
         ServerDtp dtpRequest = new ServerDtp(connection);
         dtpRequest.sendByteStream(filename);
     }
 
     private void startSendingCharacterStream(final String message) {
-        ServerSocket dataSocket = new ServerSocket(DATA_TRANSFER_PORT);
-        
-        Socket connection = dataSocket.accept();
+        Socket connection = getSocket();
         ServerDtp dtpRequest = new ServerDtp(connection);
-        dtpRequest.sendByteStream(filename);
+        dtpRequest.sendCharacterStream(message);
     }
 }

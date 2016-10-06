@@ -1,6 +1,10 @@
 package edu.gvsu.cis.campbjos.ftp;
 
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.OutputStream;
+
 public final class ControlByteWriter {
     
     public static void sendFile(final OutputStream outputStream,
@@ -16,7 +20,7 @@ public final class ControlByteWriter {
         // Send the entity body.
         if (fileExists) {
             sendBytes(fileInputStream, outputStream);
-            fis.close();
+            fileInputStream.close();
         }
     }
 

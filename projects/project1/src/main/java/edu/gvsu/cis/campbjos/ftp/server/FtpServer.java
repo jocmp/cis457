@@ -1,9 +1,9 @@
 package edu.gvsu.cis.campbjos.ftp.server;
 
-import edu.gvsu.cis.campbjos.ftp.ProtocolInterpreter;
-
 import java.net.ServerSocket;
 import java.net.Socket;
+
+import static edu.gvsu.cis.campbjos.ftp.Constants.CONTROL_PORT;
 
 final class FtpServer {
 
