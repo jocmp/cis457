@@ -5,32 +5,27 @@ import edu.gvsu.cis.campbjos.ftp.DataTransferProcess;
 import edu.gvsu.cis.campbjos.ftp.ProtocolInterpreter;
 
 import java.io.IOException;
+import java.net.ServerSocket;
 import java.net.Socket;
 
 import static edu.gvsu.cis.campbjos.ftp.Commands.*;
-import static edu.gvsu.cis.campbjos.ftp.Constants.DATA_TRANSFER_PORT;
+import static edu.gvsu.cis.campbjos.ftp.Constants.CONTROL_PORT;
 import static java.lang.Integer.valueOf;
 import static java.lang.String.format;
 
 final class ClientProtocolInterpreter implements ProtocolInterpreter {
 
-    private String serverIpAddress;
     private Socket piSocket;
-    private DataTransferProcess clientDtp;
 
     ClientProtocolInterpreter() {
         piSocket = null;
-        serverIpAddress = null;
     }
 
     void connect(final String ipAddress, final String serverPort) throws IOException {
         final int port = getServerPortNumber(serverPort);
         try {
-            serverIpAddress = ipAddress;
             piSocket = new Socket(ipAddress, port);
-            int dtpPort = port + 1;
-            clientDtp = new ClientDtp(new Socket(ipAddress, dtpPort));
-        } catch (IOException e) {
+        } catch (IOException exception) {
             throw new IOException(format("Error opening socket %s:%s", ipAddress, serverPort));
         }
     }
@@ -43,65 +38,66 @@ final class ClientProtocolInterpreter implements ProtocolInterpreter {
         }
     }
 
-    private void sendToControlWriter(final String command) {
+    private void sendToControlWriter(final String command) throws IOException {
         try {
             ControlWriter.write(piSocket.getOutputStream(), command);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IOException(format("Error writing \"%s\" to server", command));
         }
     }
 
+    boolean isConnected() {
+        return !piSocket.isClosed();
+    }
+
     @Override
-    public void list() throws IOException {
+    public String list() throws IOException {
         sendToControlWriter(LIST);
-        startListeningForCharacterStream();
+        final int dtpPort = piSocket.getPort() + 1;
+        final ServerSocket connection = new ServerSocket(dtpPort);
+        final DataTransferProcess clientDtp = new ClientDtp(connection.accept());
+        final String list = clientDtp.listenForCharacterStream();
+        clientDtp.closeSocket();
+
+        return list;
     }
 
     @Override
     public void retrieve(final String filename) throws IOException {
         sendToControlWriter(format("%s %s", RETR, filename));
-        startListeningForByteStream(filename);
+        ClientDtp clientDtp = newClientDtp();
+        clientDtp.listenForByteStream(filename);
+        clientDtp.closeSocket();
+    }
+
+    private ClientDtp newClientDtp() throws IOException {
+        int dtpPort = CONTROL_PORT + 1;
+        System.out.println(format("Waiting on %s", dtpPort));
+        ServerSocket connection = new ServerSocket(dtpPort);
+        ClientDtp clientDtp = new ClientDtp(connection.accept());
+        connection.close();
+        return clientDtp;
     }
 
     @Override
     public void store(final String filename) throws IOException {
         sendToControlWriter(format("%s %s", STOR, filename));
-        startSendingByteStream(filename);
+        int dtpPort = piSocket.getPort() + 1;
+        ServerSocket connection = new ServerSocket(dtpPort);
+        Socket dtpSocket = connection.accept();
+        DataTransferProcess clientDtp = new ClientDtp(dtpSocket);
+        clientDtp.sendByteStream(filename);
+        connection.close();
+        clientDtp.closeSocket();
     }
 
     @Override
-    public void quit() {
+    public void quit() throws IOException {
         sendToControlWriter(QUIT);
-        serverIpAddress = null;
         try {
             piSocket.close();
-            clientDtp.closeSocket();
         } catch (IOException e) {
             // It's closed
-        }
-    }
-
-    private void startListeningForCharacterStream() throws IOException {
-        clientDtp.listenForCharacterStream();
-    }
-
-    private void startListeningForByteStream(final String filename) throws IOException {
-        Socket connection = getDataSocket();
-        ClientDtp dtpRequest = new ClientDtp(connection);
-        dtpRequest.listenForByteStream(filename);
-    }
-
-    private void startSendingByteStream(final String filename) throws IOException {
-        Socket dataSocket = getDataSocket();
-        ClientDtp dtpRequest = new ClientDtp(dataSocket);
-        dtpRequest.sendByteStream(filename);
-    }
-
-    private Socket getDataSocket() throws IOException {
-        try {
-            return new Socket(serverIpAddress, DATA_TRANSFER_PORT);
-        } catch (IOException e) {
-            throw new IOException(format("Error opening socket: %s", e.getMessage()));
         }
     }
 }

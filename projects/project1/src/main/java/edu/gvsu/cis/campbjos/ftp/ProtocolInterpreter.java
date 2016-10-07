@@ -5,9 +5,9 @@ import java.io.IOException;
 
 public interface ProtocolInterpreter {
     
-    public void list() throws IOException;
-    public void retrieve(final String filename) throws IOException;
-    public void store(final String filename) throws IOException;
-    public void quit();
+    String list() throws IOException;
+    void retrieve(final String filename) throws IOException;
+    void store(final String filename) throws IOException;
+    void quit() throws IOException;
     
 }

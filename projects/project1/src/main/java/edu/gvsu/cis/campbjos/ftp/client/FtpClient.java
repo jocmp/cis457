@@ -2,7 +2,10 @@ package edu.gvsu.cis.campbjos.ftp.client;
 
 import edu.gvsu.cis.campbjos.ftp.ProtocolInterpreter;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.util.Scanner;
 
 import static edu.gvsu.cis.campbjos.ftp.Commands.*;
@@ -11,49 +14,63 @@ final class FtpClient {
 
     public static void main(String[] args) {
         final ClientProtocolInterpreter protocolInterpreter = new ClientProtocolInterpreter();
-        final Scanner keyboard = new Scanner(System.in);
-        boolean isClientRunning = true;
-        boolean isConnected = false;
+        final BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in));
 
-        while (isClientRunning) {
-            final String currentInput = keyboard.nextLine();
-            final String[] tokens = currentInput.split(" ");
-            final String command = tokens[0].toUpperCase();
-
-            if (command.equals(CONNECT)) {
-                if (tokens.length < 3) {
-                    continue;
-                }
-                final String server = tokens[1];
-                final String port = tokens[2];
-                try {
-                    protocolInterpreter.connect(server, port);
-                    isConnected = true;
-                } catch (IOException e) {
-                    System.out.println(e.getMessage());
-                    continue;
+        try {
+            while (true) {
+                final String currentInput = keyboard.readLine();
+                processInput(currentInput, protocolInterpreter);
+                if (currentInput == null) {
+                    return;
                 }
             }
+        } catch (IOException e) {
+            System.out.println("Error parsing commands");
+        }
+    }
 
-            if (!isConnected) {
-                System.out.println("ERROR: Not connected");
-            } else if (command.equals(LIST)) {
-                handleList(protocolInterpreter);
-            } else if (command.equals(RETR)) {
-                handleRetrieve(tokens, protocolInterpreter);
-            } else if (command.equals(STOR)) {
-                handleStore(tokens, protocolInterpreter);
-            } else if (command.equals(QUIT)) {
+    private static void processInput(final String input, final ClientProtocolInterpreter protocolInterpreter) {
+        final String[] tokens = input.split(" ");
+        final String command = tokens[0].toUpperCase();
+
+        if (command.equals(CONNECT)) {
+            handleConnect(tokens, protocolInterpreter);
+            return;
+        }
+
+        if (!protocolInterpreter.isConnected()) {
+            System.out.println("ERROR: Not connected");
+        } else if (command.equals(LIST)) {
+            handleList(protocolInterpreter);
+        } else if (command.equals(RETR)) {
+            handleRetrieve(tokens, protocolInterpreter);
+        } else if (command.equals(STOR)) {
+            handleStore(tokens, protocolInterpreter);
+        } else if (command.equals(QUIT)) {
+            try {
                 protocolInterpreter.quit();
-                isClientRunning = false;
-                keyboard.close();
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
             }
+        }
+    }
+
+    private static void handleConnect(final String[] tokens, final ClientProtocolInterpreter protocolInterpreter) {
+        if (tokens.length < 3) {
+            return;
+        }
+        final String server = tokens[1];
+        final String port = tokens[2];
+        try {
+            protocolInterpreter.connect(server, port);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
         }
     }
 
     private static void handleList(final ProtocolInterpreter protocolInterpreter) {
         try {
-            protocolInterpreter.list();
+            System.out.print(protocolInterpreter.list());
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }

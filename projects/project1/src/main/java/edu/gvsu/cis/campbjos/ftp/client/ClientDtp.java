@@ -9,8 +9,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
-import static edu.gvsu.cis.campbjos.ftp.Constants.CRLF;
-
 final class ClientDtp implements DataTransferProcess {
 
     private final Socket socket;
@@ -62,14 +60,15 @@ final class ClientDtp implements DataTransferProcess {
             return "";
         }
         boolean isReceivingStream = true;
-        String messageFromServer = null;
+        String messageFromServer = "";
 
         while (isReceivingStream) {
-            String requestLine = null;
             try {
-                requestLine = bufferedReader.readLine();
-                messageFromServer += requestLine;
-                isReceivingStream = !requestLine.equals(CRLF);
+                final String requestLine = bufferedReader.readLine();
+                isReceivingStream = !requestLine.isEmpty();
+                if (isReceivingStream) {
+                    messageFromServer += requestLine + '\n';
+                }
             } catch (IOException e) {
                 break;
             }

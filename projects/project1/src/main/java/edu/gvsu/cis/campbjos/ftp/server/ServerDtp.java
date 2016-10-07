@@ -8,7 +8,7 @@ import edu.gvsu.cis.campbjos.ftp.DataTransferProcess;
 import java.io.IOException;
 import java.net.Socket;
 
-final class ServerDtp implements DataTransferProcess, Runnable {
+final class ServerDtp implements DataTransferProcess {
 
     private final Socket socket;
 
@@ -56,10 +56,5 @@ final class ServerDtp implements DataTransferProcess, Runnable {
     public String listenForCharacterStream() {
         // Unused in server DTP
         return null;
-    }
-
-    @Override
-    public void run() {
-
     }
 }
