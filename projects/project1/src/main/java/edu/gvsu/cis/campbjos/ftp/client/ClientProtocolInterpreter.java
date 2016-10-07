@@ -68,7 +68,17 @@ final class ClientProtocolInterpreter implements ProtocolInterpreter {
 
     @Override
     public void retrieve(final String filename) throws IOException {
+        // Start server socket to listen
+        final ServerSocket controlSocket = newServerSocket();
+        // Retrieve [whatever] command with possible params
         sendCommandToServerControl(format("%s %s", RETR, filename));
+        // Wait for server to respond
+        final DataTransferProcess clientDtp = new ClientDtp(controlSocket.accept());
+        // Close control socket
+        controlSocket.close();
+        // Do buffer command [Read or write]
+        clientDtp.listenForByteStream(filename);
+        clientDtp.closeSocket();
     }
 
     @Override
