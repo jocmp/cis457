@@ -9,8 +9,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import static edu.gvsu.cis.campbjos.ftp.Commands.*;
-import static edu.gvsu.cis.campbjos.ftp.Constants.CONTROL_PORT;
-import static java.lang.Integer.valueOf;
+
+import static edu.gvsu.cis.campbjos.ftp.Converter.convertToServerPortNumber;
+
 import static java.lang.String.format;
 
 final class ClientProtocolInterpreter implements ProtocolInterpreter {
@@ -22,19 +23,11 @@ final class ClientProtocolInterpreter implements ProtocolInterpreter {
     }
 
     void connect(final String ipAddress, final String serverPort) throws IOException {
-        final int port = getServerPortNumber(serverPort);
+        final int port = convertToServerPortNumber(serverPort);
         try {
             piSocket = new Socket(ipAddress, port);
         } catch (IOException exception) {
             throw new IOException(format("Error opening socket %s:%s", ipAddress, serverPort));
-        }
-    }
-
-    private int getServerPortNumber(final String serverPortText) {
-        try {
-            return valueOf(serverPortText);
-        } catch (NumberFormatException exception) {
-            throw new NumberFormatException(format("Invalid port=%s", serverPortText));
         }
     }
 
@@ -51,32 +44,36 @@ final class ClientProtocolInterpreter implements ProtocolInterpreter {
     }
 
     @Override
-    public String list() throws IOException {
+    public String list() throws IOException, RuntimeException {
+        final ServerSocket controlSocket = new ServerSocket(0);
+        final String address = piSocket.getInetAddress().toString().replaceAll("/", "");
+        port(address, controlSocket.getLocalPort());
         sendToControlWriter(LIST);
-        final int dtpPort = piSocket.getPort() + 1;
-        final ServerSocket connection = new ServerSocket(dtpPort);
-        final DataTransferProcess clientDtp = new ClientDtp(connection.accept());
+
+        final DataTransferProcess clientDtp = new ClientDtp(controlSocket.accept());
+        controlSocket.close();
+
         final String list = clientDtp.listenForCharacterStream();
         clientDtp.closeSocket();
 
         return list;
     }
 
+    private void port(final String address, final int port) throws RuntimeException, IOException {
+        if (!address.isEmpty()) {
+            final String command = format("%s %s,%s", PORT, address, port);
+            sendToControlWriter(command);
+        } else {
+            throw new RuntimeException(format("Not a valid address %s:%s", address, port));
+        }
+    }
+
     @Override
     public void retrieve(final String filename) throws IOException {
         sendToControlWriter(format("%s %s", RETR, filename));
-        ClientDtp clientDtp = newClientDtp();
-        clientDtp.listenForByteStream(filename);
-        clientDtp.closeSocket();
-    }
-
-    private ClientDtp newClientDtp() throws IOException {
-        int dtpPort = CONTROL_PORT + 1;
-        System.out.println(format("Waiting on %s", dtpPort));
-        ServerSocket connection = new ServerSocket(dtpPort);
-        ClientDtp clientDtp = new ClientDtp(connection.accept());
-        connection.close();
-        return clientDtp;
+//        ClientDtp clientDtp = newClientDtp();
+//        clientDtp.listenForByteStream(filename);
+//        clientDtp.closeSocket();
     }
 
     @Override
