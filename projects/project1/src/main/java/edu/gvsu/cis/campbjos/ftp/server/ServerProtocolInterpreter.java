@@ -105,16 +105,13 @@ final class ServerProtocolInterpreter implements ProtocolInterpreter, Runnable {
         }
     }
 
-
     private Socket newDataSocket() throws IOException {
-        Socket connection = null;
         try {
             System.out.println(format("Sending to %s:%s", currentListeningAddress, currentListeningPort));
-            connection = new Socket(currentListeningAddress, currentListeningPort);
+            return new Socket(currentListeningAddress, currentListeningPort);
         } catch (IOException e) {
             throw new IOException(format("Error creating Server DTP: %s", e.getMessage()));
         }
-        return connection;
     }
 
     private void startListeningForByteStream(final String filename) throws IOException {
