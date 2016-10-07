@@ -12,9 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static edu.gvsu.cis.campbjos.ftp.Commands.LIST;
-
-import static edu.gvsu.cis.campbjos.ftp.Commands.PORT;
+import static edu.gvsu.cis.campbjos.ftp.Commands.*;
 import static edu.gvsu.cis.campbjos.ftp.Converter.convertToServerPortNumber;
 import static java.lang.String.format;
 import static java.lang.System.out;
