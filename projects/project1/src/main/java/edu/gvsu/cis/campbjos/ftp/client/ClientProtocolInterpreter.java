@@ -69,25 +69,30 @@ final class ClientProtocolInterpreter implements ProtocolInterpreter {
     @Override
     public void retrieve(final String filename) throws IOException {
         sendCommandToServerControl(format("%s %s", RETR, filename));
-//        ClientDtp clientDtp = newClientDtp();
-//        clientDtp.listenForByteStream(filename);
-//        clientDtp.closeSocket();
     }
 
     @Override
     public void store(final String filename) throws IOException {
-        final ServerSocket controlSocket = new ServerSocket(0);
-        final String address = piSocket.getInetAddress().toString().replaceAll("/", "");
-
-        port(address, controlSocket.getLocalPort());
-
+        // Start server socket to listen
+        final ServerSocket controlSocket = newServerSocket();
+        // Send [whatever] command with possible params
         sendCommandToServerControl(format("%s %s", STOR, filename));
-
+        // Wait for server to respond
         final DataTransferProcess clientDtp = new ClientDtp(controlSocket.accept());
+        // Close control socket
         controlSocket.close();
-
+        // Do buffer command [Read or write]
         clientDtp.sendByteStream(filename);
         clientDtp.closeSocket();
+    }
+
+    private ServerSocket newServerSocket() throws IOException {
+        final ServerSocket controlSocket = new ServerSocket(0);
+        // Get current address
+        final String address = piSocket.getInetAddress().toString().replaceAll("/", "");
+        // Send port command
+        port(address, controlSocket.getLocalPort());
+        return controlSocket;
     }
 
     @Override
