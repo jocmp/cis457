@@ -58,6 +58,14 @@ final class ServerProtocolInterpreter implements ProtocolInterpreter, Runnable {
             list();
         } else if (command.equals(PORT)) {
             port(tokens);
+        } else if (command.equals(RETR)) {
+            String file = tokens.get(1);
+            retrieve(file);
+        } else if (command.equals(STOR)) {
+            String file = tokens.get(1);
+            store(file);
+        } else if (command.equals(QUIT)) {
+            quit();
         }
     }
 
