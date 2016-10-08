@@ -15,7 +15,7 @@ final class FtpServer {
         System.out.println(" -------------------------------------------");
         System.out.println("| FTP Server v1 - campbjos, wrighjax, jungt |");
         System.out.println(" -------------------------------------------");
-        System.out.println(" Server started at " + ip.getHostAddress() 
+        System.out.println("Server started at " + ip.getHostAddress() 
                             + " on port " + socket.getLocalPort());
         while (true) {
             Socket connection = socket.accept();

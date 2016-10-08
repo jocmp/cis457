@@ -69,6 +69,8 @@ final class FtpClient {
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
+        if (protocolInterpreter.isConnected())
+            System.out.println("Connection Established with " + server + ":" + port);
     }
 
     private static void handleList(final ProtocolInterpreter protocolInterpreter) {

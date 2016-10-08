@@ -6,6 +6,7 @@ import edu.gvsu.cis.campbjos.ftp.ControlWriter;
 import edu.gvsu.cis.campbjos.ftp.DataTransferProcess;
 
 import java.io.IOException;
+import java.io.File;
 import java.net.Socket;
 
 final class ServerDtp implements DataTransferProcess {

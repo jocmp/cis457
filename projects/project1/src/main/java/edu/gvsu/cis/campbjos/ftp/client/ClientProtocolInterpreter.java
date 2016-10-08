@@ -38,7 +38,9 @@ final class ClientProtocolInterpreter implements ProtocolInterpreter {
     }
 
     boolean isConnected() {
-        return !piSocket.isClosed();
+        if (piSocket != null)
+            return !piSocket.isClosed();
+        return false;
     }
 
     @Override
