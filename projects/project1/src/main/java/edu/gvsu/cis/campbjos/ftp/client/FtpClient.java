@@ -15,9 +15,12 @@ final class FtpClient {
     public static void main(String[] args) {
         final ClientProtocolInterpreter protocolInterpreter = new ClientProtocolInterpreter();
         final BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in));
-
+        System.out.println(" -------------------------------------------");
+        System.out.println("| FTP Client v1 - campbjos, wrighjax, jungt |");
+        System.out.println(" -------------------------------------------");
         try {
             while (true) {
+                System.out.print("> ");
                 final String currentInput = keyboard.readLine();
                 processInput(currentInput, protocolInterpreter);
                 if (currentInput == null) {
