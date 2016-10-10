@@ -7,16 +7,25 @@ import java.io.InputStream;
 
 public final class ControlByteReader {
 
+
     public static void readByteStream(final InputStream inputStream,
                                       final String filename) throws Exception {
         FileOutputStream output = null;
         try {
-            output =
-                    new FileOutputStream(new File("./" + filename));
             int read = 0;
             byte[] bytes = new byte[1024];
 
+            boolean isValidFile = false;
+            boolean isStatusRead = true;
             while ((read = inputStream.read(bytes)) != -1) {
+                isValidFile = bytes[0] == 1;
+                if (!isValidFile && isStatusRead) {
+                    throw new NullPointerException("Invalid filename");
+                } else if (isValidFile) {
+                    isStatusRead = false;
+                    output = new FileOutputStream(new File(filename));
+                    continue;
+                }
                 output.write(bytes, 0, read);
             }
         } catch (IOException e) {

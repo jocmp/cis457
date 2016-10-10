@@ -6,9 +6,9 @@ import java.io.FileNotFoundException;
 import java.io.OutputStream;
 
 public final class ControlByteWriter {
-    
+
     public static void sendFile(final OutputStream outputStream,
-        final String filename) throws Exception {
+                                final String filename) throws Exception {
         // Open the requested file.
         FileInputStream fileInputStream = null;
         boolean fileExists = true;
@@ -19,8 +19,11 @@ public final class ControlByteWriter {
         }
         // Send the entity body.
         if (fileExists) {
+            outputStream.write(1);
             sendBytes(fileInputStream, outputStream);
             fileInputStream.close();
+        } else {
+            outputStream.write(0);
         }
     }
 

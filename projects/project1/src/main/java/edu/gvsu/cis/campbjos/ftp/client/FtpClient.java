@@ -5,22 +5,21 @@ import edu.gvsu.cis.campbjos.ftp.ProtocolInterpreter;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.util.Scanner;
 
 import static edu.gvsu.cis.campbjos.ftp.Commands.*;
+import static edu.gvsu.cis.campbjos.ftp.Constants.VANITY_HEADER;
 
 final class FtpClient {
+
+    private static final String CURSOR = "ftp > ";
 
     public static void main(String[] args) {
         final ClientProtocolInterpreter protocolInterpreter = new ClientProtocolInterpreter();
         final BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println(" -------------------------------------------");
-        System.out.println("| FTP Client v1 - campbjos, wrighjax, jungt |");
-        System.out.println(" -------------------------------------------");
+        System.out.println(VANITY_HEADER);
         try {
             while (true) {
-                System.out.print("> ");
+                System.out.print(CURSOR);
                 final String currentInput = keyboard.readLine();
                 processInput(currentInput, protocolInterpreter);
                 if (currentInput == null) {
@@ -90,6 +89,8 @@ final class FtpClient {
             protocolInterpreter.retrieve(fileName);
         } catch (IOException e) {
             System.out.println(e.getMessage());
+        } catch (NullPointerException e) {
+            System.out.println(String.format("%s: %s", fileName, e.getMessage()));
         }
     }
 

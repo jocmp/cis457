@@ -39,7 +39,6 @@ final class ServerProtocolInterpreter implements ProtocolInterpreter, Runnable {
                 String requestLine = bufferedReader.readLine();
                 System.out.println(requestLine);
                 processInput(requestLine);
-                //TODO add request processing for commands
             }
         } catch (Exception e) {
             out.println(e.getMessage());
@@ -48,7 +47,10 @@ final class ServerProtocolInterpreter implements ProtocolInterpreter, Runnable {
 
     private void processInput(final String input) throws IOException {
         final List<String> tokens = Arrays.asList(input.split(" "));
-        if (tokens.size() < 1) {
+        String file = "";
+        if (tokens.size() > 1) {
+            file = tokens.get(1);
+        } else if (tokens.isEmpty()) {
             return;
         }
         final String command = tokens.get(0);
@@ -57,10 +59,8 @@ final class ServerProtocolInterpreter implements ProtocolInterpreter, Runnable {
         } else if (command.equals(PORT)) {
             port(tokens);
         } else if (command.equals(RETR)) {
-            String file = tokens.get(1);
             retrieve(file);
         } else if (command.equals(STOR)) {
-            String file = tokens.get(1);
             store(file);
         } else if (command.equals(QUIT)) {
             quit();
@@ -78,7 +78,7 @@ final class ServerProtocolInterpreter implements ProtocolInterpreter, Runnable {
             }
         }
         startSendingCharacterStream(filesList);
-        return "";
+        return filesList;
     }
 
     private void port(final List<String> tokens) {
