@@ -5,11 +5,14 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.OutputStream;
 
+import static edu.gvsu.cis.campbjos.ftp.Constants.ENTRY_DOES_NOT_EXIST;
+import static edu.gvsu.cis.campbjos.ftp.Constants.ENTRY_EXISTS;
+
 public final class ControlByteWriter {
+
 
     public static void sendFile(final OutputStream outputStream,
                                 final String filename) throws Exception {
-        // Open the requested file.
         FileInputStream fileInputStream = null;
         boolean fileExists = true;
         try {
@@ -17,13 +20,12 @@ public final class ControlByteWriter {
         } catch (FileNotFoundException e) {
             fileExists = false;
         }
-        // Send the entity body.
         if (fileExists) {
-            outputStream.write(1);
+            outputStream.write(ENTRY_EXISTS);
             sendBytes(fileInputStream, outputStream);
             fileInputStream.close();
         } else {
-            outputStream.write(0);
+            outputStream.write(ENTRY_DOES_NOT_EXIST);
         }
     }
 

@@ -5,6 +5,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import static edu.gvsu.cis.campbjos.ftp.Constants.ENTRY_EXISTS;
+
 public final class ControlByteReader {
 
 
@@ -18,7 +20,7 @@ public final class ControlByteReader {
             boolean isValidFile = false;
             boolean isStatusRead = true;
             while ((read = inputStream.read(bytes)) != -1) {
-                isValidFile = bytes[0] == 1;
+                isValidFile = bytes[0] == ENTRY_EXISTS;
                 if (!isValidFile && isStatusRead) {
                     throw new NullPointerException("Invalid filename");
                 } else if (isValidFile) {
