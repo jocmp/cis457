@@ -69,7 +69,7 @@ final class ClientProtocolInterpreter implements ProtocolInterpreter {
     }
 
     @Override
-    public void retrieve(final String filename) throws IOException {
+    public void retrieve(final String filename) throws IOException, NullPointerException {
         // Start server socket to listen
         final ServerSocket controlSocket = newServerSocket();
         // Retrieve [whatever] command with possible params

@@ -41,13 +41,15 @@ final class ClientDtp implements DataTransferProcess {
     }
 
     @Override
-    public void listenForByteStream(final String filename) {
+    public void listenForByteStream(final String filename) throws NullPointerException {
         try {
             ControlByteReader.readByteStream(socket.getInputStream(), filename);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
-            e.printStackTrace();
+            if (e instanceof NullPointerException) {
+                throw new NullPointerException(e.getMessage());
+            }
         }
     }
 

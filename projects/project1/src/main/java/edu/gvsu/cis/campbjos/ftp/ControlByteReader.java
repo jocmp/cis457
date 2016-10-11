@@ -9,7 +9,6 @@ import static edu.gvsu.cis.campbjos.ftp.Constants.ENTRY_EXISTS;
 
 public final class ControlByteReader {
 
-
     public static void readByteStream(final InputStream inputStream,
                                       final String filename) throws Exception {
         FileOutputStream output = null;
