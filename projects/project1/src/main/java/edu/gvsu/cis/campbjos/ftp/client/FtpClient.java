@@ -14,8 +14,10 @@ final class FtpClient {
     private static final String CURSOR = "ftp > ";
 
     public static void main(String[] args) {
-        final ClientProtocolInterpreter protocolInterpreter = new ClientProtocolInterpreter();
-        final BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in));
+        final ClientProtocolInterpreter protocolInterpreter = new
+                ClientProtocolInterpreter();
+        final BufferedReader keyboard = new BufferedReader(new
+                InputStreamReader(System.in));
         System.out.println(VANITY_HEADER);
         try {
             while (true) {
@@ -31,7 +33,8 @@ final class FtpClient {
         }
     }
 
-    private static void processInput(final String input, final ClientProtocolInterpreter protocolInterpreter) {
+    private static void processInput(final String input, final
+    ClientProtocolInterpreter protocolInterpreter) {
         final String[] tokens = input.split(" ");
         final String command = tokens[0].toUpperCase();
 
@@ -57,7 +60,8 @@ final class FtpClient {
         }
     }
 
-    private static void handleConnect(final String[] tokens, final ClientProtocolInterpreter protocolInterpreter) {
+    private static void handleConnect(final String[] tokens, final
+    ClientProtocolInterpreter protocolInterpreter) {
         if (tokens.length < 3) {
             return;
         }
@@ -69,10 +73,12 @@ final class FtpClient {
             System.out.println(e.getMessage());
         }
         if (protocolInterpreter.isConnected())
-            System.out.println("Connection Established with " + server + ":" + port);
+            System.out.println("Connection Established with " +
+                    server + ":" + port);
     }
 
-    private static void handleList(final ProtocolInterpreter protocolInterpreter) {
+    private static void handleList(final ProtocolInterpreter
+                                           protocolInterpreter) {
         try {
             System.out.print(protocolInterpreter.list());
         } catch (IOException e) {
@@ -80,7 +86,8 @@ final class FtpClient {
         }
     }
 
-    private static void handleRetrieve(final String[] tokens, final ProtocolInterpreter protocolInterpreter) {
+    private static void handleRetrieve(final String[] tokens, final
+    ProtocolInterpreter protocolInterpreter) {
         if (tokens.length < 2) {
             return;
         }
@@ -90,11 +97,13 @@ final class FtpClient {
         } catch (IOException e) {
             System.out.println(e.getMessage());
         } catch (NullPointerException e) {
-            System.out.println(String.format("%s: %s", fileName, e.getMessage()));
+            System.out.println(String.format("%s: %s", fileName, e
+                    .getMessage()));
         }
     }
 
-    private static void handleStore(final String[] tokens, final ProtocolInterpreter protocolInterpreter) {
+    private static void handleStore(final String[] tokens, final
+    ProtocolInterpreter protocolInterpreter) {
         if (tokens.length < 2) {
             return;
         }

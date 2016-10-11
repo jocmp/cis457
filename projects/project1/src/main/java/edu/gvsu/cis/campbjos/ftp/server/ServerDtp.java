@@ -20,7 +20,8 @@ final class ServerDtp implements DataTransferProcess {
     public void listenForByteStream(final String filename) {
         // todo throw exception if socket is closed
         try {
-            ControlByteReader.readByteStream(socket.getInputStream(), filename);
+            ControlByteReader.readByteStream(socket.getInputStream(),
+                    filename);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -30,7 +31,8 @@ final class ServerDtp implements DataTransferProcess {
     @Override
     public void sendByteStream(final String filename) {
         try {
-            ControlByteWriter.sendFile(socket.getOutputStream(), filename);
+            ControlByteWriter.sendFile(socket.getOutputStream(),
+                    filename);
         } catch (Exception e) {
             e.printStackTrace();
         }

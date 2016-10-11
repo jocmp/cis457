@@ -5,11 +5,13 @@ import static java.lang.String.format;
 
 public class Converter {
 
-    public static int convertToServerPortNumber(final String serverPortText) {
+    public static int convertToServerPortNumber(final String
+                                                        serverPortText) {
         try {
             return valueOf(serverPortText);
         } catch (NumberFormatException exception) {
-            throw new NumberFormatException(format("Invalid port=%s", serverPortText));
+            throw new NumberFormatException(format("Invalid port=%s",
+                    serverPortText));
         }
     }
 }

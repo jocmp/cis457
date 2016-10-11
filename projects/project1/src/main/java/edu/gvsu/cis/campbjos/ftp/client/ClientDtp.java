@@ -20,7 +20,8 @@ final class ClientDtp implements DataTransferProcess {
     @Override
     public void sendByteStream(final String filename) {
         try {
-            ControlByteWriter.sendFile(socket.getOutputStream(), filename);
+            ControlByteWriter.sendFile(socket.getOutputStream(),
+                    filename);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -41,9 +42,11 @@ final class ClientDtp implements DataTransferProcess {
     }
 
     @Override
-    public void listenForByteStream(final String filename) throws NullPointerException {
+    public void listenForByteStream(final String filename) throws
+            NullPointerException {
         try {
-            ControlByteReader.readByteStream(socket.getInputStream(), filename);
+            ControlByteReader.readByteStream(socket.getInputStream(),
+                    filename);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -57,7 +60,8 @@ final class ClientDtp implements DataTransferProcess {
     public String listenForCharacterStream() {
         BufferedReader bufferedReader = null;
         try {
-            bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            bufferedReader = new BufferedReader(new InputStreamReader
+                    (socket.getInputStream()));
         } catch (IOException exception) {
             return "";
         }

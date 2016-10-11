@@ -10,7 +10,8 @@ public final class ControlWriter {
 
         BufferedWriter writer = null;
         try {
-            writer = new BufferedWriter(new OutputStreamWriter(outputStream));
+            writer = new BufferedWriter(new OutputStreamWriter
+                    (outputStream));
             writer.append(message);
             writer.newLine();
             writer.flush();

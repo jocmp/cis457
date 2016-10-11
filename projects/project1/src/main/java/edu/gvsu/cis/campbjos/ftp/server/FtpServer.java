@@ -14,13 +14,16 @@ final class FtpServer {
         ServerSocket socket = new ServerSocket(CONTROL_PORT);
         InetAddress ip = InetAddress.getLocalHost();
         System.out.print(VANITY_HEADER);
-        System.out.println(format("Server started at %s on port %s", ip.getHostAddress(), socket.getLocalPort()));
+        System.out.println(format("Server started at %s on port %s",
+                ip.getHostAddress(), socket.getLocalPort()));
         while (true) {
             Socket connection = socket.accept();
 
-            System.out.println(format("New connection with %s:%s", connection.getInetAddress(), connection.getPort()));
+            System.out.println(format("New connection with %s:%s",
+                    connection.getInetAddress(), connection.getPort()));
 
-            ServerProtocolInterpreter request = new ServerProtocolInterpreter(connection);
+            ServerProtocolInterpreter request = new
+                    ServerProtocolInterpreter(connection);
 
             Thread thread = new Thread(request);
 

@@ -12,7 +12,8 @@ public final class ControlByteWriter {
 
 
     public static void sendFile(final OutputStream outputStream,
-                                final String filename) throws Exception {
+                                final String filename) throws
+            Exception {
         FileInputStream fileInputStream = null;
         boolean fileExists = true;
         try {
