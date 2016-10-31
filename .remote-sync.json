@@ -1,0 +1,16 @@
+{
+  "uploadOnSave": true,
+  "useAtomicWrites": false,
+  "deleteLocal": false,
+  "hostname": "dc08.cis.gvsu.edu",
+  "port": "22",
+  "target": "/home/campbjos/Code/courses/cis457",
+  "ignore": [
+    ".remote-sync.json",
+    ".git/**"
+  ],
+  "username": "campbjos",
+  "keyfile": "/Users/josiah/.ssh/id_rsa",
+  "watch": [],
+  "transport": "scp"
+}

@@ -1,0 +1,4 @@
+#!/bin/bash
+
+mkdir -p out 
+javac src/edu/gvsu/cis/campbjos/*.java -d out
