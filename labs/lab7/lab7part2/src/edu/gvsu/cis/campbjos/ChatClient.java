@@ -56,7 +56,7 @@ public class ChatClient {
     public void sendTextToChat(String message) {
         message = name + ": " + message + "\n";
         byte[] buf = message.getBytes();
-        DatagramPacket dg = new DatagramPacket(buf, buf.length);
+        DatagramPacket dg = new DatagramPacket(buf, buf.length, group, port);
         try {
             multicastSocket.send(dg);
         } catch (IOException ex) {

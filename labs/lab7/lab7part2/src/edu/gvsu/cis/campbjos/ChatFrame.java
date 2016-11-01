@@ -18,7 +18,7 @@ public class ChatFrame extends Frame {
         add("South", input = new TextField());
 
         pack();
-        show();
+        setVisible(true);
         input.requestFocus();
     }
 

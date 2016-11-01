@@ -1,0 +1,23 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName = "edu.gvsu.cis.campbjos.ftp.$version" + ".Ftp" + "$version".capitalize()
+
+repositories { 
+    // mavenCentral() 
+}
+
+jar {
+    baseName = "ftp"
+    manifest {
+        attributes(
+            'Main-Class': mainClassName
+            )
+    }
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+}

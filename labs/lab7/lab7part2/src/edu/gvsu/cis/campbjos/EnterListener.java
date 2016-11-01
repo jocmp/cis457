@@ -4,7 +4,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class EnterListener extends KeyAdapter {
-
+    
+    private static final String BYE = "bye";
     ChatClient client;
     ChatFrame gui;
 
@@ -15,8 +16,18 @@ public class EnterListener extends KeyAdapter {
 
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-            client.sendTextToChat(gui.input.getText());
+            String message = gui.input.getText();
+            if (message.toLowerCase().equals(BYE)) {
+                close();
+                return;
+            }
+            client.sendTextToChat(message);
             gui.input.setText("");
         }
+    }
+
+    private void close() {
+        client.disconnect();
+        gui.setVisible(false);
     }
 }

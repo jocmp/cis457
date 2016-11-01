@@ -5,9 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.OutputStream;
 
-import static edu.gvsu.cis.campbjos.ftp.Constants.ENTRY_DOES_NOT_EXIST;
-import static edu.gvsu.cis.campbjos.ftp.Constants.ENTRY_EXISTS;
-
 public final class ControlByteWriter {
 
 
@@ -22,11 +19,8 @@ public final class ControlByteWriter {
             fileExists = false;
         }
         if (fileExists) {
-            outputStream.write(ENTRY_EXISTS);
             sendBytes(fileInputStream, outputStream);
             fileInputStream.close();
-        } else {
-            outputStream.write(ENTRY_DOES_NOT_EXIST);
         }
     }
 
@@ -36,8 +30,11 @@ public final class ControlByteWriter {
         int bytes = 0;
 
         // Copy requested file into the socket's output stream.
+        int counter = 0;
         while ((bytes = fis.read(buffer)) != -1) {
             os.write(buffer, 0, bytes);
+            System.out.println("Writing..." + counter);
+            counter++;
         }
     }
 }
