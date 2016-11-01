@@ -1,0 +1,13 @@
+def main = "edu.gvsu.cis.campbjos.ftp.client.ClientMain"
+
+jar {
+    baseName = 'p2p-client'
+    manifest {
+        attributes('Main-Class': main)
+    }
+}
+ 
+dependencies {
+      compile project(':common')
+      compile 'log4j:log4j:1.2.17'
+}

@@ -1,23 +1,15 @@
-apply plugin: 'java'
-apply plugin: 'application'
-
-mainClassName = "edu.gvsu.cis.campbjos.ftp.$version" + ".Ftp" + "$version".capitalize()
-
-repositories { 
-    // mavenCentral() 
+allprojects {
+  task hello << { task -> println "I'm $task.project.name" }
 }
 
-jar {
-    baseName = "ftp"
-    manifest {
-        attributes(
-            'Main-Class': mainClassName
-            )
-    }
-}
+subprojects {
+  apply plugin: "java"
+ 
+  repositories {
+    mavenCentral()
+  }
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
-dependencies {
+  dependencies {
+     testCompile "junit:junit:4+"
+  }
 }
