@@ -4,7 +4,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class EnterListener extends KeyAdapter {
-
+    
     private static final String BYE = "bye";
     ChatClient client;
     ChatFrame gui;

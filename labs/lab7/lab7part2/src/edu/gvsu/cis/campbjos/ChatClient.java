@@ -14,7 +14,6 @@ public class ChatClient {
     MulticastSocket multicastSocket;
     int port = 6789;
 
-
     public ChatClient(String name) {
         this.name = name;
 
