@@ -1,0 +1,6 @@
+#!/bin/bash
+
+./gradlew build -Pversion=client
+./gradlew build -Pversion=server
+
+# rsync -r build/libs/* dc08:~/Code/courses/cis457/projects/project1/build/libs/

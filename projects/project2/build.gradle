@@ -1,10 +1,10 @@
 apply plugin: 'java'
 apply plugin: 'application'
 
-mainClassName = "edu.gvsu.cis.campbjos.ftp." + ".Ftp" + "$version".capitalize()
+mainClassName = "edu.gvsu.cis.campbjos.ftp.$version" + ".Ftp" + "$version".capitalize()
 
-repositories {
-    // mavenCentral()
+repositories { 
+    // mavenCentral() 
 }
 
 jar {
