@@ -5,8 +5,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static edu.gvsu.cis.campbjos.ftp.Constants.ENTRY_EXISTS;
-
 public final class ControlByteReader {
 
     public static void readByteStream(final InputStream inputStream,
@@ -14,21 +12,16 @@ public final class ControlByteReader {
             Exception {
         FileOutputStream output = null;
         try {
-            int read = 0;
             byte[] bytes = new byte[1024];
-
-            boolean isValidFile = false;
-            boolean isStatusRead = true;
+            int read = 0;
+            output = new FileOutputStream(new File(filename));
+            boolean hasBytes = false;
             while ((read = inputStream.read(bytes)) != -1) {
-                isValidFile = bytes[0] == ENTRY_EXISTS;
-                if (!isValidFile && isStatusRead) {
-                    throw new NullPointerException("Invalid filename");
-                } else if (isValidFile) {
-                    isStatusRead = false;
-                    output = new FileOutputStream(new File(filename));
-                    continue;
-                }
                 output.write(bytes, 0, read);
+                hasBytes = true;
+            }
+            if (!hasBytes) {
+                new File(filename).delete();
             }
         } catch (IOException e) {
             e.printStackTrace();

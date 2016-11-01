@@ -55,7 +55,6 @@ final class ServerDtp implements DataTransferProcess {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        closeSocket();
     }
 
     @Override
