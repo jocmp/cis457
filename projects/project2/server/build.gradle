@@ -10,5 +10,4 @@ jar {
 dependencies {
     compile project(':common')
     compile 'org.apache.commons:commons-lang3:3.3.2'
-    compile 'log4j:log4j:1.2.17'
 }

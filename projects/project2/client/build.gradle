@@ -6,8 +6,8 @@ jar {
         attributes('Main-Class': main)
     }
 }
- 
+
 dependencies {
-      compile project(':common')
-      compile 'log4j:log4j:1.2.17'
+    compile project(':common')
+    compile 'log4j:log4j:1.2.17'
 }

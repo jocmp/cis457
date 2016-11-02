@@ -1,15 +1,16 @@
 allprojects {
-  task hello << { task -> println "I'm $task.project.name" }
 }
 
 subprojects {
-  apply plugin: "java"
- 
-  repositories {
-    mavenCentral()
-  }
+    apply plugin: "java"
+    apply plugin: "idea"
 
-  dependencies {
-     testCompile "junit:junit:4+"
-  }
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        testCompile "junit:junit:4+"
+        compile 'com.google.code.gson:gson:2.8.0'
+    }
 }
