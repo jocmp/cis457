@@ -10,7 +10,7 @@ public class Result {
     public String speed;
     @SerializedName("hostname")
     @Expose
-    public String host;
+    public String hostname;
     @SerializedName("filename")
     @Expose
     public String filename;
@@ -18,6 +18,6 @@ public class Result {
     public Result(Host host, String filename) {
         this.speed = host.speed;
         this.filename = filename;
-        this.host = host.toString();
+        this.hostname = host.hostname;
     }
 }

@@ -64,22 +64,14 @@ public class CentralInterpreter implements Runnable {
             System.out.println("-- Connection to user lost.");
         } finally {
             System.out.println("Connection ended");
-            removeResultsFromList();
+            RESULTS.removeIf(result -> result.hostname.equals(host.hostname));
             HOSTS.remove(host);
             try {
                 socket.close();
             } catch (IOException ex) {
-                System.out.println("-- Socket to user already closed ?");
+                System.out.println("Socket to user already closed");
             }
         }
-    }
-
-    private void removeResultsFromList() {
-        RESULTS.forEach(result -> {
-            if (result.getHost().getHostname().equals(host.getHostname())) {
-
-            }
-        });
     }
 
     private List<Result> queryIfValid(final String input) {
@@ -95,7 +87,7 @@ public class CentralInterpreter implements Runnable {
 
     private List<Result> queryFileList(final String searchTerm) {
         return RESULTS.stream()
-                .filter(result -> result.getFilename().contains(searchTerm))
+                .filter(result -> result.filename.contains(searchTerm))
                 .collect(toList());
     }
 }

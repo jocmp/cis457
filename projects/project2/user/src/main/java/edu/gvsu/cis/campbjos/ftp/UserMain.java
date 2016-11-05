@@ -17,13 +17,31 @@ import static edu.gvsu.cis.campbjos.ftp.common.Constants.VANITY_HEADER;
 public class UserMain extends Application {
 
     private static final String CURSOR = "ftp > ";
+    private Controller controller;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/layout.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/layout.fxml"));
+        Parent root = loader.load();
+        controller = loader.getController();
         primaryStage.setTitle("GV-Nap");
         primaryStage.setScene(new Scene(root, 797, 551));
         primaryStage.show();
+        initControlActions();
+    }
+
+    private void initControlActions() {
+        controller.connectButton.setOnAction(event -> {
+            
+        });
+
+        controller.searchButton.setOnAction(actionEvent -> {
+
+        });
+
+        controller.enterButton.setOnAction(actionEvent -> {
+
+        });
     }
 
     public static void main(String[] args) {
