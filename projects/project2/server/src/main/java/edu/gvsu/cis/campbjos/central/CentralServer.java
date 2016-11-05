@@ -15,14 +15,16 @@ public class CentralServer {
             DataInputStream in = new DataInputStream(client.getInputStream());
             String name = in.readUTF();
             System.out.println("New client " + name + " from " + client.getInetAddress());
-            CentralInterpreter handler = new CentralInterpreter(name, client);
-            handler.start();
+            CentralInterpreter handler = new CentralInterpreter(client);
+            Thread thread = new Thread(handler);
+            thread.start();
         }
     }
 
     public static void main(String args[]) throws IOException {
-        if (args.length != 1)
+        if (args.length != 1) {
             throw new RuntimeException("Syntax: java CentralServer <port>");
+        }
         new CentralServer(Integer.parseInt(args[0]));
     }
 }

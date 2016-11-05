@@ -8,4 +8,5 @@ public final class Commands {
     public static final String CONNECT = "CONNECT";
     public static final String PORT = "PORT";
     public static final String SEARCH = "SEARCH";
+    public static final String ACK = "ACK";
 }

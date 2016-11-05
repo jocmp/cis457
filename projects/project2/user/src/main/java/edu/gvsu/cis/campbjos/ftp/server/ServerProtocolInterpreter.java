@@ -35,9 +35,9 @@ final class ServerProtocolInterpreter implements ProtocolInterpreter,
 
     @Override
     public void run() {
-        final boolean isServerRunning = true;
         try {
-            while (isServerRunning) {
+            //noinspection InfiniteLoopStatement
+            while (true) {
                 String requestLine = bufferedReader.readLine();
                 System.out.println(requestLine);
                 processInput(requestLine);
