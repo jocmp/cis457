@@ -13,8 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
-import static edu.gvsu.cis.campbjos.ftp.common.Commands.ACK;
-import static edu.gvsu.cis.campbjos.ftp.common.Commands.SEARCH;
+import static edu.gvsu.cis.campbjos.ftp.common.Commands.*;
 import static edu.gvsu.cis.campbjos.ftp.common.ControlWriter.write;
 import static edu.gvsu.cis.campbjos.ftp.common.StringReader.listenForCharacterStream;
 import static java.util.stream.Collectors.toList;
@@ -42,6 +41,8 @@ public class CentralInterpreter implements Runnable {
         host = new Gson().fromJson(unParsedHost, Host.class);
         HOSTS.add(host);
         write(socket.getOutputStream(), ACK);
+
+        String unParsedResults = listenForCharacterStream(socket.getInputStream());
     }
 
     @Override
@@ -52,7 +53,9 @@ public class CentralInterpreter implements Runnable {
             while (true) {
                 String requestLine = bufferedReader.readLine();
                 System.out.println(requestLine);
-
+                if (requestLine.equals(QUIT)) {
+                    break;
+                }
                 List<Result> results = queryIfValid(requestLine);
 
                 write(socket.getOutputStream(), gson.toJson(results));
@@ -61,12 +64,22 @@ public class CentralInterpreter implements Runnable {
             System.out.println("-- Connection to user lost.");
         } finally {
             System.out.println("Connection ended");
+            removeResultsFromList();
+            HOSTS.remove(host);
             try {
                 socket.close();
             } catch (IOException ex) {
                 System.out.println("-- Socket to user already closed ?");
             }
         }
+    }
+
+    private void removeResultsFromList() {
+        RESULTS.forEach(result -> {
+            if (result.getHost().getHostname().equals(host.getHostname())) {
+
+            }
+        });
     }
 
     private List<Result> queryIfValid(final String input) {
@@ -85,9 +98,4 @@ public class CentralInterpreter implements Runnable {
                 .filter(result -> result.getFilename().contains(searchTerm))
                 .collect(toList());
     }
-
-    public void register(Host host) {
-        HOSTS.add(host);
-    }
-
 }
