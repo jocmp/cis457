@@ -1,16 +1,19 @@
 package edu.gvsu.cis.campbjos.ftp;
 
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
 
     @FXML
-    public TextArea output;
+    public TextArea ftpOutput;
 
     @FXML
     public TextArea serverHostname;
@@ -34,7 +37,7 @@ public class Controller implements Initializable {
     public TextField keyword;
 
     @FXML
-    public ChoiceBox<?> speed;
+    public ChoiceBox<String> speed;
 
     @FXML
     public TextField command;
@@ -47,7 +50,7 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
-        assert output != null : "fx:id=\"output\" was not injected: check your FXML file 'layout.fxml'.";
+        assert ftpOutput != null : "fx:id=\"output\" was not injected: check your FXML file 'layout.fxml'.";
         assert serverHostname != null : "fx:id=\"serverHostname\" was not injected: check your FXML file 'layout.fxml'.";
         assert hostname != null : "fx:id=\"hostname\" was not injected: check your FXML file 'layout.fxml'.";
         assert searchButton != null : "fx:id=\"searchButton\" was not injected: check your FXML file 'layout.fxml'.";
@@ -59,6 +62,17 @@ public class Controller implements Initializable {
         assert command != null : "fx:id=\"command\" was not injected: check your FXML file 'layout.fxml'.";
         assert username != null : "fx:id=\"username\" was not injected: check your FXML file 'layout.fxml'.";
         assert resultsTable != null : "fx:id=\"resultsTable\" was not injected: check your FXML file 'layout.fxml'.";
+
+
+        List<String> list = new ArrayList<>();
+        list.add("Ethernet");
+        list.add("T1");
+        list.add("T3");
+        list.add("Modem");
+
+        speed.setItems(FXCollections.observableArrayList(list));
+        speed.setValue("Ethernet");
+        ftpOutput.setEditable(false);
     }
 
 }

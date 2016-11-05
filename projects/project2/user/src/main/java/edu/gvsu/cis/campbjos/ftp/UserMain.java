@@ -32,7 +32,7 @@ public class UserMain extends Application {
 
     private void initControlActions() {
         controller.connectButton.setOnAction(event -> {
-            
+
         });
 
         controller.searchButton.setOnAction(actionEvent -> {
@@ -40,7 +40,7 @@ public class UserMain extends Application {
         });
 
         controller.enterButton.setOnAction(actionEvent -> {
-
+            controller.ftpOutput.setText(controller.speed.getValue());
         });
     }
 

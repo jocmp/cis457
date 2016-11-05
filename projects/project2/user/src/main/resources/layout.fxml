@@ -1,143 +1,142 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
-
-<GridPane alignment="center" hgap="10" prefHeight="551.0" prefWidth="797.0" vgap="10" xmlns="http://javafx.com/javafx/8.0.112-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.gvsu.cis.campbjos.ftp.Controller">
-   <columnConstraints>
-      <ColumnConstraints minWidth="10.0" percentWidth="100.0" prefWidth="100.0" />
-   </columnConstraints>
-   <rowConstraints>
-      <RowConstraints maxHeight="1000.0" minHeight="1.0" percentHeight="33.0" prefHeight="0.0" />
-      <RowConstraints maxHeight="59.0" minHeight="0.0" percentHeight="33.0" prefHeight="31.0" />
-      <RowConstraints minHeight="10.0" percentHeight="33.0" prefHeight="0.0" />
-   </rowConstraints>
-   <children>
-      <VBox prefHeight="200.0" prefWidth="100.0">
-         <children>
-            <Label text="Connection">
-               <padding>
-                  <Insets left="25.0" />
-               </padding>
-            </Label>
-            <Separator prefWidth="200.0">
-               <padding>
-                  <Insets left="25.0" right="25.0" />
-               </padding>
-            </Separator>
-            <HBox prefHeight="48.0" prefWidth="797.0" spacing="10.0">
-               <children>
-                  <Label text="Username" />
-                  <TextArea fx:id="username" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="10.0" minWidth="10.0" prefHeight="25.0" prefWidth="150.0" />
-                  <Label text="Hostname" />
-                  <TextArea fx:id="hostname" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="10.0" minWidth="50.0" prefHeight="25.0" prefWidth="244.0" />
-                  <Label text="Speed" />
-                  <ChoiceBox fx:id="speed" prefWidth="150.0" />
-               </children>
-               <padding>
-                  <Insets left="35.0" top="10.0" />
-               </padding>
-            </HBox>
-            <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
-               <children>
-                  <Label text="Server Hostname" />
-                  <TextArea fx:id="serverHostname" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="10.0" minWidth="10.0" prefHeight="25.0" prefWidth="455.0" />
-                  <Label text="Port" />
-                  <TextArea fx:id="port" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="25.0" minWidth="70.0" prefHeight="25.0" prefWidth="70.0" />
-                  <Button fx:id="connectButton" mnemonicParsing="false" text="Connect" />
-               </children>
-               <padding>
-                  <Insets left="35.0" top="10.0" />
-               </padding>
-            </HBox>
-         </children>
-      </VBox>
-      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
-         <children>
-            <Label text="Search">
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-               <padding>
-                  <Insets left="25.0" />
-               </padding>
-            </Label>
-            <Separator prefWidth="200.0">
-               <padding>
-                  <Insets left="25.0" right="25.0" />
-               </padding>
-            </Separator>
-            <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
-               <children>
-                  <Label text="Keyword" />
-                  <TextField fx:id="keyword" maxHeight="25.0" minHeight="25.0" prefHeight="25.0" prefWidth="618.0" />
-                  <Button fx:id="searchButton" mnemonicParsing="false" text="Search" />
-               </children>
-               <padding>
-                  <Insets left="35.0" top="10.0" />
-               </padding>
-            </HBox>
-            <HBox prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <TableView fx:id="resultsTable" maxWidth="1000.0" minHeight="100.0" prefHeight="100.0" prefWidth="772.0">
-                    <columns>
-                      <TableColumn prefWidth="118.0" text="Speed" />
-                      <TableColumn prefWidth="215.0" text="Hostname" />
-                        <TableColumn prefWidth="403.0" text="Filename" />
-                    </columns>
-                     <HBox.margin>
-                        <Insets left="35.0" right="35.0" />
-                     </HBox.margin>
-                  </TableView>
-               </children>
-               <padding>
-                  <Insets top="10.0" />
-               </padding>
-            </HBox>
-         </children></VBox>
-      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="2">
-         <children>
-            <Label text="FTP">
-               <padding>
-                  <Insets left="25.0" />
-               </padding>
-            </Label>
-            <Separator prefWidth="200.0">
-               <padding>
-                  <Insets left="25.0" right="25.0" />
-               </padding>
-            </Separator>
-            <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
-               <children>
-                  <Label text="Command" />
-                  <TextField fx:id="command" prefHeight="25.0" prefWidth="610.0" />
-                  <Button fx:id="enterButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" text="Enter" />
-               </children>
-               <padding>
-                  <Insets left="35.0" top="10.0" />
-               </padding>
-            </HBox>
-            <HBox prefHeight="200.0" prefWidth="200.0">
-               <children>
-                  <TextArea fx:id="output" prefHeight="120.0" prefWidth="737.0" />
-               </children>
-               <padding>
-                  <Insets left="35.0" top="10.0" />
-               </padding>
-            </HBox>
-         </children>
-      </VBox>
-   </children>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<GridPane alignment="center" hgap="10" prefHeight="551.0" prefWidth="797.0" vgap="10"
+          xmlns="http://javafx.com/javafx/8.0.112-ea" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="edu.gvsu.cis.campbjos.ftp.Controller">
+    <columnConstraints>
+        <ColumnConstraints minWidth="10.0" percentWidth="100.0" prefWidth="100.0"/>
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints maxHeight="1000.0" minHeight="1.0" percentHeight="33.0" prefHeight="0.0"/>
+        <RowConstraints maxHeight="59.0" minHeight="0.0" percentHeight="33.0" prefHeight="31.0"/>
+        <RowConstraints minHeight="10.0" percentHeight="33.0" prefHeight="0.0"/>
+    </rowConstraints>
+    <children>
+        <VBox prefHeight="200.0" prefWidth="100.0">
+            <children>
+                <Label text="Connection">
+                    <padding>
+                        <Insets left="25.0"/>
+                    </padding>
+                </Label>
+                <Separator prefWidth="200.0">
+                    <padding>
+                        <Insets left="25.0" right="25.0"/>
+                    </padding>
+                </Separator>
+                <HBox prefHeight="48.0" prefWidth="797.0" spacing="10.0">
+                    <children>
+                        <Label text="Username"/>
+                        <TextArea fx:id="username" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="10.0"
+                                  minWidth="10.0" prefHeight="25.0" prefWidth="150.0"/>
+                        <Label text="Hostname"/>
+                        <TextArea fx:id="hostname" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity"
+                                  maxWidth="-Infinity" minHeight="10.0" minWidth="50.0" prefHeight="25.0"
+                                  prefWidth="244.0"/>
+                        <Label text="Speed"/>
+                        <ChoiceBox fx:id="speed" prefWidth="150.0"/>
+                    </children>
+                    <padding>
+                        <Insets left="35.0" top="10.0"/>
+                    </padding>
+                </HBox>
+                <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                    <children>
+                        <Label text="Server Hostname"/>
+                        <TextArea fx:id="serverHostname" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="10.0"
+                                  minWidth="10.0" prefHeight="25.0" prefWidth="455.0"/>
+                        <Label text="Port"/>
+                        <TextArea fx:id="port" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                                  minHeight="25.0" minWidth="70.0" prefHeight="25.0" prefWidth="70.0"/>
+                        <Button fx:id="connectButton" mnemonicParsing="false" text="Connect"/>
+                    </children>
+                    <padding>
+                        <Insets left="35.0" top="10.0"/>
+                    </padding>
+                </HBox>
+            </children>
+        </VBox>
+        <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
+            <children>
+                <Label text="Search">
+                    <VBox.margin>
+                        <Insets/>
+                    </VBox.margin>
+                    <padding>
+                        <Insets left="25.0"/>
+                    </padding>
+                </Label>
+                <Separator prefWidth="200.0">
+                    <padding>
+                        <Insets left="25.0" right="25.0"/>
+                    </padding>
+                </Separator>
+                <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                    <children>
+                        <Label text="Keyword"/>
+                        <TextField fx:id="keyword" maxHeight="25.0" minHeight="25.0" prefHeight="25.0"
+                                   prefWidth="618.0"/>
+                        <Button fx:id="searchButton" mnemonicParsing="false" text="Search"/>
+                    </children>
+                    <padding>
+                        <Insets left="35.0" top="10.0"/>
+                    </padding>
+                </HBox>
+                <HBox prefHeight="100.0" prefWidth="200.0">
+                    <children>
+                        <TableView fx:id="resultsTable" maxWidth="1000.0" minHeight="100.0" prefHeight="100.0"
+                                   prefWidth="772.0">
+                            <columns>
+                                <TableColumn prefWidth="118.0" text="Speed"/>
+                                <TableColumn prefWidth="215.0" text="Hostname"/>
+                                <TableColumn prefWidth="403.0" text="Filename"/>
+                            </columns>
+                            <HBox.margin>
+                                <Insets left="35.0" right="35.0"/>
+                            </HBox.margin>
+                        </TableView>
+                    </children>
+                    <padding>
+                        <Insets top="10.0"/>
+                    </padding>
+                </HBox>
+            </children>
+        </VBox>
+        <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="2">
+            <children>
+                <Label text="FTP">
+                    <padding>
+                        <Insets left="25.0"/>
+                    </padding>
+                </Label>
+                <Separator prefWidth="200.0">
+                    <padding>
+                        <Insets left="25.0" right="25.0"/>
+                    </padding>
+                </Separator>
+                <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                    <children>
+                        <Label text="Command"/>
+                        <TextField fx:id="command" prefHeight="25.0" prefWidth="610.0"/>
+                        <Button fx:id="enterButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0"
+                                text="Enter"/>
+                    </children>
+                    <padding>
+                        <Insets left="35.0" top="10.0"/>
+                    </padding>
+                </HBox>
+                <HBox prefHeight="200.0" prefWidth="200.0">
+                    <children>
+                        <TextArea fx:id="ftpOutput" prefHeight="120.0" prefWidth="737.0"/>
+                    </children>
+                    <padding>
+                        <Insets left="35.0" top="10.0"/>
+                    </padding>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
 </GridPane>
