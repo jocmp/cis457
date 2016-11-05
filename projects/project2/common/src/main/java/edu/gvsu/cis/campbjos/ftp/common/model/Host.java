@@ -7,36 +7,14 @@ public class Host {
 
     @SerializedName("ip")
     @Expose
-    private String ip;
+    public String ip;
     @SerializedName("port")
     @Expose
-    private Integer port;
+    public Integer port;
     @SerializedName("hostname")
-    private String hostname;
-
-    public String getIp() {
-        return ip;
-    }
-
-    public void setIp(String ip) {
-        this.ip = ip;
-    }
-
-    public Integer getPort() {
-        return port;
-    }
-
-    public void setPort(Integer port) {
-        this.port = port;
-    }
-
-    public String getHostname() {
-        return hostname;
-    }
-
-    public void setHostname(String hostname) {
-        this.hostname = hostname;
-    }
+    public String hostname;
+    @SerializedName("speed")
+    public String speed;
 
     @Override
     public boolean equals(Object other) {
@@ -61,5 +39,10 @@ public class Host {
         result = 31 * result + (port != null ? port.hashCode() : 0);
         result = 31 * result + (hostname != null ? hostname.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return hostname;
     }
 }

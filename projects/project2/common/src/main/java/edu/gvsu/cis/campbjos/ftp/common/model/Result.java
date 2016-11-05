@@ -7,36 +7,17 @@ public class Result {
 
     @SerializedName("speed")
     @Expose
-    private String speed;
+    public String speed;
     @SerializedName("hostname")
     @Expose
-    private Host host;
+    public String host;
     @SerializedName("filename")
     @Expose
-    private String filename;
+    public String filename;
 
-    public String getSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(String speed) {
-        this.speed = speed;
-    }
-
-    public Host getHostname() {
-        return host;
-    }
-
-    public void setHostname(Host host) {
-        this.host = host;
-    }
-
-    public String getFilename() {
-        return filename;
-    }
-
-    public void setFilename(String filename) {
+    public Result(Host host, String filename) {
+        this.speed = host.speed;
         this.filename = filename;
+        this.host = host.toString();
     }
-
 }
