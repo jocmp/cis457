@@ -1,3 +1,3 @@
 rootProject.name = 'p2p'
 
-include ":common", ":client", ":server"
+include ":common", ":user", ":server"

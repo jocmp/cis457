@@ -1,4 +1,11 @@
-package edu.gvsu.cis.campbjos.ftp.client;
+package edu.gvsu.cis.campbjos.ftp;
+
+import edu.gvsu.cis.campbjos.ftp.client.ClientProtocolInterpreter;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,11 +14,21 @@ import java.io.InputStreamReader;
 import static edu.gvsu.cis.campbjos.ftp.common.Commands.*;
 import static edu.gvsu.cis.campbjos.ftp.common.Constants.VANITY_HEADER;
 
-final class ClientMain {
+public class UserMain extends Application {
 
     private static final String CURSOR = "ftp > ";
 
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("layout.fxml"));
+        primaryStage.setTitle("GV-Nap");
+        primaryStage.setScene(new Scene(root, 797, 551));
+        primaryStage.show();
+    }
+
     public static void main(String[] args) {
+        launch(args);
+
         final ClientProtocolInterpreter protocolInterpreter = new
                 ClientProtocolInterpreter();
         final BufferedReader keyboard = new BufferedReader(new

@@ -1,7 +1,7 @@
-def main = "edu.gvsu.cis.campbjos.ftp.client.ClientMain"
+def main = "edu.gvsu.cis.campbjos.ftp.UserMain"
 
 jar {
-    baseName = 'p2p-client'
+    baseName = 'p2p-user'
     manifest {
         attributes('Main-Class': main)
     }

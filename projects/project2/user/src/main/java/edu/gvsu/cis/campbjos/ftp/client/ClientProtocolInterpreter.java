@@ -12,15 +12,15 @@ import static edu.gvsu.cis.campbjos.ftp.common.Commands.*;
 import static edu.gvsu.cis.campbjos.ftp.common.Converter.convertToServerPortNumber;
 import static java.lang.String.format;
 
-final class ClientProtocolInterpreter implements ProtocolInterpreter {
+public final class ClientProtocolInterpreter implements ProtocolInterpreter {
 
     private Socket piSocket;
 
-    ClientProtocolInterpreter() {
+    public ClientProtocolInterpreter() {
         piSocket = null;
     }
 
-    void connect(final String ipAddress, final String serverPort)
+    public void connect(final String ipAddress, final String serverPort)
             throws IOException {
         final int port = convertToServerPortNumber(serverPort);
         try {
@@ -41,7 +41,7 @@ final class ClientProtocolInterpreter implements ProtocolInterpreter {
         }
     }
 
-    boolean isConnected() {
+    public boolean isConnected() {
         return !(piSocket == null || piSocket.isClosed());
     }
 

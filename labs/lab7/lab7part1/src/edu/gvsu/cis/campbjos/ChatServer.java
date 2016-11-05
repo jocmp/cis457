@@ -14,7 +14,6 @@ public class ChatServer {
             Socket client = server.accept();
             DataInputStream in = new DataInputStream(client.getInputStream());
             String name = in.readUTF();
-
             System.out.println("New client " + name + " from " + client.getInetAddress());
             ChatHandler c = new ChatHandler(name, client);
             c.start();
