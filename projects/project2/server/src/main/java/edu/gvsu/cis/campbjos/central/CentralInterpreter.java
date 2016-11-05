@@ -3,6 +3,7 @@ package edu.gvsu.cis.campbjos.central;
 import com.google.gson.Gson;
 import edu.gvsu.cis.campbjos.ftp.common.model.Host;
 import edu.gvsu.cis.campbjos.ftp.common.model.Result;
+import edu.gvsu.cis.campbjos.ftp.common.model.Results;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,6 +23,7 @@ public class CentralInterpreter implements Runnable {
 
     private static final Vector<Host> HOSTS;
     private static final Vector<Result> RESULTS;
+
     private final BufferedReader bufferedReader;
     private static final int COMMAND_INDEX = 0;
     private static final int SEARCH_TERM_INDEX = 1;
@@ -41,8 +43,9 @@ public class CentralInterpreter implements Runnable {
         host = new Gson().fromJson(unParsedHost, Host.class);
         HOSTS.add(host);
         write(socket.getOutputStream(), ACK);
-
         String unParsedResults = listenForCharacterStream(socket.getInputStream());
+        Results hostResults = new Gson().fromJson(unParsedResults, Results.class);
+        RESULTS.addAll(hostResults.list());
     }
 
     @Override

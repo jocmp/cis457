@@ -16,6 +16,13 @@ public class Host {
     @SerializedName("speed")
     public String speed;
 
+    public Host(String ip, Integer port, String hostname, String speed) {
+        this.ip = ip;
+        this.port = port;
+        this.hostname = hostname;
+        this.speed = speed;
+    }
+
     @Override
     public boolean equals(Object other) {
         if (this == other)

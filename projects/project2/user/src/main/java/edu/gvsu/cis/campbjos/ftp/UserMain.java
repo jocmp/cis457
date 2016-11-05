@@ -5,19 +5,26 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 import static edu.gvsu.cis.campbjos.ftp.common.Commands.*;
-import static edu.gvsu.cis.campbjos.ftp.common.Constants.VANITY_HEADER;
+import static java.lang.String.format;
 
 public class UserMain extends Application {
 
     private static final String CURSOR = "ftp > ";
     private Controller controller;
+    private final ClientProtocolInterpreter protocolInterpreter;
+    private final CentralUserInterpreter userIntepreter;
+
+    public UserMain() {
+        protocolInterpreter = new ClientProtocolInterpreter();
+        userIntepreter = new CentralUserInterpreter();
+    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -32,41 +39,48 @@ public class UserMain extends Application {
 
     private void initControlActions() {
         controller.connectButton.setOnAction(event -> {
-
+            connectToCentralServer();
         });
 
         controller.searchButton.setOnAction(actionEvent -> {
-
+            if (!controller.keyword.getText().isEmpty()) {
+                controller.resultsTable.setDisable(false);
+                controller.resultsTable.setPlaceholder(new Label("No results found"));
+                userIntepreter.query(controller.keyword.getText());
+            }
         });
 
         controller.enterButton.setOnAction(actionEvent -> {
-            controller.ftpOutput.setText(controller.speed.getValue());
+            if (!controller.command.getText().isEmpty()) {
+                String currentInput = controller.command.getText();
+                controller.ftpOutput.appendText(format("%s %s\n", CURSOR, currentInput));
+                controller.command.clear();
+                processInput(currentInput, protocolInterpreter);
+            }
         });
+    }
+
+    private void connectToCentralServer() {
+        String username = controller.username.getText();
+        String ipAddress = controller.serverHostname.getText();
+        String port = controller.port.getText();
+        try {
+            String name = userIntepreter.connect(username, ipAddress, port);
+            controller.hostname.setText(name);
+        } catch (IOException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Error connecting to central server");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+        }
     }
 
     public static void main(String[] args) {
         launch(args);
-
-        final ClientProtocolInterpreter protocolInterpreter = new
-                ClientProtocolInterpreter();
-        final BufferedReader keyboard = new BufferedReader(new
-                InputStreamReader(System.in));
-        System.out.println(VANITY_HEADER);
-        try {
-            while (true) {
-                System.out.print(CURSOR);
-                final String currentInput = keyboard.readLine();
-                processInput(currentInput, protocolInterpreter);
-                if (currentInput == null) {
-                    return;
-                }
-            }
-        } catch (IOException e) {
-            System.out.println("Error parsing commands");
-        }
     }
 
-    private static void processInput(final String input, final
+    private void processInput(final String input, final
     ClientProtocolInterpreter protocolInterpreter) {
         final String[] tokens = input.split(" ");
         final String command = tokens[0].toUpperCase();
@@ -77,7 +91,7 @@ public class UserMain extends Application {
         }
 
         if (!protocolInterpreter.isConnected()) {
-            System.out.println("ERROR: Not connected");
+            controller.ftpOutput.appendText("ERROR: Not connected\n");
         } else if (command.equals(LIST)) {
             handleList(protocolInterpreter);
         } else if (command.equals(RETR)) {
@@ -130,7 +144,7 @@ public class UserMain extends Application {
         } catch (IOException e) {
             System.out.println(e.getMessage());
         } catch (NullPointerException e) {
-            System.out.println(String.format("%s: %s", fileName, e
+            System.out.println(format("%s: %s", fileName, e
                     .getMessage()));
         }
     }

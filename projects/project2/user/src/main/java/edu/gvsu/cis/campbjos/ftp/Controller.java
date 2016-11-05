@@ -73,6 +73,8 @@ public class Controller implements Initializable {
         speed.setItems(FXCollections.observableArrayList(list));
         speed.setValue("Ethernet");
         ftpOutput.setEditable(false);
+        resultsTable.setDisable(true);
+        resultsTable.setPlaceholder(new Label(""));
     }
 
 }
