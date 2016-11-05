@@ -20,7 +20,7 @@ public class UserMain extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("layout.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/layout.fxml"));
         primaryStage.setTitle("GV-Nap");
         primaryStage.setScene(new Scene(root, 797, 551));
         primaryStage.show();
