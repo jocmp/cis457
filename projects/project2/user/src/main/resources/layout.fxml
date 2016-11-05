@@ -56,7 +56,7 @@
                   <TextArea fx:id="serverHostname" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="10.0" minWidth="10.0" prefHeight="25.0" prefWidth="455.0" />
                   <Label text="Port" />
                   <TextArea fx:id="port" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="25.0" minWidth="70.0" prefHeight="25.0" prefWidth="70.0" />
-                  <Button mnemonicParsing="false" text="Connect" />
+                  <Button fx:id="connectButton" mnemonicParsing="false" text="Connect" />
                </children>
                <padding>
                   <Insets left="35.0" top="10.0" />
