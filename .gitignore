@@ -4,3 +4,10 @@ build/
 out/
 .gradle/
 .idea/
+
+# floo stuff
+.flooignore
+.floo
+
+# iml
+*.iml
