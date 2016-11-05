@@ -34,6 +34,9 @@ public class Controller implements Initializable{
     private Button enterButton;
 
     @FXML
+    private Button connectButton;
+
+    @FXML
     private TextField keyword;
 
     @FXML
@@ -56,13 +59,14 @@ public class Controller implements Initializable{
         assert searchButton != null : "fx:id=\"searchButton\" was not injected: check your FXML file 'layout.fxml'.";
         assert port != null : "fx:id=\"port\" was not injected: check your FXML file 'layout.fxml'.";
         assert enterButton != null : "fx:id=\"enterButton\" was not injected: check your FXML file 'layout.fxml'.";
+        assert connectButton != null : "fx:id=\"connectButton\" was not injected: check your FXML file 'layout.fxml'."
         assert keyword != null : "fx:id=\"keyword\" was not injected: check your FXML file 'layout.fxml'.";
         assert speed != null : "fx:id=\"speed\" was not injected: check your FXML file 'layout.fxml'.";
         assert command != null : "fx:id=\"command\" was not injected: check your FXML file 'layout.fxml'.";
         assert username != null : "fx:id=\"username\" was not injected: check your FXML file 'layout.fxml'.";
         assert resultsTable != null : "fx:id=\"resultsTable\" was not injected: check your FXML file 'layout.fxml'.";
 
-        enterButton.setOnAction(new EventHandler<ActionEvent>() {
+        connectButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
 
@@ -70,6 +74,13 @@ public class Controller implements Initializable{
         });
 
         searchButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+            }
+        });
+
+        enterButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
 
