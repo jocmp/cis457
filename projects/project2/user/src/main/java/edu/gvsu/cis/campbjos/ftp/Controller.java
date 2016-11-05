@@ -1,5 +1,7 @@
 package edu.gvsu.cis.campbjos.ftp;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -60,6 +62,19 @@ public class Controller implements Initializable{
         assert username != null : "fx:id=\"username\" was not injected: check your FXML file 'layout.fxml'.";
         assert resultsTable != null : "fx:id=\"resultsTable\" was not injected: check your FXML file 'layout.fxml'.";
 
+        enterButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+            }
+        });
+
+        searchButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+            }
+        });
     }
 
 }
