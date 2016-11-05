@@ -40,11 +40,11 @@
             <HBox prefHeight="48.0" prefWidth="797.0" spacing="10.0">
                <children>
                   <Label text="Username" />
-                  <TextArea maxHeight="-Infinity" maxWidth="-Infinity" minHeight="10.0" minWidth="10.0" prefHeight="25.0" prefWidth="150.0" />
+                  <TextArea fx:id="username" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="10.0" minWidth="10.0" prefHeight="25.0" prefWidth="150.0" />
                   <Label text="Hostname" />
-                  <TextArea layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="10.0" minWidth="50.0" prefHeight="25.0" prefWidth="244.0" />
+                  <TextArea fx:id="hostname" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="10.0" minWidth="50.0" prefHeight="25.0" prefWidth="244.0" />
                   <Label text="Speed" />
-                  <ChoiceBox prefWidth="150.0" />
+                  <ChoiceBox fx:id="speed" prefWidth="150.0" />
                </children>
                <padding>
                   <Insets left="35.0" top="10.0" />
@@ -53,9 +53,9 @@
             <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                <children>
                   <Label text="Server Hostname" />
-                  <TextArea maxHeight="-Infinity" maxWidth="-Infinity" minHeight="10.0" minWidth="10.0" prefHeight="25.0" prefWidth="455.0" />
+                  <TextArea fx:id="serverHostname" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="10.0" minWidth="10.0" prefHeight="25.0" prefWidth="455.0" />
                   <Label text="Port" />
-                  <TextArea layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="25.0" minWidth="70.0" prefHeight="25.0" prefWidth="70.0" />
+                  <TextArea fx:id="port" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="25.0" minWidth="70.0" prefHeight="25.0" prefWidth="70.0" />
                   <Button mnemonicParsing="false" text="Connect" />
                </children>
                <padding>
@@ -82,8 +82,8 @@
             <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                <children>
                   <Label text="Keyword" />
-                  <TextField maxHeight="25.0" minHeight="25.0" prefHeight="25.0" prefWidth="618.0" />
-                  <Button mnemonicParsing="false" text="Search" />
+                  <TextField fx:id="keyword" maxHeight="25.0" minHeight="25.0" prefHeight="25.0" prefWidth="618.0" />
+                  <Button fx:id="searchButton" mnemonicParsing="false" text="Search" />
                </children>
                <padding>
                   <Insets left="35.0" top="10.0" />
@@ -91,7 +91,7 @@
             </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <TableView maxWidth="1000.0" minHeight="100.0" prefHeight="100.0" prefWidth="772.0">
+                  <TableView fx:id="resultsTable" maxWidth="1000.0" minHeight="100.0" prefHeight="100.0" prefWidth="772.0">
                     <columns>
                       <TableColumn prefWidth="118.0" text="Speed" />
                       <TableColumn prefWidth="215.0" text="Hostname" />
@@ -122,8 +122,8 @@
             <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                <children>
                   <Label text="Command" />
-                  <TextField prefHeight="25.0" prefWidth="610.0" />
-                  <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" text="Enter" />
+                  <TextField fx:id="command" prefHeight="25.0" prefWidth="610.0" />
+                  <Button fx:id="enterButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" text="Enter" />
                </children>
                <padding>
                   <Insets left="35.0" top="10.0" />
@@ -131,7 +131,7 @@
             </HBox>
             <HBox prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <TextArea prefHeight="120.0" prefWidth="737.0" />
+                  <TextArea fx:id="output" prefHeight="120.0" prefWidth="737.0" />
                </children>
                <padding>
                   <Insets left="35.0" top="10.0" />
