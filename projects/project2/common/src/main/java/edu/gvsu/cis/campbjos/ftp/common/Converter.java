@@ -10,8 +10,12 @@ public class Converter {
         try {
             return valueOf(serverPortText);
         } catch (NumberFormatException exception) {
-            throw new NumberFormatException(format("Invalid port=%s",
-                    serverPortText));
+            if (serverPortText.isEmpty()) {
+                throw new NumberFormatException("Empty port number");
+            } else {
+                throw new NumberFormatException(format("Invalid port=%s",
+                        serverPortText));
+            }
         }
     }
 }

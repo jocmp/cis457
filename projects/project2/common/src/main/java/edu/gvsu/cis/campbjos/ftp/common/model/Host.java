@@ -3,6 +3,8 @@ package edu.gvsu.cis.campbjos.ftp.common.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import static java.lang.String.format;
+
 public class Host {
 
     @SerializedName("ip")
@@ -48,8 +50,12 @@ public class Host {
         return result;
     }
 
+    public String getHostname() {
+        return format("%s/%s", hostname, ip);
+    }
+
     @Override
     public String toString() {
-        return hostname;
+        return getHostname();
     }
 }

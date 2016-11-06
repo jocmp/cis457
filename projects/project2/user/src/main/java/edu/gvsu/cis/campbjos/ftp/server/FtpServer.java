@@ -8,7 +8,7 @@ import static edu.gvsu.cis.campbjos.ftp.common.Constants.CONTROL_PORT;
 import static edu.gvsu.cis.campbjos.ftp.common.Constants.VANITY_HEADER;
 import static java.lang.String.format;
 
-final class FtpServer implements Runnable {
+public final class FtpServer implements Runnable {
 
     @Override
     public void run() {

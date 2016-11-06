@@ -3,6 +3,7 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 <GridPane alignment="center" hgap="10" prefHeight="551.0" prefWidth="797.0" vgap="10"
           xmlns="http://javafx.com/javafx/8.0.112-ea" xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="edu.gvsu.cis.campbjos.ftp.Controller">
@@ -90,9 +91,21 @@
                         <TableView fx:id="resultsTable" maxWidth="1000.0" minHeight="100.0" prefHeight="100.0"
                                    prefWidth="772.0">
                             <columns>
-                                <TableColumn prefWidth="118.0" text="Speed"/>
-                                <TableColumn prefWidth="215.0" text="Hostname"/>
-                                <TableColumn prefWidth="403.0" text="Filename"/>
+                                <TableColumn prefWidth="118.0" text="Speed">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="speed" />
+                                    </cellValueFactory>
+                                </TableColumn>
+                                <TableColumn prefWidth="215.0" text="Hostname">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="hostname" />
+                                    </cellValueFactory>
+                                </TableColumn>
+                                <TableColumn prefWidth="403.0" text="Filename">
+                                    <cellValueFactory>
+                                        <PropertyValueFactory property="filename" />
+                                    </cellValueFactory>
+                                </TableColumn>
                             </columns>
                             <HBox.margin>
                                 <Insets left="35.0" right="35.0"/>

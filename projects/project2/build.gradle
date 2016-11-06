@@ -4,6 +4,7 @@ allprojects {
 subprojects {
     apply plugin: "java"
     apply plugin: "idea"
+    apply plugin: 'eclipse-wtp'
 
     repositories {
         mavenCentral()
@@ -13,4 +14,6 @@ subprojects {
         testCompile "junit:junit:4+"
         compile 'com.google.code.gson:gson:2.8.0'
     }
+
+
 }

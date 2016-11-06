@@ -48,7 +48,7 @@ final class ServerProtocolInterpreter implements ProtocolInterpreter,
     }
 
     private void processInput(final String input) throws IOException {
-        final List<String> tokens = Arrays.asList(input.split(" "));
+        final List<String> tokens = Arrays.asList(input.split(" ", 2));
         String file = "";
         if (tokens.size() > 1) {
             file = tokens.get(1);

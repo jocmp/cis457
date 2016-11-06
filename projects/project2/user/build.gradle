@@ -5,9 +5,13 @@ jar {
     manifest {
         attributes('Main-Class': main)
     }
+    from {
+        (configurations.runtime).collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
 }
 
 dependencies {
     compile project(':common')
-    compile 'log4j:log4j:1.2.17'
 }

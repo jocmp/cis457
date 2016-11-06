@@ -5,6 +5,11 @@ jar {
     manifest {
         attributes('Main-Class': main)
     }
+    from {
+        (configurations.runtime).collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
 }
 
 dependencies {

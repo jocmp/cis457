@@ -20,7 +20,12 @@ public class Results {
         resultList.add(result);
     }
 
+    public void addResult(Host host, String filename) {
+        resultList.add(new Result(host, filename));
+    }
+
     public List<Result> list() {
         return resultList;
     }
+
 }

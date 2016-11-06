@@ -64,8 +64,8 @@ final class ClientDtp implements DataTransferProcess {
         } catch (IOException exception) {
             return "";
         }
-        boolean isReceivingStream = true;
         String messageFromServer = "";
+        boolean isReceivingStream = true;
 
         while (isReceivingStream) {
             try {
