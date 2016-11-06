@@ -16,9 +16,8 @@ import java.util.Vector;
 import static edu.gvsu.cis.campbjos.ftp.common.Commands.*;
 import static edu.gvsu.cis.campbjos.ftp.common.ControlWriter.write;
 
-public class CentralInterpreter implements Runnable {
+class CentralInterpreter implements Runnable {
 
-    //    private static final Vector<Host> HOSTS;
     private static final Vector<Result> RESULTS;
 
     private final BufferedReader bufferedReader;
@@ -29,7 +28,6 @@ public class CentralInterpreter implements Runnable {
     private Host host;
 
     static {
-//        HOSTS = new Vector<>();
         RESULTS = new Vector<>();
     }
 
@@ -38,9 +36,10 @@ public class CentralInterpreter implements Runnable {
         bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         String unParsedHost = bufferedReader.readLine();
         host = new Gson().fromJson(unParsedHost, Host.class);
-//        HOSTS.add(host);
+
         write(socket.getOutputStream(), ACK);
-        System.out.println(host.toString());
+        System.out.printf("New client %s\n", host);
+
         String unParsedResults = bufferedReader.readLine();
         Results hostResults = new Gson().fromJson(unParsedResults, Results.class);
         RESULTS.addAll(hostResults.list());
@@ -52,10 +51,11 @@ public class CentralInterpreter implements Runnable {
             //noinspection InfiniteLoopStatement
             while (true) {
                 String requestLine = bufferedReader.readLine();
-                System.out.println(requestLine);
-                if (requestLine.equals(QUIT)) {
+                if (requestLine == null || requestLine.equals(QUIT)) {
+                    System.out.printf("Disconnecting %s\n", host);
                     break;
                 }
+                System.out.println(requestLine);
                 String serializedResults = new Gson().toJson(queryIfValid(requestLine));
 
                 write(socket.getOutputStream(), serializedResults);

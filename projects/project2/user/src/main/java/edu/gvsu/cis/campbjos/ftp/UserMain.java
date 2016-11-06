@@ -22,11 +22,13 @@ public class UserMain extends Application {
     private Controller controller;
     private final ClientProtocolInterpreter protocolInterpreter;
     private final CentralUserInterpreter userInterpreter;
+    private FtpServer ftpServer;
 
     public UserMain() {
         protocolInterpreter = new ClientProtocolInterpreter();
         userInterpreter = new CentralUserInterpreter();
-        new Thread(new FtpServer()).start();
+        ftpServer = new FtpServer();
+        new Thread(ftpServer).start();
     }
 
     @Override
@@ -43,12 +45,15 @@ public class UserMain extends Application {
     @Override
     public void stop() throws Exception {
         try {
-            userInterpreter.quit();
+            if (userInterpreter.isConnected()) {
+                userInterpreter.quit();
+            }
             if (protocolInterpreter.isConnected()) {
                 protocolInterpreter.quit();
             }
-        } catch (IOException e) {
-            // couldn't stop now
+            ftpServer.close();
+        } catch (Exception e) {
+            // Don't worry about it. Just stop.
         }
         super.stop();
     }
@@ -66,7 +71,13 @@ public class UserMain extends Application {
             }
         });
 
-        controller.searchButton.setOnAction(actionEvent -> queryCentralServer());
+        controller.searchButton.setOnAction(actionEvent -> {
+            if (userInterpreter.isConnected()) {
+                queryCentralServer();
+            } else {
+                controller.showWarningDialog("Warning", "Not connected to server");
+            }
+        });
 
         controller.enterButton.setOnAction(actionEvent -> {
             if (!controller.command.getText().isEmpty()) {
@@ -113,9 +124,10 @@ public class UserMain extends Application {
                 results = userInterpreter.query(controller.keyword.getText());
             } catch (IOException e) {
                 controller.showErrorDialog("Error retrieving results", e.getMessage());
+                controller.setDisconnected();
             }
         }
-        if (results == null) {
+        if (results == null || results.list().isEmpty()) {
             controller.resultsTable.setPlaceholder(new Label("No results found"));
         } else {
             listResultsInTable(results);
@@ -167,22 +179,22 @@ public class UserMain extends Application {
         try {
             protocolInterpreter.connect(server, port);
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            controller.showErrorDialog("Error", e.getMessage());
         }
         if (protocolInterpreter.isConnected())
             controller.ftpOutput.appendText(format("Connection Established with %s:%s\n", server, port));
     }
 
-    private static void handleList(final ClientProtocolInterpreter
-                                           protocolInterpreter) {
+    private void handleList(final ClientProtocolInterpreter
+                                    protocolInterpreter) {
         try {
-            System.out.print(protocolInterpreter.list());
+            controller.ftpOutput.appendText(protocolInterpreter.list());
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            controller.showErrorDialog("Error", e.getMessage());
         }
     }
 
-    private static void handleRetrieve(final String[] tokens, final
+    private void handleRetrieve(final String[] tokens, final
     ClientProtocolInterpreter protocolInterpreter) {
         if (tokens.length < 2) {
             return;
@@ -191,14 +203,14 @@ public class UserMain extends Application {
         try {
             protocolInterpreter.retrieve(fileName);
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            controller.showErrorDialog("Error", e.getMessage());
         } catch (NullPointerException e) {
-            System.out.println(format("%s: %s", fileName, e
+            controller.showErrorDialog("Error", format("%s: %s", fileName, e
                     .getMessage()));
         }
     }
 
-    private static void handleStore(final String[] tokens, final
+    private void handleStore(final String[] tokens, final
     ClientProtocolInterpreter protocolInterpreter) {
         if (tokens.length < 2) {
             return;
@@ -207,7 +219,7 @@ public class UserMain extends Application {
         try {
             protocolInterpreter.store(fileName);
         } catch (IOException e) {
-            System.out.print(e.getMessage());
+            controller.showErrorDialog("Error", e.getMessage());
         }
     }
 }

@@ -73,6 +73,6 @@ class CentralUserInterpreter {
     }
 
     boolean isConnected() {
-        return socket != null && socket.isConnected();
+        return !(socket == null || socket.isClosed());
     }
 }

@@ -62,6 +62,7 @@ public class Host {
         this.port = port;
         this.hostname = hostname;
         this.username = username;
+        this.speed = speed;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package edu.gvsu.cis.campbjos.ftp.server;
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -10,17 +11,27 @@ import static java.lang.String.format;
 
 public final class FtpServer implements Runnable {
 
+    private ServerSocket serverSocket;
+
     @Override
     public void run() {
         try {
-            ServerSocket socket = new ServerSocket(CONTROL_PORT);
+            runFtpServer();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void runFtpServer() throws Exception {
+        try {
+            serverSocket = new ServerSocket(CONTROL_PORT);
             InetAddress ip = InetAddress.getLocalHost();
             System.out.print(VANITY_HEADER);
             System.out.println(format("Server started at %s on port %s",
-                    ip.getHostAddress(), socket.getLocalPort()));
+                    ip.getHostAddress(), serverSocket.getLocalPort()));
 
             while (true) {
-                Socket connection = socket.accept();
+                Socket connection = serverSocket.accept();
 
                 System.out.println(format("New connection with %s:%s",
                         connection.getInetAddress(), connection.getPort()));
@@ -33,7 +44,11 @@ public final class FtpServer implements Runnable {
                 thread.start();
             }
         } catch (Exception e) {
-            System.out.print(e.getMessage());
+            throw new Exception(e.getMessage());
         }
+    }
+
+    public void close() throws IOException {
+        serverSocket.close();
     }
 }

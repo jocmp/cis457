@@ -13,7 +13,6 @@ public class CentralServer {
         //noinspection InfiniteLoopStatement
         while (true) {
             Socket client = server.accept();
-            System.out.println("New client from " + client.getInetAddress());
             CentralInterpreter handler = new CentralInterpreter(client);
             Thread thread = new Thread(handler);
             thread.start();

@@ -6,9 +6,6 @@ import javafx.beans.property.SimpleStringProperty;
 
 public class Result {
 
-    @SerializedName("speed")
-    @Expose
-    public String speed;
     @SerializedName("filename")
     @Expose
     public String filename;
@@ -16,7 +13,6 @@ public class Result {
     @Expose
     public Host host;
 
-    @SerializedName("")
     private final SimpleStringProperty filenameProperty;
     private final SimpleStringProperty hostnameProperty;
     private final SimpleStringProperty speedProperty;
@@ -27,10 +23,10 @@ public class Result {
                 .setIp(host.ip)
                 .setPort(host.port)
                 .setHostname(host.hostname)
-                .setSpeed(speed)
+                .setSpeed(host.speed)
                 .setUsername(host.username).createHost();
         filenameProperty = new SimpleStringProperty(this.filename);
-        speedProperty = new SimpleStringProperty(this.speed);
+        speedProperty = new SimpleStringProperty(this.host.speed);
         hostnameProperty = new SimpleStringProperty(this.host.hostname);
     }
 

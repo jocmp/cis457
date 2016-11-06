@@ -5,7 +5,7 @@ import java.io.*;
 public final class ControlWriter {
 
     public static void write(final OutputStream outputStream,
-                             final String message) {
+                             final String message) throws IOException {
 
         BufferedWriter writer = null;
         try {
@@ -17,7 +17,7 @@ public final class ControlWriter {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IOException(e.getMessage());
         }
     }
 }

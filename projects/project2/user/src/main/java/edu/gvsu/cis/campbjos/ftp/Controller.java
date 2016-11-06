@@ -18,6 +18,12 @@ import java.util.ResourceBundle;
 public class Controller implements Initializable {
 
     @FXML
+    public Label commandLabel;
+
+    @FXML
+    public Label keywordLabel;
+
+    @FXML
     public TextArea ftpOutput;
 
     @FXML
@@ -75,16 +81,29 @@ public class Controller implements Initializable {
         speed.setValue("Ethernet");
         ftpOutput.setEditable(false);
         initResultTable();
+        setDisconnected();
     }
 
     public void setConnected() {
         connectButton.setText("Disconnect");
         connectionIndicator.setFill(Color.web("60984D"));
+        setButtonAndFieldState(true);
     }
 
     public void setDisconnected() {
         connectButton.setText("Connect");
         connectionIndicator.setFill(Color.web("CF0E0E"));
+        setButtonAndFieldState(false);
+    }
+
+    public void setButtonAndFieldState(boolean enabled) {
+        searchButton.setDisable(!enabled);
+        keyword.setDisable(!enabled);
+        keywordLabel.setDisable(!enabled);
+        command.setDisable(!enabled);
+        commandLabel.setDisable(!enabled);
+        enterButton.setDisable(!enabled);
+        ftpOutput.setDisable(!enabled);
     }
 
     public void setConnecting() {
