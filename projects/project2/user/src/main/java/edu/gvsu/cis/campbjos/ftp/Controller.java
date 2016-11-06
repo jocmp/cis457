@@ -5,6 +5,8 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Shape;
 
 import java.net.InetAddress;
 import java.net.URL;
@@ -49,6 +51,9 @@ public class Controller implements Initializable {
     public TextArea username;
 
     @FXML
+    public Shape connectionIndicator;
+
+    @FXML
     public TableView<Result> resultsTable;
 
     @Override
@@ -72,14 +77,38 @@ public class Controller implements Initializable {
         initResultTable();
     }
 
+    public void setConnected() {
+        connectButton.setText("Disconnect");
+        connectionIndicator.setFill(Color.web("60984D"));
+    }
+
+    public void setDisconnected() {
+        connectButton.setText("Connect");
+        connectionIndicator.setFill(Color.web("CF0E0E"));
+    }
+
+    public void setConnecting() {
+        connectionIndicator.setFill(Color.web("FFC300"));
+    }
+
     private void initResultTable() {
         resultsTable.setDisable(true);
         resultsTable.setPlaceholder(new Label(""));
     }
 
-    public void showErrorDialog(String header, String message) {
+    void showErrorDialog(String header, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
+        showDialog(alert, header, message);
+    }
+
+    void showWarningDialog(String header, String message) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Warning");
+        showDialog(alert, header, message);
+    }
+
+    private void showDialog(Alert alert, String header, String message) {
         alert.setHeaderText(header);
         alert.setContentText(message);
         alert.showAndWait();

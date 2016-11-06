@@ -38,7 +38,12 @@ class CentralUserInterpreter {
         }
         bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         String localAddress = InetAddress.getLocalHost().getHostAddress();
-        Host host = new Host(localAddress, port, username, speed);
+        Host host = new Host.Builder()
+                .setIp(localAddress)
+                .setPort(port)
+                .setHostname(InetAddress.getLocalHost().toString())
+                .setSpeed(speed)
+                .setUsername(username).createHost();
         write(socket.getOutputStream(), new Gson().toJson(host));
         replyWhenAcknowledged(host);
     }
@@ -64,5 +69,10 @@ class CentralUserInterpreter {
 
     void quit() throws IOException {
         write(socket.getOutputStream(), QUIT);
+        socket = null;
+    }
+
+    boolean isConnected() {
+        return socket != null && socket.isConnected();
     }
 }

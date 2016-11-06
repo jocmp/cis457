@@ -4,7 +4,6 @@ import edu.gvsu.cis.campbjos.ftp.client.ClientProtocolInterpreter;
 import edu.gvsu.cis.campbjos.ftp.common.model.Results;
 import edu.gvsu.cis.campbjos.ftp.server.FtpServer;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -22,11 +21,11 @@ public class UserMain extends Application {
     private static final String CURSOR = "ftp > ";
     private Controller controller;
     private final ClientProtocolInterpreter protocolInterpreter;
-    private final CentralUserInterpreter userIntepreter;
+    private final CentralUserInterpreter userInterpreter;
 
     public UserMain() {
         protocolInterpreter = new ClientProtocolInterpreter();
-        userIntepreter = new CentralUserInterpreter();
+        userInterpreter = new CentralUserInterpreter();
         new Thread(new FtpServer()).start();
     }
 
@@ -39,19 +38,19 @@ public class UserMain extends Application {
         primaryStage.setScene(new Scene(root, 797, 551));
         primaryStage.show();
         initControlActions();
+    }
 
-        primaryStage.setOnCloseRequest(event -> {
-            try {
-                userIntepreter.quit();
-                if (protocolInterpreter.isConnected()) {
-                    protocolInterpreter.quit();
-                }
-            } catch (IOException e) {
-                // couldn't stop now
+    @Override
+    public void stop() throws Exception {
+        try {
+            userInterpreter.quit();
+            if (protocolInterpreter.isConnected()) {
+                protocolInterpreter.quit();
             }
-            Platform.exit();
-            System.exit(0);
-        });
+        } catch (IOException e) {
+            // couldn't stop now
+        }
+        super.stop();
     }
 
     public static void main(String[] args) {
@@ -60,12 +59,14 @@ public class UserMain extends Application {
 
     private void initControlActions() {
         controller.connectButton.setOnAction(event -> {
-            connectToCentralServer();
+            if (userInterpreter.isConnected()) {
+                disconnectFromCentralServer();
+            } else {
+                connectToCentralServer();
+            }
         });
 
-        controller.searchButton.setOnAction(actionEvent -> {
-            queryCentralServer();
-        });
+        controller.searchButton.setOnAction(actionEvent -> queryCentralServer());
 
         controller.enterButton.setOnAction(actionEvent -> {
             if (!controller.command.getText().isEmpty()) {
@@ -78,17 +79,30 @@ public class UserMain extends Application {
     }
 
     private void connectToCentralServer() {
+        controller.setConnecting();
         String username = controller.username.getText();
         String ipAddress = controller.serverHostname.getText();
         String speed = controller.speed.getValue();
         String port = controller.port.getText();
         try {
-            userIntepreter.connect(username, speed, ipAddress, port);
+            userInterpreter.connect(username, speed, ipAddress, port);
+            controller.setConnected();
         } catch (IOException e) {
             controller.showErrorDialog("Error connecting to central server", e.getMessage());
+            controller.setDisconnected();
         } catch (NumberFormatException formatError) {
             controller.showErrorDialog("Error reading entries", formatError.getMessage());
+            controller.setDisconnected();
         }
+    }
+
+    private void disconnectFromCentralServer() {
+        try {
+            userInterpreter.quit();
+        } catch (IOException e) {
+            controller.showWarningDialog("Error disconnecting", e.getMessage());
+        }
+        controller.setDisconnected();
     }
 
     private void queryCentralServer() {
@@ -96,7 +110,7 @@ public class UserMain extends Application {
         if (!controller.keyword.getText().isEmpty()) {
             controller.resultsTable.setDisable(false);
             try {
-                results = userIntepreter.query(controller.keyword.getText());
+                results = userInterpreter.query(controller.keyword.getText());
             } catch (IOException e) {
                 controller.showErrorDialog("Error retrieving results", e.getMessage());
             }

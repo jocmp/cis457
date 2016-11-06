@@ -64,8 +64,7 @@ public class CentralInterpreter implements Runnable {
             System.out.println("Connection to user lost.");
         } finally {
             System.out.println("Connection ended");
-            RESULTS.removeIf(result -> result.hostname.equals(host.getHostname()));
-//            HOSTS.remove(host);
+            RESULTS.removeIf(result -> result.host.equals(host));
             try {
                 socket.close();
             } catch (IOException ex) {
@@ -88,7 +87,7 @@ public class CentralInterpreter implements Runnable {
     private Results queryFileList(final String searchTerm) {
         Results queryResults = new Results();
         RESULTS.stream()
-                .filter(result -> !result.hostname.equals(host.getHostname()))
+                .filter(result -> !result.host.equals(host))
                 .filter(result -> result.filename.contains(searchTerm))
                 .forEach(queryResults::addResult);
         return queryResults;

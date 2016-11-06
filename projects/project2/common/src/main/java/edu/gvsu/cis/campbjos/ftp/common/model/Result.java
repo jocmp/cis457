@@ -9,26 +9,29 @@ public class Result {
     @SerializedName("speed")
     @Expose
     public String speed;
-    @SerializedName("hostname")
-    @Expose
-    public String hostname;
-
     @SerializedName("filename")
     @Expose
     public String filename;
+    @SerializedName("host")
+    @Expose
+    public Host host;
 
+    @SerializedName("")
     private final SimpleStringProperty filenameProperty;
     private final SimpleStringProperty hostnameProperty;
     private final SimpleStringProperty speedProperty;
 
     public Result(Host host, String filename) {
-        this.speed = host.speed;
         this.filename = filename;
-        this.hostname = host.getHostname();
-
+        this.host = new Host.Builder()
+                .setIp(host.ip)
+                .setPort(host.port)
+                .setHostname(host.hostname)
+                .setSpeed(speed)
+                .setUsername(host.username).createHost();
         filenameProperty = new SimpleStringProperty(this.filename);
-        speedProperty = new SimpleStringProperty(speed);
-        hostnameProperty = new SimpleStringProperty(hostname);
+        speedProperty = new SimpleStringProperty(this.speed);
+        hostnameProperty = new SimpleStringProperty(this.host.hostname);
     }
 
     public String getSpeed() {
