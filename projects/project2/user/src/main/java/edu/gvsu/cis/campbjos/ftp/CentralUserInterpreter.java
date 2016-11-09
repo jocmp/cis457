@@ -1,19 +1,17 @@
 package edu.gvsu.cis.campbjos.ftp;
 
 import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
 import edu.gvsu.cis.campbjos.ftp.common.model.Host;
 import edu.gvsu.cis.campbjos.ftp.common.model.Results;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.util.Arrays;
 
 import static edu.gvsu.cis.campbjos.ftp.common.Commands.QUIT;
 import static edu.gvsu.cis.campbjos.ftp.common.Commands.SEARCH;
+import static edu.gvsu.cis.campbjos.ftp.common.Constants.CENTRAL_SERVER_MANIFEST;
 import static edu.gvsu.cis.campbjos.ftp.common.ControlWriter.write;
 import static edu.gvsu.cis.campbjos.ftp.common.Converter.convertToServerPortNumber;
 import static java.lang.String.format;
@@ -50,21 +48,20 @@ class CentralUserInterpreter {
 
     private void replyWhenAcknowledged(Host host) throws IOException {
         bufferedReader.readLine();
-        File currentDirectory = new File(".");
-        Results results = new Results();
-        Arrays.stream(currentDirectory.listFiles())
-                .forEach(file -> {
-                    results.addResult(host, file.getName());
-                });
-        write(socket.getOutputStream(), new Gson().toJson(results));
+        write(socket.getOutputStream(), readResultsFromFile());
+    }
+
+    private String readResultsFromFile() throws FileNotFoundException {
+        JsonReader reader = new JsonReader(new FileReader(CENTRAL_SERVER_MANIFEST));
+        Gson gson = new Gson();
+        return gson.toJson(gson.fromJson(reader, Results.class));
     }
 
     Results query(String searchTerm) throws IOException {
         write(socket.getOutputStream(), format("%s %s", SEARCH, searchTerm));
         Gson gson = new Gson();
         String unParsedResults = bufferedReader.readLine();
-        Results results = gson.fromJson(unParsedResults, Results.class);
-        return results;
+        return gson.fromJson(unParsedResults, Results.class);
     }
 
     void quit() throws IOException {

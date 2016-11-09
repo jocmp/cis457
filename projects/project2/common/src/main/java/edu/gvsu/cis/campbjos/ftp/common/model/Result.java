@@ -12,6 +12,9 @@ public class Result {
     @SerializedName("host")
     @Expose
     public Host host;
+    @SerializedName("description")
+    @Expose
+    public String description;
 
     private final SimpleStringProperty filenameProperty;
     private final SimpleStringProperty hostnameProperty;

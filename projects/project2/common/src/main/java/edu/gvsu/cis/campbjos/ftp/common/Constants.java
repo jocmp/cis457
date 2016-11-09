@@ -7,6 +7,5 @@ public final class Constants {
             "| FTP v2 - campbjos, wrighjax, jungt      |\n" +
             "-------------------------------------------\n";
 
-    static final int ENTRY_EXISTS = 1;
-    static final int ENTRY_DOES_NOT_EXIST = 0;
+    public static final String CENTRAL_SERVER_MANIFEST = "CENTRAL_SERVER_MANIFEST.json";
 }

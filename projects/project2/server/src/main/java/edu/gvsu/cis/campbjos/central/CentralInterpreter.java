@@ -88,7 +88,8 @@ class CentralInterpreter implements Runnable {
         Results queryResults = new Results();
         RESULTS.stream()
                 .filter(result -> !result.host.equals(host))
-                .filter(result -> result.filename.contains(searchTerm))
+                .filter(result -> result.filename.contains(searchTerm)
+                        || result.description.contains(searchTerm))
                 .forEach(queryResults::addResult);
         return queryResults;
     }
