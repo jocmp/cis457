@@ -16,33 +16,25 @@ public class Result {
     @Expose
     public String description;
 
-    private final SimpleStringProperty filenameProperty;
-    private final SimpleStringProperty hostnameProperty;
-    private final SimpleStringProperty speedProperty;
-
     public Result(Host host, String filename) {
-        this.filename = filename;
         this.host = new Host.Builder()
                 .setIp(host.ip)
                 .setPort(host.port)
                 .setHostname(host.hostname)
                 .setSpeed(host.speed)
                 .setUsername(host.username).createHost();
-        filenameProperty = new SimpleStringProperty(this.filename);
-        speedProperty = new SimpleStringProperty(this.host.speed);
-        hostnameProperty = new SimpleStringProperty(this.host.hostname);
     }
 
     public String getSpeed() {
-        return speedProperty.get();
+        return new SimpleStringProperty(this.host.speed).get();
     }
 
     public String getHostname() {
-        return hostnameProperty.get();
+        return new SimpleStringProperty(this.host.hostname).get();
     }
 
     public String getFilename() {
-        return filenameProperty.get();
+        return new SimpleStringProperty(this.filename).get();
     }
 
     @Override

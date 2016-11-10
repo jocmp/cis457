@@ -81,15 +81,15 @@ class CentralInterpreter implements Runnable {
         if (!tokens.get(COMMAND_INDEX).equals(SEARCH)) {
             return new Results();
         }
-        return queryFileList(tokens.get(SEARCH_TERM_INDEX));
+        return queryFileList(tokens.get(SEARCH_TERM_INDEX).toLowerCase());
     }
 
     private Results queryFileList(final String searchTerm) {
+
         Results queryResults = new Results();
         RESULTS.stream()
                 .filter(result -> !result.host.equals(host))
-                .filter(result -> result.filename.contains(searchTerm)
-                        || result.description.contains(searchTerm))
+                .filter(result -> result.filename.contains(searchTerm) || result.description.contains(searchTerm))
                 .forEach(queryResults::addResult);
         return queryResults;
     }

@@ -1,11 +1,13 @@
 package edu.gvsu.cis.campbjos.ftp;
 
 import com.google.gson.Gson;
-import com.google.gson.stream.JsonReader;
+import edu.gvsu.cis.campbjos.ftp.common.FileReader;
 import edu.gvsu.cis.campbjos.ftp.common.model.Host;
 import edu.gvsu.cis.campbjos.ftp.common.model.Results;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.Socket;
 
@@ -20,6 +22,7 @@ class CentralUserInterpreter {
 
     private Socket socket;
     private BufferedReader bufferedReader;
+    private Host host;
 
     CentralUserInterpreter() {
         socket = null;
@@ -36,7 +39,7 @@ class CentralUserInterpreter {
         }
         bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         String localAddress = InetAddress.getLocalHost().getHostAddress();
-        Host host = new Host.Builder()
+        host = new Host.Builder()
                 .setIp(localAddress)
                 .setPort(port)
                 .setHostname(InetAddress.getLocalHost().toString())
@@ -51,10 +54,11 @@ class CentralUserInterpreter {
         write(socket.getOutputStream(), readResultsFromFile());
     }
 
-    private String readResultsFromFile() throws FileNotFoundException {
-        JsonReader reader = new JsonReader(new FileReader(CENTRAL_SERVER_MANIFEST));
+    private String readResultsFromFile() throws IOException {
         Gson gson = new Gson();
-        return gson.toJson(gson.fromJson(reader, Results.class));
+        Results results = gson.fromJson(FileReader.getString(CENTRAL_SERVER_MANIFEST), Results.class);
+        results.list().forEach(result -> result.host = host);
+        return gson.toJson(results);
     }
 
     Results query(String searchTerm) throws IOException {
@@ -66,6 +70,7 @@ class CentralUserInterpreter {
 
     void quit() throws IOException {
         write(socket.getOutputStream(), QUIT);
+        host = null;
         socket = null;
     }
 
