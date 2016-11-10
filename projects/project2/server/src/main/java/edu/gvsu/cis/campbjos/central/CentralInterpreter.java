@@ -33,7 +33,8 @@ class CentralInterpreter implements Runnable {
 
     CentralInterpreter(Socket socket) throws IOException {
         this.socket = socket;
-        bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        bufferedReader = new BufferedReader(new InputStreamReader
+                (socket.getInputStream()));
         String unParsedHost = bufferedReader.readLine();
         host = new Gson().fromJson(unParsedHost, Host.class);
 
@@ -41,7 +42,8 @@ class CentralInterpreter implements Runnable {
         System.out.printf("New client %s\n", host);
 
         String unParsedResults = bufferedReader.readLine();
-        Results hostResults = new Gson().fromJson(unParsedResults, Results.class);
+        Results hostResults = new Gson().fromJson(unParsedResults,
+                Results.class);
         RESULTS.addAll(hostResults.list());
     }
 
@@ -56,7 +58,8 @@ class CentralInterpreter implements Runnable {
                     break;
                 }
                 System.out.println(requestLine);
-                String serializedResults = new Gson().toJson(queryIfValid(requestLine));
+                String serializedResults = new Gson().toJson
+                        (queryIfValid(requestLine));
 
                 write(socket.getOutputStream(), serializedResults);
             }
@@ -81,15 +84,15 @@ class CentralInterpreter implements Runnable {
         if (!tokens.get(COMMAND_INDEX).equals(SEARCH)) {
             return new Results();
         }
-        return queryFileList(tokens.get(SEARCH_TERM_INDEX).toLowerCase());
+        return queryFileList(tokens.get(SEARCH_TERM_INDEX)
+                .toLowerCase());
     }
 
     private Results queryFileList(final String searchTerm) {
-
         Results queryResults = new Results();
         RESULTS.stream()
                 .filter(result -> !result.host.equals(host))
-                .filter(result -> result.filename.contains(searchTerm) || result.description.contains(searchTerm))
+                .filter(result -> result.containsKeyword(searchTerm))
                 .forEach(queryResults::addResult);
         return queryResults;
     }

@@ -33,7 +33,8 @@ public class UserMain extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/layout.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource
+                ("/layout.fxml"));
         Parent root = loader.load();
         controller = loader.getController();
         primaryStage.setTitle("GV-Nap");
@@ -75,14 +76,16 @@ public class UserMain extends Application {
             if (userInterpreter.isConnected()) {
                 queryCentralServer();
             } else {
-                controller.showWarningDialog("Warning", "Not connected to server");
+                controller.showWarningDialog("Warning", "Not " +
+                        "connected to server");
             }
         });
 
         controller.enterButton.setOnAction(actionEvent -> {
             if (!controller.command.getText().isEmpty()) {
                 String currentInput = controller.command.getText();
-                controller.ftpOutput.appendText(format("%s %s\n", CURSOR, currentInput));
+                controller.ftpOutput.appendText(format("%s %s\n",
+                        CURSOR, currentInput));
                 controller.command.clear();
                 processInput(currentInput, protocolInterpreter);
             }
@@ -99,10 +102,12 @@ public class UserMain extends Application {
             userInterpreter.connect(username, speed, ipAddress, port);
             controller.setConnected();
         } catch (IOException e) {
-            controller.showErrorDialog("Error connecting to central server", e.getMessage());
+            controller.showErrorDialog("Error connecting to central " +
+                    "server", e.getMessage());
             controller.setDisconnected();
         } catch (NumberFormatException formatError) {
-            controller.showErrorDialog("Error reading entries", formatError.getMessage());
+            controller.showErrorDialog("Error reading entries",
+                    formatError.getMessage());
             controller.setDisconnected();
         }
     }
@@ -111,7 +116,8 @@ public class UserMain extends Application {
         try {
             userInterpreter.quit();
         } catch (IOException e) {
-            controller.showWarningDialog("Error disconnecting", e.getMessage());
+            controller.showWarningDialog("Error disconnecting", e
+                    .getMessage());
         }
         controller.setDisconnected();
     }
@@ -121,17 +127,19 @@ public class UserMain extends Application {
         if (!controller.keyword.getText().isEmpty()) {
             controller.resultsTable.setDisable(false);
             try {
-                results = userInterpreter.query(controller.keyword.getText());
+                results = userInterpreter.query(controller.keyword
+                        .getText());
             } catch (IOException e) {
-                controller.showErrorDialog("Error retrieving results", e.getMessage());
+                controller.showErrorDialog("Error retrieving " +
+                        "results", e.getMessage());
                 controller.setDisconnected();
             }
         }
         if (results == null || results.list().isEmpty()) {
-            controller.resultsTable.setPlaceholder(new Label("No results found"));
-        } else {
-            listResultsInTable(results);
+            controller.resultsTable.setPlaceholder(new Label("No " +
+                    "results found"));
         }
+        listResultsInTable(results);
     }
 
     private void listResultsInTable(Results results) {
@@ -171,7 +179,8 @@ public class UserMain extends Application {
     private void handleConnect(final String[] tokens, final
     ClientProtocolInterpreter protocolInterpreter) {
         if (tokens.length < 3) {
-            controller.ftpOutput.appendText("format: CONNECT <server> <port>\n");
+            controller.ftpOutput.appendText("format: CONNECT <server>" +
+                    " <port>\n");
             return;
         }
         final String server = tokens[1];
@@ -182,7 +191,8 @@ public class UserMain extends Application {
             controller.showErrorDialog("Error", e.getMessage());
         }
         if (protocolInterpreter.isConnected())
-            controller.ftpOutput.appendText(format("Connection Established with %s:%s\n", server, port));
+            controller.ftpOutput.appendText(format("Connection " +
+                    "Established with %s:%s\n", server, port));
     }
 
     private void handleList(final ClientProtocolInterpreter
@@ -205,8 +215,9 @@ public class UserMain extends Application {
         } catch (IOException e) {
             controller.showErrorDialog("Error", e.getMessage());
         } catch (NullPointerException e) {
-            controller.showErrorDialog("Error", format("%s: %s", fileName, e
-                    .getMessage()));
+            controller.showErrorDialog("Error", format("%s: %s",
+                    fileName, e
+                            .getMessage()));
         }
     }
 

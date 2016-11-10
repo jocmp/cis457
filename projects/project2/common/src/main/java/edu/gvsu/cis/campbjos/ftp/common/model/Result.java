@@ -37,6 +37,12 @@ public class Result {
         return new SimpleStringProperty(this.filename).get();
     }
 
+    public boolean containsKeyword(final String keyword) {
+        String lowercaseKeyword = keyword.toLowerCase();
+        return filename.toLowerCase().contains(lowercaseKeyword) ||
+                description.toLowerCase().contains(lowercaseKeyword);
+    }
+
     @Override
     public String toString() {
         return filename;
