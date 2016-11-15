@@ -58,18 +58,6 @@ public final class ClientProtocolInterpreter implements ProtocolInterpreter {
         return list;
     }
 
-    private void port(final String address, final int port) throws
-            RuntimeException, IOException {
-        if (!address.isEmpty()) {
-            final String command = format("%s %s,%s", PORT, address,
-                    port);
-            sendCommandToServerControl(command);
-        } else {
-            throw new RuntimeException(format("Not a valid address " +
-                    "%s:%s", address, port));
-        }
-    }
-
     @Override
     public void retrieve(final String filename) throws IOException,
             NullPointerException {
