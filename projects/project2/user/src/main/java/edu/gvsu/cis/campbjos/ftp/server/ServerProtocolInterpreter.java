@@ -1,5 +1,6 @@
 package edu.gvsu.cis.campbjos.ftp.server;
 
+import edu.gvsu.cis.campbjos.ftp.common.ControlWriter;
 import edu.gvsu.cis.campbjos.ftp.common.DataTransferProcess;
 import edu.gvsu.cis.campbjos.ftp.common.ProtocolInterpreter;
 
@@ -7,14 +8,13 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static edu.gvsu.cis.campbjos.ftp.common.Commands.*;
-import static edu.gvsu.cis.campbjos.ftp.common.Converter.convertToServerPortNumber;
-import static java.lang.String.format;
+import static java.lang.String.valueOf;
 import static java.lang.System.out;
 
 final class ServerProtocolInterpreter implements ProtocolInterpreter,
@@ -22,13 +22,9 @@ final class ServerProtocolInterpreter implements ProtocolInterpreter,
 
     private final Socket socket;
     private final BufferedReader bufferedReader;
-    private String currentListeningAddress;
-    private int currentListeningPort;
 
     ServerProtocolInterpreter(final Socket socket) throws IOException {
         this.socket = socket;
-        currentListeningAddress = "";
-        currentListeningPort = -1;
         bufferedReader = new BufferedReader(new InputStreamReader
                 (this.socket.getInputStream()));
     }
@@ -58,8 +54,6 @@ final class ServerProtocolInterpreter implements ProtocolInterpreter,
         final String command = tokens.get(0);
         if (command.equals(LIST)) {
             list();
-        } else if (command.equals(PORT)) {
-            port(tokens);
         } else if (command.equals(RETR)) {
             retrieve(file);
         } else if (command.equals(STOR)) {
@@ -83,18 +77,6 @@ final class ServerProtocolInterpreter implements ProtocolInterpreter,
         return filesList;
     }
 
-    private void port(final List<String> tokens) {
-        List<String> clientValues = new ArrayList<>();
-        if (tokens.size() > 1) {
-            clientValues = Arrays.asList(tokens.get(1).split(","));
-        }
-        if (clientValues.size() == 2) {
-            currentListeningAddress = clientValues.get(0);
-            currentListeningPort = convertToServerPortNumber
-                    (clientValues.get(1));
-        }
-    }
-
     @Override
     public void retrieve(String filename) throws IOException {
         startSendingByteStream(filename);
@@ -114,35 +96,29 @@ final class ServerProtocolInterpreter implements ProtocolInterpreter,
         }
     }
 
-    private Socket newDataSocket() throws IOException {
-        try {
-            System.out.println(format("Sending to %s:%s",
-                    currentListeningAddress, currentListeningPort));
-            return new Socket(currentListeningAddress,
-                    currentListeningPort);
-        } catch (IOException e) {
-            throw new IOException(format("Error creating Server DTP: " +
-                    "%s", e.getMessage()));
-        }
+    private ServerSocket newServerSocket() throws IOException {
+        final ServerSocket controlSocket = new ServerSocket(0);
+        ControlWriter.write(socket.getOutputStream(), valueOf(controlSocket.getLocalPort()));
+        return controlSocket;
     }
 
     private void startListeningForByteStream(final String filename)
             throws IOException {
-        DataTransferProcess serverDtp = new ServerDtp(newDataSocket());
+        DataTransferProcess serverDtp = new ServerDtp(newServerSocket().accept());
         serverDtp.listenForByteStream(filename);
         serverDtp.closeSocket();
     }
 
     private void startSendingByteStream(final String filename) throws
             IOException {
-        DataTransferProcess serverDtp = new ServerDtp(newDataSocket());
+        DataTransferProcess serverDtp = new ServerDtp(newServerSocket().accept());
         serverDtp.sendByteStream(filename);
         serverDtp.closeSocket();
     }
 
     private void startSendingCharacterStream(final String message)
             throws IOException {
-        DataTransferProcess serverDtp = new ServerDtp(newDataSocket());
+        DataTransferProcess serverDtp = new ServerDtp(newServerSocket().accept());
         serverDtp.sendCharacterStream(message);
         serverDtp.closeSocket();
     }

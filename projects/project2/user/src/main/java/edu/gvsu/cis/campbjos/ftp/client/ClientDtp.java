@@ -7,14 +7,16 @@ import edu.gvsu.cis.campbjos.ftp.common.DataTransferProcess;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.InetAddress;
 import java.net.Socket;
 
 final class ClientDtp implements DataTransferProcess {
 
     private final Socket socket;
 
-    ClientDtp(final Socket socket) {
-        this.socket = socket;
+    ClientDtp(InetAddress ipAddress, int port) throws IOException {
+        final String address = ipAddress.toString().replaceAll("/", "");
+        this.socket = new Socket(address, port);
     }
 
     @Override

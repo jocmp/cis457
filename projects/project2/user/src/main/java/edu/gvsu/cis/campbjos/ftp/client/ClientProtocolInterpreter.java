@@ -4,8 +4,9 @@ import edu.gvsu.cis.campbjos.ftp.common.ControlWriter;
 import edu.gvsu.cis.campbjos.ftp.common.DataTransferProcess;
 import edu.gvsu.cis.campbjos.ftp.common.ProtocolInterpreter;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.net.ServerSocket;
+import java.io.InputStreamReader;
 import java.net.Socket;
 
 import static edu.gvsu.cis.campbjos.ftp.common.Commands.*;
@@ -47,15 +48,10 @@ public final class ClientProtocolInterpreter implements ProtocolInterpreter {
 
     @Override
     public String list() throws IOException, RuntimeException {
-        final ServerSocket controlSocket = new ServerSocket(0);
-        final String address = piSocket.getInetAddress().toString().replaceAll("/", "");
-        port(address, controlSocket.getLocalPort());
         sendCommandToServerControl(LIST);
-
-        final DataTransferProcess clientDtp = new ClientDtp
-                (controlSocket.accept());
-        controlSocket.close();
-
+        final DataTransferProcess clientDtp = new ClientDtp(
+                piSocket.getInetAddress(),
+                readOpenDataPort());
         final String list = clientDtp.listenForCharacterStream();
         clientDtp.closeSocket();
 
@@ -77,35 +73,27 @@ public final class ClientProtocolInterpreter implements ProtocolInterpreter {
     @Override
     public void retrieve(final String filename) throws IOException,
             NullPointerException {
-        final ServerSocket controlSocket = newServerSocket();
         sendCommandToServerControl(format("%s %s", RETR, filename));
-
-        final DataTransferProcess clientDtp = new ClientDtp
-                (controlSocket.accept());
-        controlSocket.close();
-
+        final DataTransferProcess clientDtp = new ClientDtp(piSocket.getInetAddress(), readOpenDataPort());
         clientDtp.listenForByteStream(filename);
         clientDtp.closeSocket();
     }
 
     @Override
     public void store(final String filename) throws IOException {
-        final ServerSocket controlSocket = newServerSocket();
         sendCommandToServerControl(format("%s %s", STOR, filename));
-        final DataTransferProcess clientDtp = new ClientDtp
-                (controlSocket.accept());
-        controlSocket.close();
-
+        final DataTransferProcess clientDtp =
+                new ClientDtp(piSocket.getInetAddress(), readOpenDataPort());
         clientDtp.sendByteStream(filename);
         clientDtp.closeSocket();
     }
 
-    private ServerSocket newServerSocket() throws IOException {
-        final ServerSocket controlSocket = new ServerSocket(0);
-        final String address = piSocket.getInetAddress().toString()
-                .replaceAll("/", "");
-        port(address, controlSocket.getLocalPort());
-        return controlSocket;
+
+    private int readOpenDataPort() throws IOException, NumberFormatException {
+        BufferedReader bufferedReader =
+                new BufferedReader(new InputStreamReader(piSocket.getInputStream()));
+        String portLine = bufferedReader.readLine();
+        return Integer.valueOf(portLine);
     }
 
     @Override
