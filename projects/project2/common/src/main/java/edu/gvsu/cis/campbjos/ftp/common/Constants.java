@@ -8,4 +8,5 @@ public final class Constants {
             "-------------------------------------------\n";
 
     public static final String CENTRAL_SERVER_MANIFEST = "CENTRAL_SERVER_MANIFEST.json";
+    public static final String CURSOR = "ftp > ";
 }
