@@ -30,7 +30,7 @@ public class Result {
     }
 
     public String getHostname() {
-        return new SimpleStringProperty(this.host.hostname).get();
+        return new SimpleStringProperty(String.format("%s:%s", this.host.hostname, this.host.port)).get();
     }
 
     public String getFilename() {
