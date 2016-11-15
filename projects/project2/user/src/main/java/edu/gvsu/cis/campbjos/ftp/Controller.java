@@ -72,6 +72,7 @@ public class Controller implements Initializable {
         list.add("Modem");
         try {
             hostname.setText(InetAddress.getLocalHost().toString());
+            hostname.setWrapText(true);
         } catch (UnknownHostException e) {
             // don't set hostname
         }
