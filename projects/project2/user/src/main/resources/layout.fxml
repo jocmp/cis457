@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 
-<GridPane alignment="center" hgap="10" prefHeight="551.0" prefWidth="797.0" vgap="10" xmlns="http://javafx.com/javafx/8.0.112-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.gvsu.cis.campbjos.ftp.Controller">
+<GridPane alignment="center" hgap="10" prefHeight="560.0" prefWidth="800.0" vgap="10" xmlns="http://javafx.com/javafx/8.0.112-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.gvsu.cis.campbjos.ftp.Controller">
     <columnConstraints>
         <ColumnConstraints minWidth="10.0" percentWidth="100.0" prefWidth="100.0" />
     </columnConstraints>
@@ -42,9 +42,9 @@
                 <HBox prefHeight="48.0" prefWidth="797.0" spacing="10.0">
                     <children>
                         <Label text="Username" />
-                        <TextArea fx:id="username" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="10.0" minWidth="10.0" prefHeight="25.0" prefWidth="150.0" />
+                        <TextArea fx:id="username" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="10.0" minWidth="10.0" prefHeight="30.0" prefWidth="150.0" />
                         <Label text="Hostname" />
-                        <TextArea fx:id="hostname" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="10.0" minWidth="50.0" prefHeight="25.0" prefWidth="224.0" />
+                        <TextArea fx:id="hostname" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="10.0" minWidth="50.0" prefHeight="30.0" prefWidth="224.0" />
                         <Label text="Speed" />
                         <ChoiceBox fx:id="speed" prefWidth="150.0" />
                     </children>
@@ -58,7 +58,7 @@
                         <TextArea fx:id="serverHostname" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="10.0" minWidth="10.0" prefHeight="25.0" prefWidth="379.0" />
                         <Label text="Port" />
                         <TextArea fx:id="port" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="25.0" minWidth="70.0" prefHeight="25.0" prefWidth="70.0" />
-                        <Button fx:id="connectButton" mnemonicParsing="false" text="Connect" />
+                        <Button fx:id="connectButton" mnemonicParsing="false" prefHeight="27.0" prefWidth="90.0" text="Connect" />
                         <Circle fx:id="connectionIndicator" fill="#ffb01e" radius="10.0" strokeType="INSIDE" HBox.hgrow="NEVER">
                             <HBox.margin>
                                 <Insets top="2.0" />
@@ -89,8 +89,8 @@
                 <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                     <children>
                         <Label fx:id="keywordLabel" text="Keyword" />
-                        <TextField fx:id="keyword" maxHeight="25.0" minHeight="25.0" prefHeight="25.0" prefWidth="590.0" />
-                        <Button fx:id="searchButton" mnemonicParsing="false" text="Search" />
+                        <TextField fx:id="keyword" maxHeight="25.0" minHeight="25.0" prefHeight="25.0" prefWidth="562.0" />
+                        <Button fx:id="searchButton" mnemonicParsing="false" prefHeight="27.0" prefWidth="89.0" text="Search" />
                     </children>
                     <padding>
                         <Insets left="35.0" top="10.0" />
@@ -142,8 +142,8 @@
                 <HBox prefHeight="37.0" prefWidth="734.0" spacing="10.0">
                     <children>
                         <Label fx:id="commandLabel" text="Command" />
-                        <TextField fx:id="command" prefHeight="27.0" prefWidth="593.0" />
-                        <Button fx:id="enterButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" text="Enter" />
+                        <TextField fx:id="command" prefHeight="27.0" prefWidth="562.0" />
+                        <Button fx:id="enterButton" mnemonicParsing="false" prefHeight="27.0" prefWidth="90.0" text="Enter" />
                     </children>
                     <padding>
                         <Insets left="35.0" top="10.0" />
