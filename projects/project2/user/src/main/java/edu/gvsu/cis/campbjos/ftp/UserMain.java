@@ -14,11 +14,12 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 import static edu.gvsu.cis.campbjos.ftp.common.Commands.*;
+import static edu.gvsu.cis.campbjos.ftp.common.Constants.CURSOR;
 import static java.lang.String.format;
 
 public class UserMain extends Application {
 
-    private static final String CURSOR = "ftp > ";
+
     private Controller controller;
     private final ClientProtocolInterpreter protocolInterpreter;
     private final CentralUserInterpreter userInterpreter;
