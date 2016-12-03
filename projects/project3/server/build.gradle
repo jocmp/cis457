@@ -1,0 +1,18 @@
+def main = "edu.gvsu.cis.campbjos.central.CentralServer"
+
+jar {
+    baseName = 'p2p-server'
+    manifest {
+        attributes('Main-Class': main)
+    }
+    from {
+        (configurations.runtime).collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+}
+
+dependencies {
+    compile project(':common')
+    compile 'org.apache.commons:commons-lang3:3.3.2'
+}
