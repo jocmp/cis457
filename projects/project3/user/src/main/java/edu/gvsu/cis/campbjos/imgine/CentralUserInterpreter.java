@@ -44,12 +44,16 @@ class CentralUserInterpreter {
                 .setIp(localAddress)
                 .setPort(ftpServerPort)
                 .setUsername(username).createHost();
+        uploadHostManifestToServer();
+    }
+
+    private void uploadHostManifestToServer() {
         new Thread(() -> {
             try {
                 write(socket.getOutputStream(), new Gson().toJson(host));
                 replyWhenAcknowledged();
             } catch (IOException e) {
-                e.printStackTrace();
+                // couldn't start server connection
             }
         }).start();
     }

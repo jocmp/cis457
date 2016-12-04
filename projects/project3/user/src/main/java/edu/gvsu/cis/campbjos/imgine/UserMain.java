@@ -150,14 +150,27 @@ public class UserMain extends Application implements OnCellClickListener {
         }
         final Result result = currentResults.list().get(currentSelectedResultIndex);
         controller.downloadProgress.setVisible(true);
+        retrieveImageFromServer(result);
+    }
+
+    private void retrieveImageFromServer(Result result) {
         new Thread(() -> {
             try {
                 protocolInterpreter.connect(result.host.ip, result.host.port);
                 protocolInterpreter.retrieve(result.filename);
             } catch (IOException e) {
-                controller.downloadProgress.setVisible(false);
+                // just continue
             }
+            sleepThread(1000);
             controller.downloadProgress.setVisible(false);
         }).start();
+    }
+
+    private void sleepThread(int milliseconds) {
+        try {
+            Thread.sleep(milliseconds);
+        } catch (InterruptedException e) {
+            // just continue
+        }
     }
 }

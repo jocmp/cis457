@@ -3,6 +3,7 @@ package edu.gvsu.cis.campbjos.imgine.client;
 import edu.gvsu.cis.campbjos.imgine.common.ControlWriter;
 import edu.gvsu.cis.campbjos.imgine.common.DataTransferProcess;
 import edu.gvsu.cis.campbjos.imgine.common.ProtocolInterpreter;
+import javafx.scene.control.ProgressBar;
 
 import java.io.BufferedReader;
 import java.io.IOException;
