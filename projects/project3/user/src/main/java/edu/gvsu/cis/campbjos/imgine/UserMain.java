@@ -1,6 +1,7 @@
 package edu.gvsu.cis.campbjos.imgine;
 
 import edu.gvsu.cis.campbjos.imgine.client.ClientProtocolInterpreter;
+import edu.gvsu.cis.campbjos.imgine.common.model.Result;
 import edu.gvsu.cis.campbjos.imgine.common.model.Results;
 import edu.gvsu.cis.campbjos.imgine.server.FtpServer;
 import javafx.application.Application;
@@ -15,18 +16,21 @@ import java.io.IOException;
 
 import static java.lang.String.format;
 
-public class UserMain extends Application {
+public class UserMain extends Application implements OnCellClickListener {
 
     private Controller controller;
     private final ClientProtocolInterpreter protocolInterpreter;
     private final CentralUserInterpreter userInterpreter;
     private FtpServer ftpServer;
+    private Results currentResults;
+    private int currentSelectedResultIndex;
 
     public UserMain() {
         protocolInterpreter = new ClientProtocolInterpreter();
         userInterpreter = new CentralUserInterpreter();
         ftpServer = new FtpServer();
         new Thread(ftpServer).start();
+        currentResults = new Results();
     }
 
     public static void main(String[] args) {
@@ -65,6 +69,7 @@ public class UserMain extends Application {
     }
 
     private void initControlActions() {
+        controller.setOnCellClickListener(this);
         controller.connectButton.setOnAction(event -> {
             if (userInterpreter.isConnected()) {
                 disconnectFromCentralServer();
@@ -72,7 +77,6 @@ public class UserMain extends Application {
                 connectToCentralServer();
             }
         });
-
         controller.searchButton.setOnAction(actionEvent -> {
             if (userInterpreter.isConnected()) {
                 queryCentralServer();
@@ -81,6 +85,7 @@ public class UserMain extends Application {
                         "connected to server");
             }
         });
+        controller.downloadButton.setOnAction(event -> onDownloadClick());
     }
 
     private void connectToCentralServer() {
@@ -90,7 +95,7 @@ public class UserMain extends Application {
         String port = controller.portField.getText();
 
         try {
-            userInterpreter.connect(username, ipAddress, port);
+            userInterpreter.connect(username, ipAddress, port, FtpServer.getFtpServerPort());
             controller.setConnected();
         } catch (IOException e) {
             controller.showErrorDialog("Error connecting to central " +
@@ -114,21 +119,57 @@ public class UserMain extends Application {
     }
 
     private void queryCentralServer() {
-        Results results = null;
+        currentResults.clear();
         controller.shrug.setVisible(false);
         if (!controller.searchField.getText().isEmpty()) {
             try {
-                results = userInterpreter.query(controller.searchField
-                        .getText());
+                currentResults.addAll(userInterpreter.query(controller.searchField
+                        .getText()));
             } catch (IOException e) {
                 controller.showErrorDialog("Error retrieving " +
                         "results", e.getMessage());
                 controller.setDisconnected();
             }
         }
-        if (results == null || results.list().isEmpty()) {
+        if (currentResults.list().isEmpty()) {
             controller.shrug.setVisible(true);
+            controller.downloadButton.setDisable(true);
         }
-        controller.populateImageContainer(results);
+        controller.populateImageContainer(currentResults);
+    }
+
+    @Override
+    public void onClick(int index) {
+        currentSelectedResultIndex = index;
+        controller.downloadButton.setDisable(false);
+    }
+
+    private void onDownloadClick() {
+        Result result = null;
+        try {
+            result = currentResults.list().get(currentSelectedResultIndex);
+        } catch (IndexOutOfBoundsException e) {
+            return;
+        }
+        try {
+            controller.downloadProgress.setVisible(true);
+            protocolInterpreter.connect(result.host.ip, result.host.port);
+            protocolInterpreter.retrieve(result.filename);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(4000L);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+            controller.downloadProgress.setVisible(false);
+
+        } catch (IOException e) {
+            // Show error retrieving
+            controller.downloadProgress.setVisible(false);
+        }
     }
 }

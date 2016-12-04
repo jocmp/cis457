@@ -30,18 +30,19 @@ class CentralUserInterpreter {
         socket = null;
     }
 
-    void connect(final String username, final String ipAddress, final String serverPort) throws IOException, NumberFormatException {
-        final int port = convertToServerPortNumber(serverPort);
+    void connect(final String username, final String ipAddress, final String centralServerPort,
+                 final int ftpServerPort) throws IOException, NumberFormatException {
+        final int port = convertToServerPortNumber(centralServerPort);
         try {
             socket = new Socket(ipAddress, port);
         } catch (IOException exception) {
-            throw new IOException(format("Error opening socket to server %s:%s", ipAddress, serverPort));
+            throw new IOException(format("Error opening socket to server %s:%s", ipAddress, centralServerPort));
         }
         bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         String localAddress = InetAddress.getLocalHost().getHostAddress();
         host = new Host.Builder()
                 .setIp(localAddress)
-                .setPort(port)
+                .setPort(ftpServerPort)
                 .setUsername(username).createHost();
         new Thread(() -> {
             try {

@@ -5,21 +5,41 @@ import com.jfoenix.controls.JFXProgressBar;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.validation.RequiredFieldValidator;
 import com.jfoenix.validation.base.ValidatorBase;
+import com.sun.org.apache.bcel.internal.generic.Select;
 import edu.gvsu.cis.campbjos.imgine.common.BufferedImageConverter;
 import edu.gvsu.cis.campbjos.imgine.common.model.Result;
 import edu.gvsu.cis.campbjos.imgine.common.model.Results;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.beans.property.DoubleProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.effect.BlendMode;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.util.Callback;
+import org.controlsfx.control.GridCell;
 import org.controlsfx.control.GridView;
+import org.controlsfx.control.cell.ImageGridCell;
 
 import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static javafx.embed.swing.SwingFXUtils.toFXImage;
+import static javafx.scene.layout.CornerRadii.EMPTY;
+import static javafx.scene.paint.Color.BLUE;
 
 public class Controller implements Initializable {
 
@@ -33,15 +53,40 @@ public class Controller implements Initializable {
     JFXProgressBar downloadProgress;
 
     @FXML
-    GridView<BufferedImage> imageContainer;
+    GridView<Image> imageContainer;
 
     @FXML
     ImageView shrug;
 
+    private OnCellClickListener onCellClickListener;
+
+    private ObservableList<Image> images;
+
+    private Selection selection;
+
     @Override
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
+        selection = new Selection();
         setDisconnected();
         createIpValidator();
+        createPortValidator();
+        imageContainer.setCellFactory(gridView -> {
+            ImageGridCell cell = new ImageGridCell();
+            cell.setOnMouseClicked(event -> {
+                onCellClickListener.onClick(cell.getIndex());
+                selection.set(cell);
+            });
+            return cell;
+        });
+
+        images = FXCollections.observableList(new ArrayList<>());
+        imageContainer.setItems(images);
+
+        downloadProgress.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
+    }
+
+    public void setOnCellClickListener(OnCellClickListener onCellClickListener) {
+        this.onCellClickListener = onCellClickListener;
     }
 
     private void createIpValidator() {
@@ -65,17 +110,14 @@ public class Controller implements Initializable {
     }
 
     void populateImageContainer(Results results) {
-        List<BufferedImage> pImages = results
+        images.clear();
+        List<BufferedImage> bufferedImages = results
                 .list()
                 .parallelStream()
                 .map(result -> BufferedImageConverter.getImageFromJson(result.thumbnail))
-                .filter(Objects::nonNull)
                 .collect(Collectors.toList());
-        ObservableList<BufferedImage> images = FXCollections.observableList(new ArrayList<BufferedImage>());
-        imageContainer.setItems(images);
-        for (BufferedImage img : pImages) {
-            images.add(img);
-        }
+
+        bufferedImages.forEach(bufferedImage -> images.add(toFXImage(bufferedImage, null)));
     }
 
     void setConnected() {
@@ -91,6 +133,9 @@ public class Controller implements Initializable {
     }
 
     void setDisconnected() {
+        if (images != null) {
+            images.clear();
+        }
         usernameField.setDisable(false);
         ipAddressField.setDisable(false);
         portField.setDisable(false);
@@ -128,4 +173,6 @@ public class Controller implements Initializable {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+
 }

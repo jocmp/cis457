@@ -24,4 +24,14 @@ public class Results {
         return resultList;
     }
 
+    public void clear() {
+        resultList.clear();
+    }
+
+    public void addAll(Results results) {
+        if (results == null) {
+            return;
+        }
+        resultList.addAll(results.list());
+    }
 }

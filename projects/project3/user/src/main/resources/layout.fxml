@@ -28,40 +28,44 @@
             <children>
                 <HBox prefHeight="64.0" prefWidth="800.0" spacing="8.0">
                     <children>
-                  <ImageView fitHeight="75.0" fitWidth="100.0" opacity="0.72" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@logo.png" />
-                     </image>
-                     <HBox.margin>
-                        <Insets top="8.0" />
-                     </HBox.margin>
-                  </ImageView>
+                        <ImageView fitHeight="75.0" fitWidth="100.0" opacity="0.72" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@logo.png" />
+                            </image>
+                            <HBox.margin>
+                                <Insets top="8.0" />
+                            </HBox.margin>
+                        </ImageView>
                         <JFXTextField fx:id="usernameField" labelFloat="true" promptText="Username">
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <HBox.margin>
-                        <Insets top="8.0" />
-                     </HBox.margin></JFXTextField>
+                            <opaqueInsets>
+                                <Insets />
+                            </opaqueInsets>
+                            <HBox.margin>
+                                <Insets top="8.0" />
+                            </HBox.margin>
+                        </JFXTextField>
                         <JFXTextField fx:id="ipAddressField" labelFloat="true" promptText="Server IP Address">
-                     <HBox.margin>
-                        <Insets top="8.0" />
-                     </HBox.margin></JFXTextField>
+                            <HBox.margin>
+                                <Insets top="8.0" />
+                            </HBox.margin>
+                        </JFXTextField>
                         <JFXTextField fx:id="portField" labelFloat="true" layoutX="204.0" layoutY="20.0" maxWidth="91.0" minWidth="91.0" prefHeight="31.0" prefWidth="91.0" promptText="Server Port">
-                     <HBox.margin>
-                        <Insets top="8.0" />
-                     </HBox.margin></JFXTextField>
+                            <HBox.margin>
+                                <Insets top="8.0" />
+                            </HBox.margin>
+                        </JFXTextField>
                         <JFXButton fx:id="connectButton" buttonType="RAISED" mnemonicParsing="false" ripplerFill="WHITE" style="-fx-background-color: rgb(77,102,204);" text="CONNECT" textFill="WHITE">
-                     <HBox.margin>
-                        <Insets top="8.0" />
-                     </HBox.margin></JFXButton>
+                            <HBox.margin>
+                                <Insets top="8.0" />
+                            </HBox.margin>
+                        </JFXButton>
                     </children>
-               <VBox.margin>
-                  <Insets bottom="8.0" left="16.0" right="16.0" top="8.0" />
-               </VBox.margin>
-               <padding>
-                  <Insets top="8.0" />
-               </padding>
+                    <VBox.margin>
+                        <Insets bottom="8.0" left="16.0" right="16.0" top="8.0" />
+                    </VBox.margin>
+                    <padding>
+                        <Insets top="8.0" />
+                    </padding>
                 </HBox>
             </children>
         </VBox>
@@ -72,23 +76,23 @@
                         <JFXTextField fx:id="searchField" labelFloat="true" maxWidth="527.0" minWidth="408.0" prefHeight="31.0" prefWidth="527.0" promptText="Search" />
                         <JFXButton fx:id="searchButton" buttonType="RAISED" mnemonicParsing="false" ripplerFill="WHITE" style="-fx-background-color: rgb(77,102,204);" text="SEARCH" textFill="WHITE" />
                     </children>
-               <VBox.margin>
-                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
-               </VBox.margin>
+                    <VBox.margin>
+                        <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                    </VBox.margin>
                 </HBox>
-            <StackPane prefHeight="426.0" prefWidth="800.0">
-               <children>
-                      <GridView fx:id="imageContainer" prefHeight="271.0" prefWidth="800.0" style="-fx-background-color: #eeeeee;" />
-                  <ImageView fx:id="shrug" fitHeight="150.0" fitWidth="200.0" opacity="0.33" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@nothing.png" />
-                     </image>
-                  </ImageView>
-               </children>
-               <VBox.margin>
-                  <Insets left="16.0" right="16.0" />
-               </VBox.margin>
-            </StackPane>
+                <StackPane prefHeight="426.0" prefWidth="800.0">
+                    <children>
+                        <GridView fx:id="imageContainer" prefHeight="271.0" prefWidth="800.0" style="-fx-background-color: #eeeeee;" />
+                        <ImageView fx:id="shrug" fitHeight="150.0" fitWidth="200.0" opacity="0.33" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@nothing.png" />
+                            </image>
+                        </ImageView>
+                    </children>
+                    <VBox.margin>
+                        <Insets left="16.0" right="16.0" />
+                    </VBox.margin>
+                </StackPane>
             </children>
         </VBox>
         <VBox prefHeight="78.0" prefWidth="800.0" GridPane.rowIndex="2">
@@ -96,19 +100,19 @@
                 <HBox prefHeight="55.0" prefWidth="784.0">
                     <children>
                         <JFXButton fx:id="downloadButton" buttonType="RAISED" mnemonicParsing="false" ripplerFill="WHITE" style="-fx-background-color: rgb(77,102,204);" text="DOWNLOAD" textFill="WHITE">
-                     <HBox.margin>
-                        <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
-                     </HBox.margin></JFXButton>
-                  <JFXProgressBar fx:id="downloadProgress" prefWidth="200.0" progress="0.0">
-                     <HBox.margin>
-                        <Insets left="8.0" top="20.0" />
-                     </HBox.margin>
-                  </JFXProgressBar>
-
+                            <HBox.margin>
+                                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                            </HBox.margin>
+                        </JFXButton>
+                        <JFXProgressBar fx:id="downloadProgress" prefWidth="200.0" visible="false" HBox.hgrow="NEVER">
+                            <HBox.margin>
+                                <Insets top="18.0" />
+                            </HBox.margin>
+                        </JFXProgressBar>
                     </children>
-               <VBox.margin>
-                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
-               </VBox.margin>
+                    <VBox.margin>
+                        <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                    </VBox.margin>
                 </HBox>
             </children>
         </VBox>

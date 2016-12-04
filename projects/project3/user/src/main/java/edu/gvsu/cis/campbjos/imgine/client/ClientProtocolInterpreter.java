@@ -21,11 +21,10 @@ public final class ClientProtocolInterpreter implements ProtocolInterpreter {
         piSocket = null;
     }
 
-    public void connect(final String ipAddress, final String serverPort)
+    public void connect(final String ipAddress, final int serverPort)
             throws IOException {
-        final int port = convertToServerPortNumber(serverPort);
         try {
-            piSocket = new Socket(ipAddress, port);
+            piSocket = new Socket(ipAddress, serverPort);
         } catch (IOException exception) {
             throw new IOException(format("Error opening socket " +
                     "%s:%s", ipAddress, serverPort));
