@@ -1,4 +1,4 @@
-def main = "edu.gvsu.cis.campbjos.central.CentralServer"
+def main = "edu.gvsu.cis.campbjos.imgine.central.CentralServer"
 
 jar {
     baseName = 'p2p-server'
