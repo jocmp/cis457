@@ -10,7 +10,7 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 
 import static edu.gvsu.cis.campbjos.imgine.common.Commands.*;
-import static edu.gvsu.cis.campbjos.imgine.common.Converter.convertToServerPortNumber;
+import static edu.gvsu.cis.campbjos.imgine.common.ServerPortConverter.convertToServerPortNumber;
 import static java.lang.String.format;
 
 public final class ClientProtocolInterpreter implements ProtocolInterpreter {

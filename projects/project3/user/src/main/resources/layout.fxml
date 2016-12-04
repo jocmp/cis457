@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import org.controlsfx.control.GridView?>
 
@@ -75,11 +76,19 @@
                   <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                </VBox.margin>
                 </HBox>
-                <GridView fx:id="imageContainer" prefHeight="420.0" prefWidth="768.0" style="-fx-background-color: #eeeeee;" VBox.vgrow="ALWAYS">
-                    <VBox.margin>
-                        <Insets left="16.0" right="16.0" />
-                    </VBox.margin>
-                </GridView>
+            <StackPane prefHeight="426.0" prefWidth="800.0">
+               <children>
+                      <GridView fx:id="imageContainer" prefHeight="271.0" prefWidth="800.0" style="-fx-background-color: #eeeeee;" />
+                  <ImageView fx:id="shrug" fitHeight="150.0" fitWidth="200.0" opacity="0.33" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@nothing.png" />
+                     </image>
+                  </ImageView>
+               </children>
+               <VBox.margin>
+                  <Insets left="16.0" right="16.0" />
+               </VBox.margin>
+            </StackPane>
             </children>
         </VBox>
         <VBox prefHeight="78.0" prefWidth="800.0" GridPane.rowIndex="2">

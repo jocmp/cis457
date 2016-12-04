@@ -9,9 +9,16 @@ import java.util.Base64;
 
 public class BufferedImageConverter {
 
-    public static String getThumbnailStringFromImage(BufferedImage bufferedImage) throws IOException {
+    public static String getThumbnailStringFromImage(BufferedImage bufferedImage) {
+        if (bufferedImage == null) {
+            return null;
+        }
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        ImageIO.write(bufferedImage, "jpg", byteArrayOutputStream);
+        try {
+            ImageIO.write(bufferedImage, "jpg", byteArrayOutputStream);
+        } catch (IOException e) {
+            return null;
+        }
         byte[] imageBytes = byteArrayOutputStream.toByteArray();
         return Base64.getEncoder().encodeToString(imageBytes);
     }

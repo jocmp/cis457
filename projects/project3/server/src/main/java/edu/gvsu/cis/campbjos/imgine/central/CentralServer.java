@@ -9,7 +9,7 @@ public class CentralServer {
 
     public CentralServer(int port) throws IOException {
         ServerSocket server = new ServerSocket(port);
-        System.out.printf("New server started from %s:%d\n", InetAddress.getLocalHost().getHostAddress(), server.getLocalPort());
+        System.out.printf("New server started from %s %d\n", InetAddress.getLocalHost().getHostAddress(), server.getLocalPort());
         //noinspection InfiniteLoopStatement
         while (true) {
             Socket client = server.accept();

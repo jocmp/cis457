@@ -1,0 +1,20 @@
+{
+  "results": [
+    {
+      "filename": "tree.png",
+      "description": "Tree photo"
+    },
+    {
+      "filename": "TermPrint.txt",
+      "description": "Just another print file lol"
+    },
+    {
+      "filename": "fork-exit-wait-exec.pdf",
+      "description": "Operating Systems informations technology"
+    },
+    {
+      "filename": "86-xor.gif",
+      "description": "Architecture gif display an XOR"
+    }
+  ]
+}

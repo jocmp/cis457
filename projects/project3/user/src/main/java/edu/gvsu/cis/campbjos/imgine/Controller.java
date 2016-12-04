@@ -3,6 +3,8 @@ package edu.gvsu.cis.campbjos.imgine;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXProgressBar;
 import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.validation.RequiredFieldValidator;
+import com.jfoenix.validation.base.ValidatorBase;
 import edu.gvsu.cis.campbjos.imgine.common.BufferedImageConverter;
 import edu.gvsu.cis.campbjos.imgine.common.model.Result;
 import edu.gvsu.cis.campbjos.imgine.common.model.Results;
@@ -11,6 +13,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import org.controlsfx.control.GridView;
 
 import java.awt.image.BufferedImage;
@@ -32,15 +35,39 @@ public class Controller implements Initializable {
     @FXML
     GridView<BufferedImage> imageContainer;
 
+    @FXML
+    ImageView shrug;
+
     @Override
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
         setDisconnected();
+        createIpValidator();
+    }
+
+    private void createIpValidator() {
+        RequiredFieldValidator ipValidator = new RequiredFieldValidator();
+        ipValidator.setMessage("Invalid IP");
+        ipValidator.setErrorStyleClass(ValidatorBase.DEFAULT_ERROR_STYLE_CLASS);
+        ipAddressField.getValidators().add(ipValidator);
+        ipAddressField.focusedProperty().addListener((o, oldVal, newVal) -> {
+            ipAddressField.validate();
+        });
+    }
+
+    private void createPortValidator() {
+        RequiredFieldValidator portValidator = new RequiredFieldValidator();
+        portValidator.setMessage("Invalid Port");
+        portValidator.setErrorStyleClass(ValidatorBase.DEFAULT_ERROR_STYLE_CLASS);
+        portField.getValidators().add(portValidator);
+        portField.focusedProperty().addListener((o, oldVal, newVal) -> {
+            ipAddressField.validate();
+        });
     }
 
     void populateImageContainer(Results results) {
         List<BufferedImage> pImages = results
                 .list()
-                .stream()
+                .parallelStream()
                 .map(result -> BufferedImageConverter.getImageFromJson(result.thumbnail))
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
@@ -72,6 +99,11 @@ public class Controller implements Initializable {
         searchField.setDisable(true);
         downloadButton.setDisable(true);
         downloadProgress.setVisible(false);
+
+        shrug.setVisible(false);
+
+        connectButton.setDisable(false);
+        connectButton.setText("CONNECT");
     }
 
     void setConnecting() {

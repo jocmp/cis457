@@ -11,11 +11,13 @@ import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.Socket;
 
+import static edu.gvsu.cis.campbjos.imgine.common.BufferedImageConverter.getThumbnailStringFromImage;
 import static edu.gvsu.cis.campbjos.imgine.common.Commands.QUIT;
 import static edu.gvsu.cis.campbjos.imgine.common.Commands.SEARCH;
 import static edu.gvsu.cis.campbjos.imgine.common.Constants.CENTRAL_SERVER_MANIFEST;
 import static edu.gvsu.cis.campbjos.imgine.common.ControlWriter.write;
-import static edu.gvsu.cis.campbjos.imgine.common.Converter.convertToServerPortNumber;
+import static edu.gvsu.cis.campbjos.imgine.common.ServerPortConverter.convertToServerPortNumber;
+import static edu.gvsu.cis.campbjos.imgine.common.ThumbnailGenerator.generate;
 import static java.lang.String.format;
 
 class CentralUserInterpreter {
@@ -33,8 +35,7 @@ class CentralUserInterpreter {
         try {
             socket = new Socket(ipAddress, port);
         } catch (IOException exception) {
-            throw new IOException(format("Error opening socket " +
-                    "%s:%s", ipAddress, serverPort));
+            throw new IOException(format("Error opening socket to server %s:%s", ipAddress, serverPort));
         }
         bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         String localAddress = InetAddress.getLocalHost().getHostAddress();
@@ -42,11 +43,17 @@ class CentralUserInterpreter {
                 .setIp(localAddress)
                 .setPort(port)
                 .setUsername(username).createHost();
-        write(socket.getOutputStream(), new Gson().toJson(host));
-        replyWhenAcknowledged(host);
+        new Thread(() -> {
+            try {
+                write(socket.getOutputStream(), new Gson().toJson(host));
+                replyWhenAcknowledged();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
-    private void replyWhenAcknowledged(Host host) throws IOException {
+    private void replyWhenAcknowledged() throws IOException {
         bufferedReader.readLine();
         write(socket.getOutputStream(), readResultsFromFile());
     }
@@ -54,7 +61,12 @@ class CentralUserInterpreter {
     private String readResultsFromFile() throws IOException {
         Gson gson = new Gson();
         Results results = gson.fromJson(FileReader.getString(CENTRAL_SERVER_MANIFEST), Results.class);
-        results.list().forEach(result -> result.host = host);
+        results.list()
+                .parallelStream()
+                .forEach(result -> {
+                    result.host = host;
+                    result.thumbnail = getThumbnailStringFromImage(generate(result.filename));
+                });
         return gson.toJson(results);
     }
 

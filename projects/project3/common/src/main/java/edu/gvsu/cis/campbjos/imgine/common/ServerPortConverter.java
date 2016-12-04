@@ -3,7 +3,7 @@ package edu.gvsu.cis.campbjos.imgine.common;
 import static java.lang.Integer.valueOf;
 import static java.lang.String.format;
 
-public class Converter {
+public class ServerPortConverter {
 
     public static int convertToServerPortNumber(final String
                                                         serverPortText) {

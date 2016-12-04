@@ -45,7 +45,9 @@ public final class FtpServer implements Runnable {
                 thread.start();
             }
         } catch (SocketException exception) {
-            System.out.println(format("Address already in use: %s", exception.getMessage()));
+            if (exception.getMessage().equals("Address already in use")) {
+                runFtpServer(startingPort + 1);
+            }
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }

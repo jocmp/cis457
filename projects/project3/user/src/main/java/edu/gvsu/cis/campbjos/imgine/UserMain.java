@@ -87,8 +87,8 @@ public class UserMain extends Application {
         controller.setConnecting();
         String username = controller.usernameField.getText();
         String ipAddress = controller.ipAddressField.getText();
+        String port = controller.portField.getText();
 
-        String port = controller.ipAddressField.getText();
         try {
             userInterpreter.connect(username, ipAddress, port);
             controller.setConnected();
@@ -115,6 +115,7 @@ public class UserMain extends Application {
 
     private void queryCentralServer() {
         Results results = null;
+        controller.shrug.setVisible(false);
         if (!controller.searchField.getText().isEmpty()) {
             try {
                 results = userInterpreter.query(controller.searchField
@@ -126,8 +127,7 @@ public class UserMain extends Application {
             }
         }
         if (results == null || results.list().isEmpty()) {
-//            controller.resultsTable.setPlaceholder(new Label("No " +
-//                    "results found"));
+            controller.shrug.setVisible(true);
         }
         controller.populateImageContainer(results);
     }

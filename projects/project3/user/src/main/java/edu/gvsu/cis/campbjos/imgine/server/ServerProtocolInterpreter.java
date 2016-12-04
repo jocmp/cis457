@@ -52,39 +52,16 @@ final class ServerProtocolInterpreter implements ProtocolInterpreter,
             return;
         }
         final String command = tokens.get(0);
-        if (command.equals(LIST)) {
-            list();
-        } else if (command.equals(RETR)) {
+        if (command.equals(RETR)) {
             retrieve(file);
-        } else if (command.equals(STOR)) {
-            store(file);
         } else if (command.equals(QUIT)) {
             quit();
         }
     }
 
     @Override
-    public String list() throws IOException {
-        String filesList = "";
-        File serverDir = new File(".");
-        File[] files = serverDir.listFiles();
-        if (files != null) {
-            for (File file : files) {
-                filesList += file.getName() + "\n";
-            }
-        }
-        startSendingCharacterStream(filesList);
-        return filesList;
-    }
-
-    @Override
     public void retrieve(String filename) throws IOException {
         startSendingByteStream(filename);
-    }
-
-    @Override
-    public void store(String filename) throws IOException {
-        startListeningForByteStream(filename);
     }
 
     @Override
