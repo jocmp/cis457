@@ -145,31 +145,19 @@ public class UserMain extends Application implements OnCellClickListener {
     }
 
     private void onDownloadClick() {
-        Result result = null;
-        try {
-            result = currentResults.list().get(currentSelectedResultIndex);
-        } catch (IndexOutOfBoundsException e) {
+        if (currentSelectedResultIndex > currentResults.list().size() - 1) {
             return;
         }
-        try {
-            controller.downloadProgress.setVisible(true);
-            protocolInterpreter.connect(result.host.ip, result.host.port);
-            protocolInterpreter.retrieve(result.filename);
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Thread.sleep(4000L);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }).start();
+        final Result result = currentResults.list().get(currentSelectedResultIndex);
+        controller.downloadProgress.setVisible(true);
+        new Thread(() -> {
+            try {
+                protocolInterpreter.connect(result.host.ip, result.host.port);
+                protocolInterpreter.retrieve(result.filename);
+            } catch (IOException e) {
+                controller.downloadProgress.setVisible(false);
+            }
             controller.downloadProgress.setVisible(false);
-
-        } catch (IOException e) {
-            // Show error retrieving
-            controller.downloadProgress.setVisible(false);
-        }
+        }).start();
     }
 }
