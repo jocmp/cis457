@@ -1,4 +1,4 @@
-def main = "edu.gvsu.cis.campbjos.ftp.UserMain"
+def main = "edu.gvsu.cis.campbjos.imgine.UserMain"
 
 jar {
     baseName = 'p2p-user'
@@ -14,4 +14,6 @@ jar {
 
 dependencies {
     compile project(':common')
+    compile 'com.jfoenix:jfoenix:1.0.0'
+    compile 'org.controlsfx:controlsfx:8.40.12'
 }
