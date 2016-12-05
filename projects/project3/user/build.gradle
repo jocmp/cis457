@@ -1,0 +1,19 @@
+def main = "edu.gvsu.cis.campbjos.imgine.UserMain"
+
+jar {
+    baseName = 'p2p-user'
+    manifest {
+        attributes('Main-Class': main)
+    }
+    from {
+        (configurations.runtime).collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+}
+
+dependencies {
+    compile project(':common')
+    compile 'com.jfoenix:jfoenix:1.0.0'
+    compile 'org.controlsfx:controlsfx:8.40.12'
+}

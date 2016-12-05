@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXProgressBar?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import org.controlsfx.control.GridView?>
+
+<GridPane alignment="center" hgap="10" prefHeight="560.0" prefWidth="800.0" style="-fx-background-color: #FFF;" vgap="10" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.gvsu.cis.campbjos.imgine.Controller">
+    <columnConstraints>
+        <ColumnConstraints minWidth="10.0" percentWidth="100.0" prefWidth="100.0" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints maxHeight="1000.0" minHeight="1.0" percentHeight="15.0" prefHeight="0.0" />
+        <RowConstraints maxHeight="427.0" minHeight="0.0" percentHeight="80.0" prefHeight="396.0" />
+        <RowConstraints maxHeight="79.0" minHeight="10.0" percentHeight="10.0" prefHeight="79.0" />
+    </rowConstraints>
+    <children>
+        <VBox prefHeight="200.0" prefWidth="100.0">
+            <children>
+                <HBox prefHeight="64.0" prefWidth="800.0" spacing="8.0">
+                    <children>
+                        <ImageView fitHeight="75.0" fitWidth="100.0" opacity="0.72" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@logo.png" />
+                            </image>
+                            <HBox.margin>
+                                <Insets top="8.0" />
+                            </HBox.margin>
+                        </ImageView>
+                        <JFXTextField fx:id="usernameField" labelFloat="true" promptText="Username">
+                            <opaqueInsets>
+                                <Insets />
+                            </opaqueInsets>
+                            <HBox.margin>
+                                <Insets top="8.0" />
+                            </HBox.margin>
+                        </JFXTextField>
+                        <JFXTextField fx:id="ipAddressField" labelFloat="true" promptText="Server IP Address">
+                            <HBox.margin>
+                                <Insets top="8.0" />
+                            </HBox.margin>
+                        </JFXTextField>
+                        <JFXTextField fx:id="portField" labelFloat="true" layoutX="204.0" layoutY="20.0" maxWidth="91.0" minWidth="91.0" prefHeight="31.0" prefWidth="91.0" promptText="Server Port">
+                            <HBox.margin>
+                                <Insets top="8.0" />
+                            </HBox.margin>
+                        </JFXTextField>
+                        <JFXButton fx:id="connectButton" buttonType="RAISED" mnemonicParsing="false" ripplerFill="WHITE" style="-fx-background-color: rgb(77,102,204);" text="CONNECT" textFill="WHITE">
+                            <HBox.margin>
+                                <Insets top="8.0" />
+                            </HBox.margin>
+                        </JFXButton>
+                    </children>
+                    <VBox.margin>
+                        <Insets bottom="8.0" left="16.0" right="16.0" top="8.0" />
+                    </VBox.margin>
+                    <padding>
+                        <Insets top="8.0" />
+                    </padding>
+                </HBox>
+            </children>
+        </VBox>
+        <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
+            <children>
+                <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                    <children>
+                        <JFXTextField fx:id="searchField" labelFloat="true" maxWidth="527.0" minWidth="408.0" prefHeight="31.0" prefWidth="527.0" promptText="Search" />
+                        <JFXButton fx:id="searchButton" buttonType="RAISED" mnemonicParsing="false" ripplerFill="WHITE" style="-fx-background-color: rgb(77,102,204);" text="SEARCH" textFill="WHITE" />
+                    </children>
+                    <VBox.margin>
+                        <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                    </VBox.margin>
+                </HBox>
+                <StackPane prefHeight="426.0" prefWidth="800.0">
+                    <children>
+                        <GridView fx:id="imageContainer" prefHeight="271.0" prefWidth="800.0" style="-fx-background-color: #eeeeee;" />
+                        <ImageView fx:id="shrug" fitHeight="150.0" fitWidth="200.0" opacity="0.33" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@nothing.png" />
+                            </image>
+                        </ImageView>
+                    </children>
+                    <VBox.margin>
+                        <Insets left="16.0" right="16.0" />
+                    </VBox.margin>
+                </StackPane>
+            </children>
+        </VBox>
+        <VBox prefHeight="78.0" prefWidth="800.0" GridPane.rowIndex="2">
+            <children>
+                <HBox prefHeight="55.0" prefWidth="784.0">
+                    <children>
+                        <JFXButton fx:id="downloadButton" buttonType="RAISED" mnemonicParsing="false" ripplerFill="WHITE" style="-fx-background-color: rgb(77,102,204);" text="DOWNLOAD" textFill="WHITE">
+                            <HBox.margin>
+                                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                            </HBox.margin>
+                        </JFXButton>
+                        <JFXProgressBar fx:id="downloadProgress" prefWidth="200.0" visible="false" HBox.hgrow="NEVER">
+                            <HBox.margin>
+                                <Insets top="18.0" />
+                            </HBox.margin>
+                        </JFXProgressBar>
+                    </children>
+                    <VBox.margin>
+                        <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                    </VBox.margin>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+</GridPane>
