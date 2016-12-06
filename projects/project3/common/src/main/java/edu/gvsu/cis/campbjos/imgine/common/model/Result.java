@@ -19,11 +19,14 @@ public class Result {
     @Expose
     public String thumbnail;
 
-    public Result(Host host, String filename) {
+    public Result(Host host, String filename, String thumbnail, String description) {
         this.host = new Host.Builder()
                 .setIp(host.ip)
                 .setPort(host.port)
                 .setUsername(host.username).createHost();
+        this.filename = filename;
+        this.thumbnail = thumbnail;
+        this.description = description;
     }
 
     public String getFilename() {

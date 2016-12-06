@@ -7,6 +7,6 @@ public final class Constants {
             "| FTP v2 - campbjos, wrighjax, jungt      |\n" +
             "-------------------------------------------\n";
 
-    public static final String CENTRAL_SERVER_MANIFEST = "CENTRAL_SERVER_MANIFEST.json";
+    public static final String DESCRIPTIONS_JSON = "DESCRIPTIONS.json";
     public static final String CURSOR = "imgine > ";
 }

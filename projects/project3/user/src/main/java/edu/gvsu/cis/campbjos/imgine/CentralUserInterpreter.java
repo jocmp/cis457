@@ -2,19 +2,25 @@ package edu.gvsu.cis.campbjos.imgine;
 
 import com.google.gson.Gson;
 import edu.gvsu.cis.campbjos.imgine.common.FileReader;
+import edu.gvsu.cis.campbjos.imgine.common.model.Descriptions;
 import edu.gvsu.cis.campbjos.imgine.common.model.Host;
+import edu.gvsu.cis.campbjos.imgine.common.model.Result;
 import edu.gvsu.cis.campbjos.imgine.common.model.Results;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.nio.file.Files;
+import java.util.Arrays;
+import java.util.List;
 
 import static edu.gvsu.cis.campbjos.imgine.common.BufferedImageConverter.getThumbnailStringFromImage;
 import static edu.gvsu.cis.campbjos.imgine.common.Commands.QUIT;
 import static edu.gvsu.cis.campbjos.imgine.common.Commands.SEARCH;
-import static edu.gvsu.cis.campbjos.imgine.common.Constants.CENTRAL_SERVER_MANIFEST;
+import static edu.gvsu.cis.campbjos.imgine.common.Constants.DESCRIPTIONS_JSON;
 import static edu.gvsu.cis.campbjos.imgine.common.ControlWriter.write;
 import static edu.gvsu.cis.campbjos.imgine.common.ServerPortConverter.convertToServerPortNumber;
 import static edu.gvsu.cis.campbjos.imgine.common.ThumbnailGenerator.generate;
@@ -60,19 +66,44 @@ class CentralUserInterpreter {
 
     private void replyWhenAcknowledged() throws IOException {
         bufferedReader.readLine();
-        write(socket.getOutputStream(), readResultsFromFile());
+        write(socket.getOutputStream(), createResultsFromFiles());
     }
 
-    private String readResultsFromFile() throws IOException {
+    private String createResultsFromFiles() throws IOException {
         Gson gson = new Gson();
-        Results results = gson.fromJson(FileReader.getString(CENTRAL_SERVER_MANIFEST), Results.class);
-        results.list()
-                .parallelStream()
-                .forEach(result -> {
-                    result.host = host;
-                    result.thumbnail = getThumbnailStringFromImage(generate(result.filename));
-                });
+        File folder = new File(".");
+        List<File> files = Arrays.asList(getFiles(folder));
+        Results results = new Results();
+        Descriptions desc = gson.fromJson(FileReader.getString(DESCRIPTIONS_JSON), Descriptions.class);
+        files.parallelStream()
+                .filter(this::isImageFile)
+                .map(file -> createResultFromFile(file, desc))
+                .forEach(results::addResult);
+
         return gson.toJson(results);
+    }
+
+    private Result createResultFromFile(File file, Descriptions desc) {
+        String filename = file.getName();
+        String thumbnail = getThumbnailStringFromImage(generate(filename));
+        String description = desc.getFileDescription(filename);
+        return new Result(host, filename, thumbnail, description);
+    }
+
+    private boolean isImageFile(File file) {
+        try {
+            return Files.probeContentType(file.toPath()).startsWith("image");
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    private File[] getFiles(File folder) {
+        File[] files = folder.listFiles();
+        if (files == null) {
+            return new File[]{};
+        }
+        return files;
     }
 
     Results query(String searchTerm) throws IOException {
