@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.List;
 
@@ -28,6 +27,7 @@ import static java.lang.String.format;
 
 class CentralUserInterpreter {
 
+    private static final String IMAGE_PATTERN = "([^\\s]+(\\.(?i)(jpg|png|gif|bmp))$)";
     private Socket socket;
     private BufferedReader bufferedReader;
     private Host host;
@@ -75,7 +75,7 @@ class CentralUserInterpreter {
         List<File> files = Arrays.asList(getFiles(folder));
         Results results = new Results();
         Descriptions desc = gson.fromJson(FileReader.getString(DESCRIPTIONS_JSON), Descriptions.class);
-        files.parallelStream()
+        files.stream()
                 .filter(this::isImageFile)
                 .map(file -> createResultFromFile(file, desc))
                 .forEach(results::addResult);
@@ -91,11 +91,7 @@ class CentralUserInterpreter {
     }
 
     private boolean isImageFile(File file) {
-        try {
-            return Files.probeContentType(file.toPath()).startsWith("image");
-        } catch (IOException e) {
-            return false;
-        }
+        return file.getName().matches(IMAGE_PATTERN);
     }
 
     private File[] getFiles(File folder) {

@@ -5,41 +5,27 @@ import com.jfoenix.controls.JFXProgressBar;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.validation.RequiredFieldValidator;
 import com.jfoenix.validation.base.ValidatorBase;
-import com.sun.org.apache.bcel.internal.generic.Select;
 import edu.gvsu.cis.campbjos.imgine.common.BufferedImageConverter;
-import edu.gvsu.cis.campbjos.imgine.common.model.Result;
 import edu.gvsu.cis.campbjos.imgine.common.model.Results;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
-import javafx.beans.property.DoubleProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
-import javafx.scene.Node;
-import javafx.scene.control.*;
-import javafx.scene.effect.BlendMode;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.WritableImage;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.util.Callback;
-import org.controlsfx.control.GridCell;
 import org.controlsfx.control.GridView;
 import org.controlsfx.control.cell.ImageGridCell;
 
 import java.awt.image.BufferedImage;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 import static javafx.embed.swing.SwingFXUtils.toFXImage;
-import static javafx.scene.layout.CornerRadii.EMPTY;
-import static javafx.scene.paint.Color.BLUE;
 
 public class Controller implements Initializable {
 

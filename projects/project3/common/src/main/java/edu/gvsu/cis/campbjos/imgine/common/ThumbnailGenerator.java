@@ -3,16 +3,15 @@ package edu.gvsu.cis.campbjos.imgine.common;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 
 public class ThumbnailGenerator {
 
-    public static BufferedImage generate(String filePath) {
+    public static BufferedImage generate(String filename) {
         BufferedImage bufferedImage = null;
         try {
-            bufferedImage = ImageIO.read(new File(filePath));
+            bufferedImage = ImageIO.read(new File(filename));
         } catch (IOException e) {
             return null;
         }
