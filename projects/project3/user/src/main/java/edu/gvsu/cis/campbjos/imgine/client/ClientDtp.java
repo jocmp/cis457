@@ -57,29 +57,4 @@ final class ClientDtp implements DataTransferProcess {
         }
     }
 
-    @Override
-    public String listenForCharacterStream() {
-        BufferedReader bufferedReader;
-        try {
-            bufferedReader = new BufferedReader(new InputStreamReader
-                    (socket.getInputStream()));
-        } catch (IOException exception) {
-            return "";
-        }
-        String messageFromServer = "";
-        boolean isReceivingStream = true;
-
-        while (isReceivingStream) {
-            try {
-                final String requestLine = bufferedReader.readLine();
-                isReceivingStream = !requestLine.isEmpty();
-                if (isReceivingStream) {
-                    messageFromServer += requestLine + '\n';
-                }
-            } catch (IOException e) {
-                break;
-            }
-        }
-        return messageFromServer;
-    }
 }

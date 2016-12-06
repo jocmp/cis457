@@ -74,11 +74,19 @@ class CentralUserInterpreter {
         File folder = new File(".");
         List<File> files = Arrays.asList(getFiles(folder));
         Results results = new Results();
-        Descriptions desc = gson.fromJson(FileReader.getString(DESCRIPTIONS_JSON), Descriptions.class);
-        files.parallelStream()
-                .filter(this::isImageFile)
-                .map(file -> createResultFromFile(file, desc))
-                .forEach(results::addResult);
+        if (new File(DESCRIPTIONS_JSON).exists()) {
+            Descriptions desc = gson.fromJson(FileReader.getString(DESCRIPTIONS_JSON), Descriptions.class);
+            files.parallelStream()
+                    .filter(this::isImageFile)
+                    .map(file -> createResultFromFile(file, desc))
+                    .forEach(results::addResult);
+        } else {
+            Descriptions desc = new Descriptions();
+            files.parallelStream()
+                    .filter(this::isImageFile)
+                    .map(file -> createResultFromFile(file, desc))
+                    .forEach(results::addResult);
+        }
 
         return gson.toJson(results);
     }
