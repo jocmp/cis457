@@ -40,7 +40,8 @@ public final class FtpServer implements Runnable {
                 Socket connection = serverSocket.accept();
 
                 System.out.println(format("New connection with %s:%s",
-                        connection.getInetAddress(), connection.getPort()));
+                        connection.getInetAddress(), connection
+                                .getPort()));
 
                 ServerProtocolInterpreter request = new
                         ServerProtocolInterpreter(connection);
@@ -50,7 +51,8 @@ public final class FtpServer implements Runnable {
                 thread.start();
             }
         } catch (SocketException exception) {
-            runFtpServer(startingPort + 1);
+            System.out.println(format("Closing socket: %s", exception
+                    .getMessage()));
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
