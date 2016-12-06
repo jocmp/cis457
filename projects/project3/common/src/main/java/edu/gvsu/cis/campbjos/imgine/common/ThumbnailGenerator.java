@@ -15,10 +15,16 @@ public class ThumbnailGenerator {
         } catch (IOException e) {
             return null;
         }
-        BufferedImage scaledImage = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
-        scaledImage.createGraphics()
-                .drawImage(bufferedImage.getScaledInstance(100, 100, Image.SCALE_SMOOTH), 0, 0, null);
+        BufferedImage scaledImage = null;
+        try {
+            scaledImage = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
+            scaledImage.createGraphics()
+                    .drawImage(bufferedImage.getScaledInstance(100, 100, Image.SCALE_SMOOTH), 0, 0, null);
 
+        } catch (NullPointerException e) {
+            // It's fine. Continue
+            scaledImage = null;
+        }
         return scaledImage;
     }
 }
