@@ -10,7 +10,7 @@ public class Descriptions {
 
     @SerializedName("file_descriptions")
     @Expose
-    private Map<String, String> fileDescriptions;
+    private final Map<String, String> fileDescriptions;
 
     public Descriptions() {
         fileDescriptions = new HashMap<>();

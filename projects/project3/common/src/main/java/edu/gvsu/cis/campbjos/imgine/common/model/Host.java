@@ -9,37 +9,12 @@ public class Host {
 
     @SerializedName("ip")
     @Expose
-    public String ip;
+    public final String ip;
     @SerializedName("port")
     @Expose
-    public Integer port;
+    public final Integer port;
     @SerializedName("username")
-    public String username;
-
-    public static class Builder {
-        private String ip;
-        private Integer port;
-        private String username;
-
-        public Builder setIp(String ip) {
-            this.ip = ip;
-            return this;
-        }
-
-        public Builder setPort(Integer port) {
-            this.port = port;
-            return this;
-        }
-
-        public Builder setUsername(String username) {
-            this.username = username;
-            return this;
-        }
-
-        public Host createHost() {
-            return new Host(ip, port, username);
-        }
-    }
+    public final String username;
 
     private Host(String ip, Integer port, String username) {
         this.ip = ip;
@@ -71,5 +46,30 @@ public class Host {
     @Override
     public String toString() {
         return format("%s@%s:%s", username, ip, port);
+    }
+
+    public static class Builder {
+        private String ip;
+        private Integer port;
+        private String username;
+
+        public Builder setIp(String ip) {
+            this.ip = ip;
+            return this;
+        }
+
+        public Builder setPort(Integer port) {
+            this.port = port;
+            return this;
+        }
+
+        public Builder setUsername(String username) {
+            this.username = username;
+            return this;
+        }
+
+        public Host createHost() {
+            return new Host(ip, port, username);
+        }
     }
 }

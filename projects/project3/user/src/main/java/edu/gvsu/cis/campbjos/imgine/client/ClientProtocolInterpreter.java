@@ -3,15 +3,14 @@ package edu.gvsu.cis.campbjos.imgine.client;
 import edu.gvsu.cis.campbjos.imgine.common.ControlWriter;
 import edu.gvsu.cis.campbjos.imgine.common.DataTransferProcess;
 import edu.gvsu.cis.campbjos.imgine.common.ProtocolInterpreter;
-import javafx.scene.control.ProgressBar;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
-import static edu.gvsu.cis.campbjos.imgine.common.Commands.*;
-import static edu.gvsu.cis.campbjos.imgine.common.ServerPortConverter.convertToServerPortNumber;
+import static edu.gvsu.cis.campbjos.imgine.common.Commands.QUIT;
+import static edu.gvsu.cis.campbjos.imgine.common.Commands.RETR;
 import static java.lang.String.format;
 
 public final class ClientProtocolInterpreter implements ProtocolInterpreter {

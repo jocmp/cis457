@@ -5,7 +5,6 @@ import edu.gvsu.cis.campbjos.imgine.common.DataTransferProcess;
 import edu.gvsu.cis.campbjos.imgine.common.ProtocolInterpreter;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
@@ -13,7 +12,8 @@ import java.net.Socket;
 import java.util.Arrays;
 import java.util.List;
 
-import static edu.gvsu.cis.campbjos.imgine.common.Commands.*;
+import static edu.gvsu.cis.campbjos.imgine.common.Commands.QUIT;
+import static edu.gvsu.cis.campbjos.imgine.common.Commands.RETR;
 import static java.lang.String.valueOf;
 import static java.lang.System.out;
 

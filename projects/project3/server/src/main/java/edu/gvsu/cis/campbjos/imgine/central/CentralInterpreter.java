@@ -19,17 +19,16 @@ import static edu.gvsu.cis.campbjos.imgine.common.ControlWriter.write;
 class CentralInterpreter implements Runnable {
 
     private static final Vector<Result> RESULTS;
-
-    private final BufferedReader bufferedReader;
     private static final int COMMAND_INDEX = 0;
     private static final int SEARCH_TERM_INDEX = 1;
-
-    private Socket socket;
-    private Host host;
 
     static {
         RESULTS = new Vector<>();
     }
+
+    private final BufferedReader bufferedReader;
+    private Socket socket;
+    private Host host;
 
     CentralInterpreter(Socket socket) throws IOException {
         this.socket = socket;

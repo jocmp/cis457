@@ -14,13 +14,11 @@ import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
-import static java.lang.String.format;
-
 public class UserMain extends Application implements OnCellClickListener {
 
-    private Controller controller;
     private final ClientProtocolInterpreter protocolInterpreter;
     private final CentralUserInterpreter userInterpreter;
+    private Controller controller;
     private FtpServer ftpServer;
     private Results currentResults;
     private int currentSelectedResultIndex;

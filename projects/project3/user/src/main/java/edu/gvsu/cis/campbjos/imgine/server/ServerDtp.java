@@ -12,7 +12,7 @@ final class ServerDtp implements DataTransferProcess {
 
     private final Socket socket;
 
-    public ServerDtp(final Socket socket) {
+    ServerDtp(final Socket socket) {
         this.socket = socket;
     }
 
@@ -54,11 +54,5 @@ final class ServerDtp implements DataTransferProcess {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public String listenForCharacterStream() {
-        // Unused in server DTP
-        return null;
     }
 }

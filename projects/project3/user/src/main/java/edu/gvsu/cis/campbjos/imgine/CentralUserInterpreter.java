@@ -59,7 +59,7 @@ class CentralUserInterpreter {
                 write(socket.getOutputStream(), new Gson().toJson(host));
                 replyWhenAcknowledged();
             } catch (IOException e) {
-                // couldn't start server connection
+                // Couldn't start server connection
             }
         }).start();
     }
@@ -75,7 +75,7 @@ class CentralUserInterpreter {
         List<File> files = Arrays.asList(getFiles(folder));
         Results results = new Results();
         Descriptions desc = gson.fromJson(FileReader.getString(DESCRIPTIONS_JSON), Descriptions.class);
-        files.stream()
+        files.parallelStream()
                 .filter(this::isImageFile)
                 .map(file -> createResultFromFile(file, desc))
                 .forEach(results::addResult);
@@ -83,10 +83,10 @@ class CentralUserInterpreter {
         return gson.toJson(results);
     }
 
-    private Result createResultFromFile(File file, Descriptions desc) {
+    private Result createResultFromFile(File file, Descriptions descriptions) {
         String filename = file.getName();
         String thumbnail = getThumbnailStringFromImage(generate(filename));
-        String description = desc.getFileDescription(filename);
+        String description = descriptions.getFileDescription(filename);
         return new Result(host, filename, thumbnail, description);
     }
 

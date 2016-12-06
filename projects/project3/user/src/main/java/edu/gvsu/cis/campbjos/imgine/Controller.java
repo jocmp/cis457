@@ -3,16 +3,12 @@ package edu.gvsu.cis.campbjos.imgine;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXProgressBar;
 import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.validation.RequiredFieldValidator;
-import com.jfoenix.validation.base.ValidatorBase;
 import edu.gvsu.cis.campbjos.imgine.common.BufferedImageConverter;
 import edu.gvsu.cis.campbjos.imgine.common.model.Results;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ProgressIndicator;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.controlsfx.control.GridView;
@@ -25,7 +21,11 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
+import static javafx.collections.FXCollections.observableList;
 import static javafx.embed.swing.SwingFXUtils.toFXImage;
+import static javafx.scene.control.Alert.AlertType.ERROR;
+import static javafx.scene.control.Alert.AlertType.WARNING;
+import static javafx.scene.control.ProgressIndicator.INDETERMINATE_PROGRESS;
 
 public class Controller implements Initializable {
 
@@ -54,8 +54,6 @@ public class Controller implements Initializable {
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
         selection = new Selection();
         setDisconnected();
-        createIpValidator();
-        createPortValidator();
         imageContainer.setCellFactory(gridView -> {
             ImageGridCell cell = new ImageGridCell();
             cell.setOnMouseClicked(event -> {
@@ -65,34 +63,14 @@ public class Controller implements Initializable {
             return cell;
         });
 
-        images = FXCollections.observableList(new ArrayList<>());
+        images = observableList(new ArrayList<>());
         imageContainer.setItems(images);
 
-        downloadProgress.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
+        downloadProgress.setProgress(INDETERMINATE_PROGRESS);
     }
 
     public void setOnCellClickListener(OnCellClickListener onCellClickListener) {
         this.onCellClickListener = onCellClickListener;
-    }
-
-    private void createIpValidator() {
-        RequiredFieldValidator ipValidator = new RequiredFieldValidator();
-        ipValidator.setMessage("Invalid IP");
-        ipValidator.setErrorStyleClass(ValidatorBase.DEFAULT_ERROR_STYLE_CLASS);
-        ipAddressField.getValidators().add(ipValidator);
-        ipAddressField.focusedProperty().addListener((o, oldVal, newVal) -> {
-            ipAddressField.validate();
-        });
-    }
-
-    private void createPortValidator() {
-        RequiredFieldValidator portValidator = new RequiredFieldValidator();
-        portValidator.setMessage("Invalid Port");
-        portValidator.setErrorStyleClass(ValidatorBase.DEFAULT_ERROR_STYLE_CLASS);
-        portField.getValidators().add(portValidator);
-        portField.focusedProperty().addListener((o, oldVal, newVal) -> {
-            ipAddressField.validate();
-        });
     }
 
     void populateImageContainer(Results results) {
@@ -143,13 +121,13 @@ public class Controller implements Initializable {
     }
 
     void showErrorDialog(String header, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
+        Alert alert = new Alert(ERROR);
         alert.setTitle("Error");
         showDialog(alert, header, message);
     }
 
     void showWarningDialog(String header, String message) {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
+        Alert alert = new Alert(WARNING);
         alert.setTitle("Warning");
         showDialog(alert, header, message);
     }

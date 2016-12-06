@@ -8,5 +8,4 @@ public final class Constants {
             "-------------------------------------------\n";
 
     public static final String DESCRIPTIONS_JSON = "DESCRIPTIONS.json";
-    public static final String CURSOR = "imgine > ";
 }

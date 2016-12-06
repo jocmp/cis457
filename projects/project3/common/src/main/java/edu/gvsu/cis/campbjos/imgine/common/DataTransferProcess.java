@@ -8,8 +8,6 @@ public interface DataTransferProcess {
 
     void sendCharacterStream(final String message);
 
-    String listenForCharacterStream();
-
     void closeSocket();
 
 }

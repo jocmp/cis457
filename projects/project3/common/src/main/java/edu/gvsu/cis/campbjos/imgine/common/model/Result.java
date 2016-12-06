@@ -8,16 +8,16 @@ public class Result {
 
     @SerializedName("filename")
     @Expose
-    public String filename;
+    public final String filename;
     @SerializedName("host")
     @Expose
-    public Host host;
+    public final Host host;
     @SerializedName("description")
     @Expose
-    public String description;
+    public final String description;
     @SerializedName("thumbnail")
     @Expose
-    public String thumbnail;
+    public final String thumbnail;
 
     public Result(Host host, String filename, String thumbnail, String description) {
         this.host = new Host.Builder()

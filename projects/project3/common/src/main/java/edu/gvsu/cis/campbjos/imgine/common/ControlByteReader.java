@@ -7,8 +7,7 @@ import java.io.InputStream;
 
 public final class ControlByteReader {
 
-    public static void readByteStream(final InputStream inputStream,
-                                      final String filename) throws Exception {
+    public static void readByteStream(final InputStream inputStream, final String filename) {
         FileOutputStream output = null;
         try {
             byte[] bytes = new byte[1024];

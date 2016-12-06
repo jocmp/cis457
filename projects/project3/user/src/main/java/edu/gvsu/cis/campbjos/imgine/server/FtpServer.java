@@ -15,6 +15,10 @@ public final class FtpServer implements Runnable {
     private static int ftpServerPort;
     private ServerSocket serverSocket;
 
+    public static int getFtpServerPort() {
+        return ftpServerPort;
+    }
+
     @Override
     public void run() {
         try {
@@ -50,10 +54,6 @@ public final class FtpServer implements Runnable {
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
-    }
-
-    public static int getFtpServerPort() {
-        return ftpServerPort;
     }
 
     public void close() throws IOException {
