@@ -1,9 +1,14 @@
 allprojects {
 }
 
+
+
+
+
 subprojects {
     apply plugin: "java"
     apply plugin: "idea"
+    apply plugin: 'kotlin'
     apply plugin: 'eclipse-wtp'
 
     repositories {
@@ -13,5 +18,20 @@ subprojects {
     dependencies {
         testCompile "junit:junit:4+"
         compile 'com.google.code.gson:gson:2.8.0'
+        compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+}
+
+buildscript {
+    ext.kotlin_version = '1.0.5'
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
